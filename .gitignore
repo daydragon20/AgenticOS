@@ -1,0 +1,9 @@
+# Ruwe bronbestanden — persoonlijke documenten
+raw/
+
+# Obsidian workspace-instellingen (machine-specifiek)
+.obsidian/
+
+# Windows
+desktop.ini
+Thumbs.db
