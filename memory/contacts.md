@@ -17,9 +17,10 @@
 - **Ontmoet:** brunch 2026-05-01
 - **Relevant voor Nathan:** topnetwerk van Belgische investeerders, potentiële mentor-figuur
 
-### Onbekend contact — Interview Automation Opportuniteit
+### Matias Rodriguez — Interview Automation Opportuniteit
+- **LinkedIn:** https://www.linkedin.com/in/matias-rodriguezc
 - **Ontmoet via:** brunch Thomas Guenter, 2026-05-01
 - **Opportuniteit:** AI-automatisatie bouwen voor interview-gesprekken voor zijn bedrijf
 - **Gevraagde skills:** AI, Claude Code, nieuwste automation-technieken
-- **Status:** open — nog geen naam/contactgegevens opgeslagen
-- **Volgende stap:** naam + contactgegevens ophalen, concreet voorstel sturen
+- **Status:** open — nog geen bedrijfsnaam/sector opgeslagen
+- **Volgende stap:** zijn LinkedIn checken voor bedrijfscontext → concreet voorstel sturen binnen 48u
