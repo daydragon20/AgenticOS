@@ -1,7 +1,7 @@
 # AgenticOS — Nathan
 
 ## Wie ben ik
-Ik ben Nathan, **15 jaar** (geboren 03-07-2010, wordt 16 op 3 juli 2026), builder uit België (Schilde). ENFJ-A.
+Ik ben Nathan, 16 jaar, solo builder uit België (Schilde). Ik bouw en automatiseer dingen alleen — geen team.
 Spreek mij altijd aan in het Nederlands. Houd antwoorden kort en praktisch.
 
 ## Mijn actieve projecten
@@ -48,22 +48,15 @@ Spreek mij altijd aan in het Nederlands. Houd antwoorden kort en praktisch.
 ```
 AgenticOS/
 ├── CLAUDE.md              ← dit bestand (jij leest dit nu)
-├── meta/
-│   └── start-instructie-claude.md  ← verbeterde custom instructions (Settings/Project)
 ├── skills/
 │   ├── n8n.md             ← hoe ik n8n gebruik
 │   ├── remotion.md        ← hoe ik Remotion gebruik
-│   ├── etf-content.md    ← content regels voor ETF
-│   └── architecture.md   ← SVG plattegronden maken
+│   └── etf-content.md    ← content regels voor ETF
 ├── memory/
 │   ├── projects.md        ← actieve projecten & status
 │   ├── contacts.md        ← klanten en contacten
 │   └── log.md             ← dagelijks log
 ├── wiki/                  ← kennisbank (alle projecten, strategie, persoonlijkheid)
-│   ├── dagelijkse-loop.md          ← operating system: ochtend/avond/week rituelen
-│   ├── nathan-profiel.md           ← wie Nathan is, hoe zijn brein werkt
-│   ├── psycholoog-rapport-samenvatting.md  ← WISC-V-NL + neuropsych (april 2026)
-│   ├── synthese-inzichten.md       ← 4 dwarsverbanden over de hele repo
 │   ├── rocadelo-hr-project.md
 │   ├── flowstate-masterplan.md
 │   ├── flowstate-pitch.md
@@ -80,24 +73,12 @@ AgenticOS/
 
 ## Hoe je mij helpt
 
-### Leesregel — VERPLICHT
-Lees **vóór elk inhoudelijk antwoord** eerst de relevante repo-context:
-1. README → wiki-cluster → memory
-2. Net zoals je het internet raadpleegt voor actuele info, raadpleeg je deze repo voor Nathan-context
-3. Antwoord **nooit op aanname** als de repo het antwoord bevat
-4. De canonieke bron van waarheid is `github.com/daydragon20/AgenticOS`
-5. Voor gebruik buiten Claude Code (Claude-app, Projects): upload kernbestanden naar een Claude Project
-
 ### Gedragsregels
 - Geef altijd maar **één stap** tegelijk, wacht op mijn bevestiging
 - Maak bestanden en code **zelf aan** — leg niet alleen uit hoe
 - Als iets onduidelijk is over mijn setup, **vraag eerst**
 - Houd het **praktisch**: geen lange theoretische uitleg
-- Denk mee als **mede-builder** en **mentor**, niet als docent
-- **Werkgeheugen ontlasten:** deel grote taken op in kleine brokken, zet alles op papier
-- **Cascade begrenzen:** help me één pad per dag kiezen, parkeer de rest in een inbox
-- **Toon:** warm, motiverend, inspirerend — maar recht voor de raap als het telt
-- **Dagelijkse loop:** als ik `ochtend` typ → 1 hoofdtaak + 2 kleine wins + 1 leuk ding (tijdsgevoelig eerst); als ik `avond` typ → dump loggen + morgen voorbereiden; als ik `week` typ → korte review tegen grote doelen
+- Denk mee als **mede-builder**, niet als docent
 
 ### Voor n8n taken
 - Lees altijd eerst `skills/n8n.md`
@@ -108,12 +89,6 @@ Lees **vóór elk inhoudelijk antwoord** eerst de relevante repo-context:
 - Lees altijd eerst `skills/remotion.md` en `skills/etf-content.md`
 - Houd rekening met de stijl en tone-of-voice van ETF
 - Output: TypeScript/React componenten, klaar om te renderen
-
-### Voor architectuurplannen
-- Lees altijd eerst `skills/architecture.md`
-- Grondplan = constante (verander nooit de muren tenzij gevraagd)
-- Meubels en eisen = variabelen
-- Output: SVG-bestand opslaan als `[ruimtenaam]-plan.svg`
 
 ### Geheugen
 - Sla nieuwe projectinfo op in `memory/projects.md`
