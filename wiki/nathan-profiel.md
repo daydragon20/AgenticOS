@@ -92,9 +92,9 @@ kapitaal — start klein/gratis, investeert pas met verdiend geld, vermijdt risi
 
 ## Zijn Mensen (Twee Cirkels)
 
-- **De wortels (Mariagaarden, Westmalle):** Loby Pennen, Stan Claessens, Lynn Goossens —
+- **De wortels (Mariagaarden, Westmalle):** Lowie Penne, Stan Claessens, Lenn Goosens —
   emotionele thuisbasis, "dingen die tieners doen", de kern.
-- **De ontdekkers:** Thobe de Brouwer, Xander Zeebrechts — hoger ambitiemilieu, nieuwe werelden.
+- **De ontdekkers:** Thobe de Brouwer, Xander Sebreghts — hoger ambitiemilieu, nieuwe werelden.
 - **Idolen:** founders op social media — inspiratie + levensmotivatie.
 
 Sociaal is zijn **nummer één** van de drie pijlers (werk / sociaal / leren). Het rapport bevestigt:
