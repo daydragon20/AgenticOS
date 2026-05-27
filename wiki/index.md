@@ -6,6 +6,16 @@ This is the catalog of every page in your wiki. Claude updates it automatically.
 
 ---
 
+## Profiel & Systeem
+
+_(wie Nathan is, hoe hij werkt — begin hier voor elk advies)_
+
+- [[Nathan Profiel]] — **START HIER voor profiel.** Hoe zijn brein werkt, curiosity cascade, ENFJ-A, zijn mensen, instructies voor Claude
+- [[Nathans Persoonlijkheid]] — ENFJ-A Protagonist volledig profiel (16personalities), sterktes, zwaktes, relaties
+- [[Psycholoog Rapport Samenvatting]] — WISC-V-NL + neuropsych (Praktijk de Wilg, april 2026): TIQ 133, werkgeheugen 103, geen ADHD
+- [[Dagelijkse Loop]] — Operating system: ochtend/avond/week rituelen, cascade begrenzen, inbox, sociaal inplannen
+- [[Synthese Inzichten]] — 4 dwarsverbanden die geen enkel los bestand dekt (Flowstate=zelf, cascade, niet-solo, projectlast)
+
 ## Entities
 
 _(people, places, organizations, products — pages that describe a thing)_
@@ -22,7 +32,7 @@ _(ideas, frameworks, patterns, principles — pages that describe a concept)_
 
 - [[Brief aan Nathan]] — Persoonlijke motivatiebrief: het vuur, het pad, de kritieke vraag "graven of vluchten?"
 - [[Discipline Systemen]] — Dagstructuur, phone hygiene, mindset frameworks (Long-term greedy, 2-dag regel), energie management
-- [[Examencommissie Strategie]] — Aanbevolen richting (Eco-wiskunde/Wetenschappen), AgODi huisonderwijs aanvraag, 1.000+ uur extra/jaar
+- [[Examencommissie Strategie]] — Aanbevolen richting (Eco-wiskunde/Wetenschappen), huisonderwijs deadline 3e schooldag (~3 sept 2026), uitschrijven Vita et Pax vóór 1 sept
 - [[Financieel Plan]] — Beleggingsstrategie (IWDA ETF), revenue-allocatie per fase, weg naar financiële vrijheid op 30
 - [[Flowstate Strategie]] — Trademark vs. patent uitleg, USPTO-risico's bij bestaande naam, merkdifferentiatie-opties
 - [[Jonge Founders Patronen]] — Profielen (Yip/Guillem/Edholm), 5 mentale traits, vroege validatie loop, Belgische mogelijkheden
@@ -35,7 +45,7 @@ _(synthesized answers to questions you've asked, filed back as pages)_
 
 - [[Nathans Bucket List]] — 50 levensdoelen in 7 categorieën: fortuin, eigendommen, ruimte, reizen, kennis, impact, persoonlijk
 - [[Nathans Ideaal Leven]] — Blueprint: ochtend 05:45, piano, partner-criteria, Rockefeller Center kantoor, penthouse Manhattan, 8 mantras
-- [[Nathans Levensplan]] — Levensplan 2025–2040: 4 fasen, identiteit (ENTP), 6 mantras, financieel doel €5K/m passief op 30
+- [[Nathans Levensplan]] — Levensplan 2025–2040: 4 fasen, identiteit (ENFJ-A), 6 mantras, financieel doel €5K/m passief op 30
 
 ## Sources
 

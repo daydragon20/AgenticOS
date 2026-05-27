@@ -6,7 +6,7 @@
 
 ## Wie is Nathan
 
-Nathan is een 15-jarige solo builder uit België. ENTP. Bouwt alles alleen.
+Nathan is een 15-jarige builder uit België (Schilde). **ENFJ-A (Protagonist).** Geboren 03-07-2010 (wordt 16 op 3 juli 2026).
 
 **Nu actief:**
 - Website agency voor lokale Belgische zaken (eerste klanten in aanbouw)
@@ -56,8 +56,15 @@ AgenticOS/
 ├── CLAUDE.md                  ← gedragsregels en projectoverzicht voor Claude
 ├── log.md                     ← chronologisch log van alle sessies
 │
+├── meta/
+│   └── start-instructie-claude.md  ← verbeterde custom instructions voor Settings/Project
+│
 ├── wiki/                      ← gesynthetiseerde kennis (begin hier voor context)
 │   ├── index.md               ← overzicht van alle wiki-pagina's
+│   ├── nathan-profiel.md      ← wie Nathan is, hoe zijn brein werkt (START HIER voor profiel)
+│   ├── dagelijkse-loop.md     ← operating system: ochtend/avond/week rituelen
+│   ├── psycholoog-rapport-samenvatting.md  ← WISC-V-NL + neuropsych april 2026
+│   ├── synthese-inzichten.md  ← 4 dwarsverbanden over de hele repo
 │   ├── nathans-levensplan.md  ← identiteit, fasen, mantras, blokkades
 │   ├── nathans-ideaal-leven.md
 │   ├── nathans-bucket-list.md
@@ -106,11 +113,15 @@ Gebruik deze clusters als startpunt. Lees **alle** bestanden in een cluster voor
 
 ### "Wie is Nathan / wat drijft hem?"
 ```
-wiki/nathans-levensplan.md        ← START HIER
+wiki/nathan-profiel.md                    ← START HIER (meest compleet profiel)
+wiki/nathans-levensplan.md
+wiki/nathans-persoonlijkheid.md           ← ENFJ-A details
+wiki/psycholoog-rapport-samenvatting.md   ← cognitief profiel + advies
 wiki/nathans-ideaal-leven.md
 wiki/nathans-bucket-list.md
 wiki/brief-aan-nathan.md
 wiki/discipline-systemen.md
+wiki/dagelijkse-loop.md
 wiki/jonge-founders-patronen.md
 ```
 

@@ -11,8 +11,8 @@ tags: [identiteit, levensplan, strategie, fasen]
 
 ## Kerncijfers
 
-- **Leeftijd nu:** 15 jaar
-- **Persoonlijkheidstype:** ENTP · Protagonist
+- **Leeftijd nu:** 15 jaar (geboren 03-07-2010)
+- **Persoonlijkheidstype:** **ENFJ-A · Protagonist** *(eerdere notitie vermeldde ENTP — ENFJ-A is het meest recente en correcte resultaat, zie `nathans-persoonlijkheid.md`)*
 - **Horizon:** 2040 (30 jaar)
 - **Missie:** Ondernemen, bouwen, vrijheid
 - **Financieel doel:** €5.000/maand passief of semi-passief inkomen @ 30
@@ -85,4 +85,4 @@ Eigen tech bedrijf, ruimtevaartsector, financiële vrijheid, wereldwijd werken, 
 | Motivatie grillig | Discipline = consistentie, 1 vast routine-anker per dag |
 | Startangst | 2-minuten start, maak het ultra-concreet, falen op 15 heeft nul gevolgen |
 
-**Zie ook:** [[Agency Website Business]] · [[AI Automation Agency]] · [[Ruimtevaartsector]] · [[Financieel Plan]] · [[Nieuwe York Ambitie]] · [[Examencommissie Strategie]]
+**Zie ook:** [[Nathan Profiel]] · [[Nathans Persoonlijkheid]] · [[Agency Website Business]] · [[AI Automation Agency]] · [[Ruimtevaartsector]] · [[Financieel Plan]] · [[Nieuwe York Ambitie]] · [[Examencommissie Strategie]]
