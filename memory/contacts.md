@@ -1,13 +1,13 @@
 # Contacten & Stakeholders
 
 ## Vrienden — Dichtste Cirkel (Mariagaarden, Westmalle)
-- **Loby Pennen** — beste vriend
+- **Lowie Penne** — beste vriend
 - **Stan Claessens** — beste vriend
-- **Lynn Goossens** — beste vriend
+- **Lenn Goosens** — beste vriend
 
 ## Vrienden — Nieuwere Cirkel (hoger ambitiemilieu)
 - **Thobe de Brouwer** — nieuwe connectie, hoger milieu
-- **Xander Zeebrechts** — nieuwe connectie, hoger milieu
+- **Xander Sebreghts** — nieuwe connectie, hoger milieu
 
 ## ETF (oma's bedrijf)
 - **Contact:** oma
