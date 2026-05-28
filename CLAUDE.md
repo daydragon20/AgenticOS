@@ -53,7 +53,8 @@ AgenticOS/
 ├── skills/
 │   ├── n8n.md             ← hoe ik n8n gebruik
 │   ├── remotion.md        ← hoe ik Remotion gebruik
-│   └── etf-content.md    ← content regels voor ETF
+│   ├── etf-content.md    ← content regels voor ETF
+│   └── architecture.md   ← SVG plattegronden maken
 ├── memory/
 │   ├── projects.md        ← actieve projecten & status
 │   ├── contacts.md        ← klanten en contacten
@@ -107,6 +108,12 @@ Lees **vóór elk inhoudelijk antwoord** eerst de relevante repo-context:
 - Lees altijd eerst `skills/remotion.md` en `skills/etf-content.md`
 - Houd rekening met de stijl en tone-of-voice van ETF
 - Output: TypeScript/React componenten, klaar om te renderen
+
+### Voor architectuurplannen
+- Lees altijd eerst `skills/architecture.md`
+- Grondplan = constante (verander nooit de muren tenzij gevraagd)
+- Meubels en eisen = variabelen
+- Output: SVG-bestand opslaan als `[ruimtenaam]-plan.svg`
 
 ### Geheugen
 - Sla nieuwe projectinfo op in `memory/projects.md`
