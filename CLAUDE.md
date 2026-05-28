@@ -102,8 +102,16 @@ Als ik een nieuwe sessie begin, doe dan het volgende:
 2. Lees `memory/log.md` voor wat er recent gebeurd is
 3. Vraag: "Wat gaan we vandaag aanpakken?"
 
+## Upload / bestanden aanmaken — VERPLICHT
+Telkens wanneer ik vraag om iets te uploaden, aan te maken of op te slaan in de repo:
+1. Maak het bestand aan op de feature branch
+2. Commit en push naar de feature branch
+3. **Maak direct een PR aan en merge die onmiddellijk naar `main`**
+4. Geen extra bevestiging nodig — gewoon doen
+
 ## Einde van elke sessie — VERPLICHT
 Na elke sessie waarin bestanden zijn aangemaakt of gewijzigd:
 1. Commit en push alle wijzigingen naar de huidige branch
 2. **Merge de PR onmiddellijk naar `main`** — dit zorgt ervoor dat kennis beschikbaar is in de volgende sessie
 3. Zonder merge naar main zijn nieuwe bestanden onzichtbaar in toekomstige sessies
+4. Controleer altijd of er nog open PRs zijn die nog niet gemerged zijn — merge die ook
