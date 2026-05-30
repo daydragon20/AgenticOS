@@ -1,0 +1,59 @@
+# Jekyll Configuration for AgenticOS
+# This enables GitHub Pages and improves SEO
+
+title: "AgenticOS — Nathan Charita's Personal OS"
+description: "Personal knowledge system, project tracker, and AI instruction center for Nathan Charita (15, Belgium)"
+url: "https://github.com/daydragon20/AgenticOS"
+author: "Nathan Charita"
+email: "nathan@charut.be"
+
+# Theme
+remote_theme: pages-themes/slate@v0.2.0
+plugins:
+  - jekyll-remote-theme
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+
+# SEO & Discovery
+show_downloads: true
+
+# Navigation
+permalink: /:title/
+
+# Collections for better organization
+collections:
+  wiki:
+    output: false
+  memory:
+    output: false
+  skills:
+    output: false
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: "default"
+
+# Exclude from processing
+exclude:
+  - ".git"
+  - "node_modules"
+  - ".gitignore"
+  - "LICENSE"
+  - ".DS_Store"
+
+# Keywords for SEO
+keywords:
+  - "personal knowledge system"
+  - "AI operating system"
+  - "Nathan Charita"
+  - "Belgium tech"
+  - "AI automation"
+  - "n8n"
+  - "project management"
