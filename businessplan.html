@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Businessplan — werkdocument</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F6F0E2;--paper-2:#FBF7EC;--ink:#211C18;--ink-soft:#4a4239;
+    --wine:#6E1E2A;--wine-deep:#561420;--ochre:#BE8A2E;--ochre-soft:#f2e6c8;
+    --rule:#d8ccb2;--serif:"Newsreader",Georgia,serif;--display:"Fraunces",Georgia,serif;--mono:"JetBrains Mono",monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);
+    font-size:clamp(16px,1rem + .2vw,18px);line-height:1.6;
+    background-image:radial-gradient(circle at 1px 1px, rgba(33,28,24,.025) 1px, transparent 0);background-size:22px 22px;
+    -webkit-font-smoothing:antialiased;animation:fade .5s ease both}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .wrap{max-width:720px;margin:0 auto;padding:0 22px 64px}
+  header{padding:54px 0 22px;border-bottom:2px solid var(--ink);margin-bottom:8px}
+  .kicker{font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--wine);font-weight:700}
+  h1{font-family:var(--display);font-weight:900;font-size:clamp(2.1rem,7vw,3.2rem);line-height:1;letter-spacing:-.02em;margin:.3em 0 .2em}
+  .sub{font-size:1.1rem;color:var(--ink-soft);max-width:52ch;margin:0 0 1.1em}
+  .meta{display:flex;flex-wrap:wrap;gap:7px 10px;font-family:var(--mono);font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+  .meta span{background:var(--paper-2);border:1px solid var(--rule);padding:4px 9px;border-radius:30px}
+  section{padding:22px 0;border-top:1px solid var(--rule)}
+  section:first-of-type{border-top:none}
+  .secnum{font-family:var(--mono);font-size:.66rem;letter-spacing:.18em;color:var(--ochre);font-weight:700}
+  h2{font-family:var(--display);font-weight:600;font-size:1.4rem;line-height:1.1;margin:.2em 0 .5em}
+  p{margin:0 0 .8em}
+  ul{margin:0 0 .6em;padding-left:1.2em}
+  li{margin:.32em 0}
+  li::marker{color:var(--wine)}
+  strong{font-weight:600;color:var(--wine-deep)}
+  .pitch{background:var(--ink);color:var(--paper);border-radius:14px;padding:22px 24px;margin:24px 0;font-size:1.18rem;line-height:1.5;font-family:var(--display);font-weight:500}
+  .pitch span{color:var(--ochre);font-family:var(--mono);font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;display:block;margin-bottom:8px;font-weight:700}
+  .grid{display:grid;gap:12px;margin:.4em 0}
+  @media(min-width:560px){.grid{grid-template-columns:1fr 1fr}}
+  .card{background:var(--paper-2);border:1px solid var(--rule);border-radius:11px;padding:14px 16px}
+  .card h3{font-family:var(--display);font-weight:600;font-size:1rem;margin:0 0 .25em;color:var(--wine)}
+  .card p{font-size:.92rem;margin:0;color:var(--ink-soft)}
+  ol.flow{counter-reset:f;list-style:none;padding:0;margin:.4em 0}
+  ol.flow>li{counter-increment:f;position:relative;padding:8px 0 8px 40px;border-bottom:1px dashed var(--rule)}
+  ol.flow>li:last-child{border-bottom:none}
+  ol.flow>li::before{content:counter(f);position:absolute;left:0;top:7px;width:26px;height:26px;display:grid;place-items:center;background:var(--wine);color:var(--paper);font-family:var(--display);font-weight:900;border-radius:50%;font-size:.82rem}
+  .open{background:#efe7d6;border:1px dashed #b7a37a;border-radius:12px;padding:16px 18px}
+  .open h2{margin-top:0}
+  .twocol{display:grid;gap:10px}
+  @media(min-width:560px){.twocol{grid-template-columns:1fr 1fr}}
+  .who{background:var(--paper-2);border:1px solid var(--rule);border-left:4px solid var(--ochre);border-radius:0 11px 11px 0;padding:12px 15px}
+  .who b{display:block;font-family:var(--display);color:var(--wine-deep)}
+  .who span{font-size:.9rem;color:var(--ink-soft)}
+  footer{border-top:2px solid var(--ink);margin-top:14px;padding-top:18px;font-size:.82rem;color:var(--ink-soft)}
+  ::selection{background:var(--wine);color:var(--paper)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="kicker">Businessplan · Werkdocument v0.1 · Vertrouwelijk</div>
+    <h1>De Outbound Engine</h1>
+    <p class="sub">Een geautomatiseerde, ingebedde recruitment-laag voor recruitmentbureaus. <em>(Werktitel — definitieve naam nog te kiezen.)</em></p>
+    <div class="meta"><span>Rocadelo HR × Nathan</span><span>2 juni 2026</span><span>Launch partner: Rocadelo HR</span></div>
+  </header>
+
+  <div class="pitch"><span>In één zin</span>Wij nemen de LinkedIn-outreach van recruitmentbureaus volledig over — op onze eigen veilige accounts — zodat er vanzelf kandidaten en opdrachten binnenstromen. We verdienen mee aan wat het oplevert.</div>
+
+  <section>
+    <div class="secnum">01 · HET PROBLEEM</div>
+    <h2>Recruitment draait nog op manueel werk</h2>
+    <ul>
+      <li>Recruiters verliezen <strong>uren per dag</strong> aan handmatig prospecteren en aanschrijven op LinkedIn.</li>
+      <li>Bestaande tools zetten het <strong>eigen profiel van de recruiter op het spel</strong> — en LinkedIn handhaaft in 2026 strenger dan ooit.</li>
+      <li>De tools die bestaan zijn ofwel robotisch, ofwel riskant, ofwel niet gebouwd voor recruitment.</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="secnum">02 · DE OPLOSSING — ONS MODEL</div>
+    <h2>Een ingebedde, geautomatiseerde laag</h2>
+    <p>We vervangen een stuk van de "zoekmachine" van een recruitmentbureau door een geautomatiseerd team. Het bureau <strong>stuurt via een dashboard</strong> (hun keuzes, hun info), maar het zoeken en aanschrijven gebeurt <strong>automatisch op opgewarmde accounts die wij beheren</strong> — zodat hun eigen profiel veilig blijft.</p>
+    <p>We zijn geen tool die ze kopen, maar een <strong>ingebedde partner</strong> — een <em>recruiter voor recruiters</em> — die meedeelt in de plaatsingen die eruit voortkomen.</p>
+  </section>
+
+  <section>
+    <div class="secnum">03 · WAAROM WIJ WINNEN</div>
+    <h2>Vier dingen die niemand combineert</h2>
+    <div class="grid">
+      <div class="card"><h3>Accountveiligheid</h3><p>De klant koppelt nooit zijn eigen profiel. Loopt een account schade op, dan is het óns account.</p></div>
+      <div class="card"><h3>Partner, geen tool</h3><p>We worden deel van hun machine en werken namens hen — moeilijk te vervangen.</p></div>
+      <div class="card"><h3>Betaald op resultaat</h3><p>We winnen pas als zij winnen. Lage drempel, gedeelde belangen.</p></div>
+      <div class="card"><h3>Lokaal & recruitment-first</h3><p>Belgische bureaus, NL + FR, gebouwd voor recruitment — niet voor sales.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="secnum">04 · HOE HET WERKT</div>
+    <h2>Van prospect tot afspraak</h2>
+    <ol class="flow">
+      <li>Het bureau stelt via het dashboard in wie het zoekt.</li>
+      <li>Ons systeem vindt en verrijkt automatisch de juiste profielen.</li>
+      <li>Het stuurt gepersonaliseerde outreach via opgewarmde accounts (LinkedIn + e-mail).</li>
+      <li>Antwoorden worden afgehandeld; gekwalificeerde gesprekken landen klaar in hun pijplijn.</li>
+    </ol>
+  </section>
+
+  <section>
+    <div class="secnum">05 · VERDIENMODEL</div>
+    <h2>Prestatiegebonden</h2>
+    <p>Het uitgangspunt: we worden betaald op wat we opleveren, niet op een kale licentie. De <strong>exacte vorm ligt nog op tafel</strong> — een vast maandbedrag, een revenue-share op plaatsingen die via ons binnenkomen, of een hybride.</p>
+    <p>Leidend principe bij die keuze: <strong>afrekenen op wat ons systeem zelf kan meten</strong> (bv. een geboekte gekwalificeerde afspraak), zodat we attributie- en inningsdiscussies vermijden. Dit is de eerste beslissing om met Mathias scherp te zetten.</p>
+  </section>
+
+  <section>
+    <div class="secnum">06 · MARKT & AANPAK</div>
+    <h2>Eerst bewijzen, dan verkopen</h2>
+    <p><strong>Doelgroep fase 1:</strong> Belgische tech- en finance-recruitmentbureaus van 3–15 mensen, met plaatsingen tussen €60k–€120k.</p>
+    <p><strong>Aanpak:</strong> we draaien het systeem éérst intern bij Rocadelo HR (dogfooding), meten harde cijfers, en bouwen daarmee onze eerste case study. Pas daarna verkopen we het door aan andere bureaus.</p>
+  </section>
+
+  <section>
+    <div class="secnum">07 · CONCURRENTIE</div>
+    <h2>Waarom we naast hen spelen, niet tegen</h2>
+    <p>Spelers als <strong>Spott</strong> verkopen software die het bureau zélf bedient en waarvoor het zijn eigen accounts koppelt. Wij verkopen geen software, maar een <strong>ingebedde performance-partner</strong> die het werk én het accountrisico overneemt. Niemand bedient die exacte hoek — dat is onze witte ruimte.</p>
+  </section>
+
+  <section>
+    <div class="secnum">08 · TEAM</div>
+    <h2>Wie bouwt dit</h2>
+    <div class="twocol">
+      <div class="who"><b>Nathan</b><span>Technical lead — bouw, architectuur en automatisering van het systeem.</span></div>
+      <div class="who"><b>Mathias</b><span>Commercieel + sector — runt Rocadelo HR, brengt klanten, netwerk en recruitment-expertise.</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="secnum">09 · VOLGENDE STAPPEN</div>
+    <h2>De route, kort</h2>
+    <ol class="flow">
+      <li><strong>Prijsmodel beslissen</strong> met Mathias (vast / revenue-share / hybride — meten op wat het systeem ziet).</li>
+      <li><strong>Accounts opwarmen — nu starten</strong> (4–6 weken; de make-or-break van het model).</li>
+      <li><strong>De backend bouwen</strong>: Unipile + Claude + n8n tot één werkende keten.</li>
+      <li><strong>Bewijzen in Rocadelo HR</strong>: eerste cijfers meten → eerste case study.</li>
+      <li><strong>Extern verkopen</strong>, met dashboard + wekelijks rapport voor controle en zicht.</li>
+    </ol>
+  </section>
+
+  <section>
+    <div class="open">
+      <div class="secnum">10 · OPEN PUNTEN (EERLIJK)</div>
+      <h2>Wat nog beslist moet worden</h2>
+      <ul>
+        <li><strong>Prijsmechaniek & attributie:</strong> hoe meten en innen we ons aandeel? Het hardste punt van dit model — eerst oplossen.</li>
+        <li><strong>Account-warming & -beheer:</strong> dit draagt het hele model. Beheersen we het, dan is onze veiligheidsbelofte echt; onderschatten we het, dan is het onze achilleshiel.</li>
+        <li><strong>Tool vs. partner:</strong> Nathan en Mathias moeten hier één gedeeld beeld op krijgen voor we extern gaan.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    Werkdocument om samen met Mathias aan te scherpen. Cijfers en model zijn een startpunt, geen vaststaand feit — bedoeld om over te beslissen, niet om klakkeloos te volgen.
+  </footer>
+</div>
+</body>
+</html>

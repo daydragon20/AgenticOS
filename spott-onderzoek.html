@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spott — het verhaal, het product en de strategie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F6F0E2;
+    --paper-2:#FBF7EC;
+    --ink:#211C18;
+    --ink-soft:#4a4239;
+    --wine:#6E1E2A;
+    --wine-deep:#561420;
+    --ochre:#BE8A2E;
+    --ochre-soft:#f2e6c8;
+    --rule:#d8ccb2;
+    --shadow:rgba(33,28,24,.10);
+    --serif:"Newsreader",Georgia,serif;
+    --display:"Fraunces",Georgia,serif;
+    --mono:"JetBrains Mono",monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--serif);font-size:clamp(17px,1.05rem + .2vw,19px);
+    line-height:1.72;font-weight:400;
+    background-image:radial-gradient(circle at 1px 1px, rgba(33,28,24,.025) 1px, transparent 0);
+    background-size:22px 22px;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* progress bar */
+  #bar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--wine),var(--ochre));z-index:50;transition:width .1s linear}
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px}
+  /* HERO */
+  header.hero{padding:64px 0 30px;border-bottom:2px solid var(--ink);margin-bottom:8px}
+  .kicker{font-family:var(--mono);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--wine);font-weight:700}
+  header.hero h1{font-family:var(--display);font-weight:900;font-size:clamp(2.5rem,8vw,4.4rem);line-height:.98;letter-spacing:-.02em;margin:.28em 0 .15em}
+  header.hero h1 em{font-style:italic;color:var(--wine);font-weight:500}
+  .dek{font-size:1.22rem;color:var(--ink-soft);max-width:54ch;font-weight:400;margin:.2em 0 1.4em}
+  .meta{display:flex;flex-wrap:wrap;gap:8px 14px;font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+  .meta span{background:var(--paper-2);border:1px solid var(--rule);padding:5px 10px;border-radius:30px}
+  /* reveal */
+  /* reveal — content is ALWAYS visible; the entrance is a harmless one-shot fade, never a hide */
+  .reveal{opacity:1;transform:none}
+  .reveal.in{opacity:1;transform:none}
+  /* TLDR */
+  .tldr{background:var(--ink);color:var(--paper);border-radius:14px;padding:26px 26px 10px;margin:34px 0;box-shadow:0 18px 40px -22px rgba(33,28,24,.6)}
+  .tldr h2{font-family:var(--mono);font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ochre);margin:0 0 6px}
+  .tldr ul{margin:0;padding-left:1.1em}
+  .tldr li{margin:0 0 14px;font-size:1.02rem;line-height:1.6}
+  .tldr li::marker{color:var(--ochre)}
+  /* TOC */
+  nav.toc{background:var(--paper-2);border:1px solid var(--rule);border-radius:14px;padding:20px 24px;margin:30px 0}
+  nav.toc h2{font-family:var(--mono);font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--wine);margin:0 0 12px}
+  nav.toc ol{margin:0;padding-left:1.3em;columns:1}
+  nav.toc li{margin:6px 0;line-height:1.4}
+  nav.toc a{color:var(--ink);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s,color .2s}
+  nav.toc a:hover{color:var(--wine);border-color:var(--wine)}
+  /* SECTIONS */
+  section{padding:34px 0;border-top:1px solid var(--rule)}
+  .secnum{font-family:var(--mono);font-size:.74rem;letter-spacing:.2em;color:var(--ochre);font-weight:700}
+  h2.sec{font-family:var(--display);font-weight:600;font-size:clamp(1.7rem,5vw,2.5rem);line-height:1.06;letter-spacing:-.015em;margin:.15em 0 .55em}
+  h3{font-family:var(--display);font-weight:600;font-size:1.32rem;line-height:1.2;margin:1.8em 0 .35em;color:var(--wine-deep)}
+  h4{font-family:var(--serif);font-weight:600;font-size:1.08rem;margin:1.4em 0 .2em;color:var(--ink)}
+  p{margin:0 0 1.1em}
+  a{color:var(--wine)}
+  strong{font-weight:600}
+  .lead{font-size:1.12rem;color:var(--ink-soft)}
+  ul,ol{margin:0 0 1.2em;padding-left:1.25em}
+  li{margin:.4em 0}
+  li::marker{color:var(--wine)}
+  /* term callout */
+  .term{background:linear-gradient(180deg,var(--ochre-soft),#f6ecd2);border:1px solid #e6d4a6;border-left:4px solid var(--ochre);
+    border-radius:0 12px 12px 0;padding:16px 20px 16px 18px;margin:1.3em 0;font-size:.98rem;line-height:1.62;position:relative}
+  .term::before{content:"💡 Wat betekent dit?";display:block;font-family:var(--mono);font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;color:#8a6516;font-weight:700;margin-bottom:6px}
+  .term p{margin:0}
+  .term p+p{margin-top:.7em}
+  .term strong{color:var(--wine-deep)}
+  /* blockquote */
+  blockquote{margin:1.4em 0;padding:6px 0 6px 22px;border-left:3px solid var(--wine);font-style:italic;font-size:1.1rem;color:var(--ink-soft)}
+  blockquote span{display:block;font-style:normal;font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--wine);margin-top:8px}
+  /* tables */
+  .tablewrap{overflow-x:auto;margin:1.4em 0;border:1px solid var(--rule);border-radius:12px}
+  table{border-collapse:collapse;width:100%;font-size:.93rem;min-width:480px}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--rule);vertical-align:top}
+  thead th{background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700}
+  tbody tr:nth-child(even){background:var(--paper-2)}
+  tbody td:first-child{font-weight:600;color:var(--wine-deep)}
+  /* pricing cards */
+  .tiers{display:grid;gap:14px;margin:1.3em 0}
+  @media(min-width:620px){.tiers{grid-template-columns:repeat(3,1fr)}}
+  .tier{background:var(--paper-2);border:1px solid var(--rule);border-radius:12px;padding:18px}
+  .tier h4{margin:0 0 4px;color:var(--wine)}
+  .tier .price{font-family:var(--display);font-weight:900;font-size:1.5rem}
+  .tier small{color:var(--ink-soft);font-size:.82rem}
+  /* lesson list */
+  .lessons{counter-reset:l;list-style:none;padding:0}
+  .lessons>li{counter-increment:l;position:relative;padding:14px 0 14px 52px;border-bottom:1px dashed var(--rule)}
+  .lessons>li::before{content:counter(l);position:absolute;left:0;top:12px;width:34px;height:34px;display:grid;place-items:center;background:var(--wine);color:var(--paper);font-family:var(--display);font-weight:900;border-radius:50%;font-size:1rem}
+  /* phase blocks */
+  .phase{background:var(--paper-2);border:1px solid var(--rule);border-left:4px solid var(--wine);border-radius:0 12px 12px 0;padding:16px 20px;margin:1em 0}
+  .phase h4{margin:0 0 .3em;color:var(--wine-deep)}
+  /* caveats */
+  .caveats{background:#efe7d6;border:1px dashed #b7a37a;border-radius:12px;padding:20px 24px;margin:1.4em 0;font-size:.95rem}
+  .caveats h3{margin-top:0;color:var(--ink)}
+  /* sources/footer */
+  footer{border-top:2px solid var(--ink);margin-top:30px;padding:34px 0 70px}
+  footer h2{font-family:var(--mono);font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:var(--wine);margin:0 0 12px}
+  footer ul{font-size:.86rem;color:var(--ink-soft);padding-left:1.1em}
+  .sig{font-family:var(--display);font-style:italic;font-size:1.05rem;color:var(--ink-soft);margin-top:24px}
+  .endmark{text-align:center;font-family:var(--display);color:var(--ochre);font-size:1.6rem;margin:30px 0 0}
+  /* code */
+  pre.code{background:#211C18;color:#f3ead6;border-radius:12px;padding:18px 20px;overflow-x:auto;font-family:var(--mono);font-size:.82rem;line-height:1.65;margin:1.2em 0;border:1px solid #3a3128}
+  pre.code .c{color:#b69a6a}
+  pre.code .k{color:#e0a85f}
+  pre.code .s{color:#cdb89a}
+  code.inl{font-family:var(--mono);font-size:.86em;background:#ece0c6;padding:1px 6px;border-radius:5px;color:var(--wine-deep)}
+  /* chain */
+  ol.chain{counter-reset:c;list-style:none;padding:0;margin:1.3em 0}
+  ol.chain>li{counter-increment:c;position:relative;padding:12px 0 12px 46px;border-left:2px dashed var(--ochre);margin-left:14px}
+  ol.chain>li::before{content:counter(c);position:absolute;left:-15px;top:10px;width:28px;height:28px;display:grid;place-items:center;background:var(--ochre);color:#3a2d0a;font-family:var(--display);font-weight:900;border-radius:50%;font-size:.85rem}
+  ol.chain>li:last-child{border-left-color:transparent}
+  /* key insight */
+  .key{background:var(--wine);color:var(--paper);border-radius:14px;padding:22px 24px;margin:1.5em 0;box-shadow:0 16px 36px -22px rgba(110,30,42,.7)}
+  .key h4{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ochre);margin:0 0 8px}
+  .key p{margin:0 0 .6em}
+  .key strong{color:#fff}
+  ::selection{background:var(--wine);color:var(--paper)}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+
+<div class="wrap">
+  <header class="hero reveal">
+    <div class="kicker">Onderzoeksdossier · Concurrentie-analyse</div>
+    <h1>Spott</h1>
+    <p class="dek">Het verhaal, het product en de strategie — uitgelegd als een halve economieles, speciaal voor jou.</p>
+    <div class="meta">
+      <span>Voor Nathan</span>
+      <span>AI-native ATS &amp; CRM</span>
+      <span>Leuven ↔ New York</span>
+      <span>Elke term uitgelegd</span>
+    </div>
+  </header>
+
+  <!-- TL;DR -->
+  <div class="tldr reveal">
+    <h2>TL;DR — de kern in 3 punten</h2>
+    <ul>
+      <li>Spott is een Belgisch softwarebedrijf uit Leuven (opgericht 2024 door Manu Vanderveeren, Lander Degrève en Samuel Smeys — ex-McKinsey/BCG/Bain, die elkaar kennen van KU Leuven) dat een “AI-native” ATS &amp; CRM voor recruitmentbureaus bouwt. Het haalde <strong>$3,2 miljoen</strong> seed-funding op (geleid door Base10 Partners, met Y Combinator, Fortino Capital en True Equity) na de YC W25-batch, groeide van ±€100K naar <strong>€1M+ ARR in vier maanden</strong>, en opende een tweede kantoor in New York.</li>
+      <li>Spott en jouw Rocadelo HR lijken op elkaar (beide gebruiken AI om recruiters tijd te besparen, beide in de recruitment-niche), maar verschillen <strong>fundamenteel</strong>: Spott is <strong>self-service software</strong> die de klant zelf bedient (klant koppelt zijn eigen accounts), terwijl Rocadelo een <strong>done-for-you managed service</strong> is met eigen opgewarmde accounts en eigen Belgische IP’s — zodat het profiel van de klant nooit risico loopt.</li>
+      <li>De grootste lessen: begin met één scherp pijnpunt, durf te “pivoten”, verkoop op waarde i.p.v. jezelf goedkoop weg te zetten, bouw een herhaalbaar verkoopproces, en gebruik Spott’s witte vlek — <strong>accountveiligheid + volledig ontzorgen</strong> — als jouw eigen differentiator.</li>
+    </ul>
+  </div>
+
+  <p class="lead reveal"><strong>Hoe je dit leest.</strong> Dit is een lang dossier, opgebouwd als een halve economieles. Elke vakterm krijgt een eigen “💡 Wat betekent dit?”-kader in eenvoudige taal. Lees van begin tot eind, of spring via de inhoud. Achteraan staat de grote vergelijking met Rocadelo HR plus concrete actiepunten.</p>
+
+  <!-- TOC -->
+  <nav class="toc reveal">
+    <h2>Inhoud</h2>
+    <ol>
+      <li><a href="#d1">Wat ís Spott eigenlijk? (de basisbegrippen)</a></li>
+      <li><a href="#d2">De geschiedenis &amp; het oprichtingsverhaal</a></li>
+      <li><a href="#d3">De funding (het geld) uitgelegd</a></li>
+      <li><a href="#d4">Waarom twee kantoren: Leuven én New York?</a></li>
+      <li><a href="#d5">De klanten</a></li>
+      <li><a href="#d6">Het product: hoe werkt het, stap voor stap?</a></li>
+      <li><a href="#d7">Het businessmodel: hoe verdient Spott geld?</a></li>
+      <li><a href="#d8">Team &amp; groei</a></li>
+      <li><a href="#d9">De grote vergelijking: Spott vs. Rocadelo HR</a></li>
+      <li><a href="#acties">Concrete volgende stappen</a></li>
+      <li><a href="#caveats">Eerlijke kanttekeningen</a></li>
+      <li><a href="#pipeline">Extra: hoe hun LinkedIn- &amp; outreach-pipeline exact werkt</a></li>
+      <li><a href="#backend">Extra: backend &amp; tools connecteren (+ vergelijking Spott)</a></li>
+    </ol>
+  </nav>
+
+  <!-- DEEL 1 -->
+  <section id="d1" class="reveal">
+    <div class="secnum">DEEL 01</div>
+    <h2 class="sec">Wat ís Spott eigenlijk?</h2>
+    <p>Spott noemt zichzelf “the AI-native ATS &amp; CRM for recruiting firms” — de AI-gedreven software voor recruitmentbureaus. Laten we die woorden uit elkaar trekken.</p>
+
+    <div class="term">
+      <p><strong>Wat is een recruitmentbureau?</strong> Een bedrijf dat voor ándere bedrijven mensen zoekt en aanwerft. Stel: een fabriek zoekt een ingenieur maar heeft geen tijd om te zoeken. Ze betalen een recruitmentbureau om de juiste persoon te vinden. Het bureau verdient een “fee” als de kandidaat wordt aangenomen — vaak een percentage van het jaarloon. Soorten: <strong>executive search</strong> (headhunting voor topmanagers), <strong>perm</strong> (vaste jobs), <strong>temp</strong> (uitzend/tijdelijk) en <strong>contracting</strong> (freelancers voor projecten).</p>
+    </div>
+    <p>Spott zegt expliciet gebouwd te zijn voor bureaus die “multiple clients, pipelines, and revenue models across exec search, perm, temp, and contracting” draaien.</p>
+
+    <div class="term">
+      <p><strong>Wat is een ATS?</strong> Applicant Tracking System = “kandidaten-volgsysteem”. Software die alle kandidaten bijhoudt: hun cv, in welke fase ze zitten (gebeld, geïnterviewd, voorgesteld). Zie het als een gigantische, slimme adressenlijst speciaal voor kandidaten.</p>
+    </div>
+    <div class="term">
+      <p><strong>Wat is een CRM?</strong> Customer Relationship Management = “klantrelatie-beheer”. Software die alle contacten met klanten bijhoudt. Bij een recruitmentbureau is de CRM-kant het beheren van de bedrijven die mensen zoeken; de ATS-kant het beheren van de kandidaten.</p>
+    </div>
+    <div class="term">
+      <p><strong>Wat is SaaS?</strong> Software as a Service = “software als dienst”. Je betaalt een maandelijks of jaarlijks abonnement om online software te gebruiken (zoals Netflix, maar dan voor bedrijfssoftware). Spott is SaaS.</p>
+    </div>
+    <div class="term">
+      <p><strong>Wat betekent “AI-native”?</strong> “Native” = van nature, vanaf de geboorte. De software is van de grond af opgebouwd rond AI. Het tegenovergestelde is “AI bolted on” — AI die er later bovenop is geschroefd op oude software. Mede-oprichter Lander Degrève: “the only way to fully unlock AI’s potential in recruitment is to rebuild the entire system from the ground up.”</p>
+    </div>
+    <div class="term">
+      <p><strong>Wat is een vector-database?</strong> Een gewone database slaat info op in strakke rijen en kolommen — perfect om exacte woorden terug te vinden (“zoek iedereen met de titel ‘Java developer’”). Een vector-database slaat de <em>betekenis</em> van tekst op als getallen, zodat de computer begrijpt dat “iemand die backend-systemen bouwt met payments-ervaring” dicht ligt bij “Java + payments”. Spott bouwde bewust een vector-database náást de traditionele database — dat is de technische kern van hun product.</p>
+    </div>
+  </section>
+
+  <!-- DEEL 2 -->
+  <section id="d2" class="reveal">
+    <div class="secnum">DEEL 02</div>
+    <h2 class="sec">De geschiedenis &amp; het oprichtingsverhaal</h2>
+
+    <h3>De drie oprichters</h3>
+    <p>Manu Vanderveeren, Lander Degrève en Samuel Smeys leerden elkaar ±acht jaar geleden kennen aan <strong>KU Leuven</strong>, waar ze “business engineering” (handelsingenieur) studeerden. Ze belandden alle drie in <strong>management consulting</strong> in Brussel: Manu bij <strong>McKinsey</strong>, Samuel bij <strong>BCG</strong>, Lander bij <strong>Bain &amp; Company</strong>.</p>
+    <div class="term">
+      <p><strong>Wat is management consulting?</strong> Consultants zijn externe adviseurs die bedrijven helpen problemen op te lossen (strategie, kosten, technologie). McKinsey, BCG en Bain zijn de drie meest prestigieuze ter wereld (“MBB”). Zeer selectieve, goedbetaalde jobs — een sterk signaal aan investeerders dat de oprichters slim en hardwerkend zijn.</p>
+    </div>
+    <p>Rolverdeling (bronnen verschillen, mogelijk door wisselingen): Lander meestal CEO (soms CPO), Manu COO (soms CEO), Samuel consequent CTO. Samuel werkte bij BCG aan machine-learning-pijplijnen voor recruitmentbureaus en heeft een master statistiek aan de LSE.</p>
+    <div class="term">
+      <p><strong>Wat betekenen CEO, COO, CTO, CPO?</strong> “C-level”-titels (C = Chief, de baas van een domein): CEO = algemene baas, COO = operationele baas/uitvoering, CTO = techniek, CPO = product.</p>
+    </div>
+
+    <h3>Het probleem dat ze zagen</h3>
+    <p>Tijdens hun consulting-projecten draaiden ze — onafhankelijk van elkaar — mee bij recruitmentbureaus in Europa, het VK en het Midden-Oosten. Overal hetzelfde: recruiters die de helft van hun dag aan administratie besteedden in plaats van mensen te plaatsen. Eén systeem dook overal op: <strong>Bullhorn</strong>, marktleider, maar verouderd. Op de website staat letterlijk: “Bullhorn is the reason Spott exists.” Hun inzicht: “talent moves through conversations, not spreadsheets.”</p>
+
+    <h3>Van idee naar bedrijf — de tijdlijn</h3>
+    <ul>
+      <li><strong>2024:</strong> Spott opgericht in Leuven. (Bronnen verschillen: website/Belgische media zeggen september 2024; funding-persberichten zeggen “founded November 2024”. Kleine onzekerheid.)</li>
+      <li>Eerste idee: een <strong>“candidate report writer”</strong> — AI die kandidaatpresentaties opstelt uit cv’s en interview-transcripties. De eerste, scherpe pijn.</li>
+      <li>Ze proberen eerst AI bovenop bestaande systemen te bouwen. Werkt niet — de oude architectuur laat het niet toe.</li>
+      <li>Ze nemen ontslag en bouwen een prototype.</li>
+      <li><strong>Winter 2025:</strong> aanvaard in <strong>Y Combinator</strong> (batch “W25”). YC investeert initieel <strong>$500.000</strong>.</li>
+      <li>Tijdens YC <strong>pivoteren</strong> ze: van rapporten-schrijver naar volledig AI-native ATS.</li>
+      <li><strong>Mei 2025:</strong> seed-ronde van <strong>$3,2 miljoen</strong> (VentureBeat, 28 mei 2025).</li>
+      <li><strong>Okt 2025:</strong> ±€100K ARR → <strong>vier maanden later: €1M+ ARR.</strong></li>
+      <li><strong>±Mei 2026:</strong> kantoor in <strong>New York</strong> onder Tycho De Saeytyd (ex-McKinsey). Team van 3 → ±21, ambitie ±60 tegen jaareinde.</li>
+    </ul>
+    <div class="term">
+      <p><strong>Wat is “pivoten”?</strong> Van richting veranderen wanneer je merkt dat je eerste idee niet het grootste probleem oplost. Spott pivotte van een klein hulpmiddeltje (rapporten) naar een volledig platform. Pivoten is normaal en vaak verstandig — niet falen.</p>
+    </div>
+
+    <h3>Wat is Y Combinator en hoe werkt het?</h3>
+    <div class="term">
+      <p><strong>Y Combinator (YC)</strong> is de beroemdste startup-<strong>accelerator</strong> ter wereld (San Francisco) — een intensief ±3 maanden “bootcamp” voor jonge bedrijven: geld, mentoring en een netwerk, in ruil voor een klein stukje aandelen. YC investeerde <strong>$500.000</strong> in Spott en zit achter o.a. Airbnb, Stripe en Dropbox. Hun mentor was <strong>Tom Blomfield</strong> (oprichter van bank Monzo). Aan het eind is er een <strong>“demo day”</strong>: je pitcht voor honderden investeerders — Manu sprak van 1.500+ internationale investeerders.</p>
+    </div>
+    <blockquote>Tom Blomfield zei tegen Manu dat hij zichzelf te goedkoop verkocht met een te lage waardering: “If you go in at that number, everyone will think your startup is ten times worse than the rest.” Manu verhoogde het bedrag — en de investeerders werden plots veel gretiger (60+ gesprekken die week).<span>Spott origin story</span></blockquote>
+    <div class="term">
+      <p><strong>Wat is een “valuation” (waardering)?</strong> De prijs die op een heel bedrijf wordt geplakt bij een investering. Zeggen investeerders “je bedrijf is €10 miljoen waard” en stoppen ze er €1 miljoen in, dan krijgen ze 10%. Een hógere waardering = je geeft minder van je bedrijf weg voor hetzelfde geld. Spott’s exacte waardering is niet publiek.</p>
+    </div>
+  </section>
+
+  <!-- DEEL 3 -->
+  <section id="d3" class="reveal">
+    <div class="secnum">DEEL 03</div>
+    <h2 class="sec">De funding (het geld) uitgelegd</h2>
+    <p>Spott haalde <strong>$3,2 miljoen</strong> op in een <strong>seed-ronde</strong>, geleid door <strong>Base10 Partners</strong> (San Francisco — partners Adeyemi Ajao en Rexhep Dollaku), met deelname van <strong>Y Combinator</strong>, <strong>Fortino Capital</strong> (Benelux B2B-SaaS), <strong>True Equity</strong> en enkele angel investors. Inclusief de eerdere YC-$500K rapporteren databanken ±$3,7M over twee rondes.</p>
+    <div class="term">
+      <p><strong>Wat is funding / een funding round?</strong> Geld dat investeerders in een startup stoppen in ruil voor aandelen. Startups verbranden in het begin meer geld dan ze verdienen, dus halen ze kapitaal op om sneller te groeien.</p>
+    </div>
+    <div class="term">
+      <p><strong>Pre-seed, seed, Serie A?</strong> De fases van investeren, van vroeg naar later. <strong>Pre-seed</strong>: allereerste klein geld (oprichters, vrienden, of YC). <strong>Seed</strong> (“zaadgeld”): eerste echte kapitaal om te bouwen en eerste klanten te vinden — hier zit Spott. <strong>Serie A, B, C…</strong>: grotere rondes naarmate je bewezen groeit.</p>
+    </div>
+    <div class="term">
+      <p><strong>Wat is een VC / durfkapitalist?</strong> Venture Capital = durfkapitaal: investeerders die geld in risicovolle jonge bedrijven steken, hopend dat enkele enorm groot worden. <strong>Angel investors</strong> zijn rijke individuen die met eigen geld investeren. De <strong>“lead investor”</strong> legt het meeste geld in en onderhandelt de voorwaarden — bij Spott is dat Base10.</p>
+    </div>
+    <div class="term">
+      <p><strong>Wat is “runway”?</strong> Letterlijk “startbaan”: hoe lang je bedrijf nog geld heeft bij de huidige uitgaven. €1,2M op de bank en €100K/maand uitgaven = 12 maanden runway. Opvallend: Spott gaf naar eigen zeggen maar “a fraction” van de $3,2M uit en zit dicht bij winstgevendheid — dus een zeer lange runway. Uitzonderlijk zuinig (en sterk).</p>
+    </div>
+    <div class="term">
+      <p><strong>Wat zijn ARR en MRR?</strong> Dé kerncijfers van een SaaS-bedrijf. <strong>MRR</strong> = Monthly Recurring Revenue (maandelijks terugkerende omzet). <strong>ARR</strong> = Annual Recurring Revenue (= MRR × 12). “Recurring” (terugkerend) is het toverwoord: voorspelbare omzet die elke maand opnieuw binnenkomt. Spott ging van ±€100K naar €1M+ ARR in vier maanden.</p>
+    </div>
+    <div class="term">
+      <p><strong>Wat is “churn”?</strong> Klantverloop: het percentage klanten dat opzegt. Lage churn = klanten blijven = gezond bedrijf. Spott claimt <strong>“zero churn”</strong>. Vroege klant Pauwels Solutions Group werd genoemd met (toen, kleine steekproef) 100% contractverlenging. VentureBeat voegde eerlijk toe dat de steekproef nog klein was.</p>
+    </div>
+  </section>
+
+  <!-- DEEL 4 -->
+  <section id="d4" class="reveal">
+    <div class="secnum">DEEL 04</div>
+    <h2 class="sec">Waarom twee kantoren: Leuven én New York?</h2>
+
+    <h4>Waarom Leuven (het bouw-kantoor)?</h4>
+    <ul>
+      <li><strong>KU Leuven</strong> levert sterke ingenieurs; talent is goedkoper en loyaler dan in Silicon Valley.</li>
+      <li>Het engineering-team werkt elke dag samen op kantoor (geen remote) → snelle ontwikkeling, met wekelijkse releases over 1M+ regels code.</li>
+      <li>Verhuisd naar een groter kantoor in het Ubicenter op de Philipssite in Leuven (ruimte voor 60 mensen).</li>
+    </ul>
+    <h4>Waarom New York (het verkoop-/markt-kantoor)?</h4>
+    <ul>
+      <li>De VS is <strong>de grootste recruitmentmarkt ter wereld</strong>. Tycho De Saeytyd: “US recruitment agencies generate ~$200 billion in revenue every year… 72% of recruiters already use AI in some form.”</li>
+      <li>Klanten en concurrentie zitten daar; lokale aanwezigheid helpt sales, support en geloofwaardigheid.</li>
+      <li>Via YC een sterk Amerikaans netwerk en Amerikaanse investeerders (Base10).</li>
+      <li>New York heeft een hoge dichtheid aan staffing- en executive-search-bureaus.</li>
+    </ul>
+    <p><strong>Waarom expandeert een Belgische startup überhaupt naar de VS?</strong> België is klein. Om een wereldschaal-softwarebedrijf te bouwen, moet je naar grote markten met meer kapitaal, snellere adoptie en grotere klanten. Lander merkte op dat het tempo in de VS “many times higher” ligt dan in Europa. Nuance: Amerikaanse bureaus verkiezen korte, parallelle trials; Europese klanten eerder langere jaarcontracten — dus de verkoopaanpak verschilt per markt.</p>
+    <div class="term">
+      <p><strong>Start-up vs. scale-up?</strong> Een <strong>start-up</strong> zoekt nog product en markt. Een <strong>scale-up</strong> heeft dat gevonden en richt zich op snel gróter worden. Spott wordt in de Belgische pers al een “techscale-up” genoemd.</p>
+    </div>
+  </section>
+
+  <!-- DEEL 5 -->
+  <section id="d5" class="reveal">
+    <div class="secnum">DEEL 05</div>
+    <h2 class="sec">De klanten</h2>
+    <p>Spott richt zich op <strong>recruitmentbureaus</strong> (third-party recruiters, niet interne HR), van executive search tot uitzend, klein tot groot. Het claimt <strong>1.000+ dagelijkse actieve gebruikers</strong> op vijf continenten.</p>
+    <h4>Bekende, publiek genoemde klanten</h4>
+    <ul>
+      <li><strong>Pauwels Solutions Group</strong> (België) — vroege klant; automatische cv-formattering en presentaties in eigen sjabloon.</li>
+      <li><strong>Stanton Chase</strong> — wereldwijd executive-search-bureau; betaalde trials.</li>
+      <li><strong>FreelanceRepublik</strong> — testte 200+ ATS’en, koos Spott; draait nu Talent Acquisition én Business Development erop.</li>
+      <li><strong>CGP Group</strong> (Singapore) en <strong>HW Anderson</strong> (New York) — internationale referenties.</li>
+      <li><strong>Macmillan Davies</strong> — verving Vincere; live in &lt;4 weken, 280K kandidaten gemigreerd, 100K dubbels ontdubbeld.</li>
+      <li><strong>Alexander Lyons Solutions</strong> — overgestapt van Vincere.</li>
+    </ul>
+    <p><strong>Belangrijk groeicijfer:</strong> 60% van de omzet komt nu van <strong>enterprise</strong>-klanten (100+ recruiters) die overstappen van Salesforce, Bullhorn en Loxo.</p>
+    <div class="term">
+      <p><strong>Wat is “enterprise”?</strong> De grote klanten (bedrijven met veel gebruikers). Ze betalen meer maar zijn moeilijker binnen te halen. Het tegenovergestelde is “SMB” (small &amp; medium business). 60% enterprise-omzet betekent: relatief weinig, maar grote klanten.</p>
+    </div>
+    <div class="term">
+      <p><strong>Case study vs. testimonial?</strong> Een <strong>testimonial</strong> is een korte aanbeveling/citaat van een tevreden klant. Een <strong>case study</strong> is een uitgebreider succesverhaal (“klant X had probleem Y, gebruikte ons, kreeg resultaat Z”). Beide wekken vertrouwen bij nieuwe klanten.</p>
+    </div>
+    <p><em>Een volledige klantenlijst en exacte interne cijfers per klant zijn niet publiek.</em></p>
+  </section>
+
+  <!-- DEEL 6 -->
+  <section id="d6" class="reveal">
+    <div class="secnum">DEEL 06</div>
+    <h2 class="sec">Het product: hoe werkt het, stap voor stap?</h2>
+    <p>Spott’s belofte: “Everything a modern agency needs, in one workspace. No add-ons.”</p>
+
+    <h3>Het kernidee: AI Matching op context, niet op trefwoorden</h3>
+    <p>Bij oude systemen zoek je met “Boolean queries” (lange formules met AND/OR/NOT). Spott laat je in gewone taal beschrijven wie je zoekt, en doorzoekt niet enkel cv’s maar ook notities, social media en call-transcripties. Het toont bovendien <em>waarom</em> elke kandidaat een match is. Het is geen “black box”: de AI rangschikt, de mens beslist.</p>
+    <div class="term">
+      <p><strong>Wat is “semantic search”?</strong> “Semantisch” = op betekenis. Semantische zoek begrijpt de bedoeling van je zin, niet alleen de letterlijke woorden — zo vind je ook kandidaten die niet exact dezelfde woorden in hun cv hebben.</p>
+    </div>
+
+    <h3>De belangrijkste features (één voor één)</h3>
+    <ul>
+      <li><strong>AI Note-taker / Conversation Intelligence:</strong> sluit aan bij Zoom/Teams/Meet/VoIP-gesprekken, transcribeert, vat samen en vult het kandidaatdossier in. “De verborgen belasting in recruiting is niet sourcing, het is het systeem actueel houden.”</li>
+      <li><strong>Multichannel outreach / Campaigns:</strong> automatische, gepersonaliseerde berichtenreeksen over <strong>e-mail, LinkedIn en WhatsApp</strong> + telefoon-/taakstappen in één campagne. (Dit is precies de kern van Rocadelo — bij Spott is het één feature.)</li>
+      <li><strong>Unibox:</strong> alle gesprekken per kandidaat in één draad — altijd volledige context.</li>
+      <li><strong>Sending domains / deliverability:</strong> domeinen koppelen, handtekeningen, verzendmomenten plannen.</li>
+      <li><strong>Data Enrichment (“Living Database”):</strong> vult automatisch ontbrekende e-mails, telefoonnummers en LinkedIn-URL’s aan.</li>
+      <li><strong>CV-reformatter:</strong> elk cv in seconden naar het sjabloon van het bureau.</li>
+      <li><strong>Candidate Presentation / Company Portal:</strong> nette rapporten + een live, gebrand klantportaal voor feedback.</li>
+      <li><strong>Scheduler:</strong> boekingslink gekoppeld aan je agenda.</li>
+      <li><strong>Chrome-extensie:</strong> kandidaten toevoegen vanuit LinkedIn (sinds Q1 2026 aangepast naar publieke-profiel-opzoeking, om accountveilig en compliant te blijven).</li>
+      <li><strong>Analytics &amp; Reporting:</strong> dashboards die placement- en retainer-fees en bottlenecks tonen.</li>
+      <li><strong>Ask-AI, suggested tasks, automations, MCP-server:</strong> vragen stellen in gewone taal; voorgestelde updates/taken na elk gesprek; AI-assistenten als Claude/ChatGPT kunnen rechtstreeks met de ATS-data werken.</li>
+    </ul>
+    <div class="term">
+      <p><strong>Wat is VoIP?</strong> Voice over IP = telefoneren via internet i.p.v. een klassieke telefoonlijn (zoals bellen via een app).</p>
+    </div>
+    <div class="term">
+      <p><strong>Wat is “multichannel outreach”?</strong> Outreach = proactief mensen aanschrijven. Multichannel = via meerdere kanalen (e-mail + LinkedIn + WhatsApp). Een “sequence/campagne” is een vooraf ingestelde reeks berichten met tussenpozen, zodat je automatisch opvolgt.</p>
+    </div>
+    <div class="term">
+      <p><strong>Deliverability &amp; sending domain?</strong> <strong>Deliverability</strong> = de kans dat je e-mail écht in de inbox belandt i.p.v. in spam. Een <strong>sending domain</strong> is het adres waarvan je mails vertrekken (bv. @jouwbedrijf.com). Te veel mails via één domein → spamfilters markeren je. Daarom gebruiken profs meerdere “opgewarmde” verzenddomeinen. (Cruciaal concept voor Rocadelo.)</p>
+    </div>
+    <div class="term">
+      <p><strong>Wat is “warming up”?</strong> Een nieuw account dat plots veel berichten stuurt, wordt verdacht en geblokkeerd. “Opwarmen” = geleidelijk de activiteit opbouwen over weken, zodat het account betrouwbaar lijkt.</p>
+    </div>
+    <div class="term">
+      <p><strong>Wat is “enrichment”?</strong> Verrijking = ontbrekende gegevens automatisch aanvullen via externe bronnen. Spott rekent hiervoor “enrichment credits” aan — de enige extra kost bovenop het abonnement.</p>
+    </div>
+    <div class="term">
+      <p><strong>Retainer fee vs. placement fee?</strong> Bij executive search betaalt de klant soms vooraf (een <strong>retainer</strong>, voorschot) plus bij succes. Een <strong>placement fee</strong> is de vergoeding wanneer een kandidaat effectief geplaatst wordt.</p>
+    </div>
+    <div class="term">
+      <p><strong>Wat is “agentic” / een AI-agent?</strong> Software die zélf taken uitvoert (niet enkel antwoordt, maar handelt: zoeken, mailen, plannen). “Agentic workflows” = volledige processen die de AI grotendeels zelfstandig afhandelt, met de mens als toezichthouder die de eindbeslissing neemt.</p>
+    </div>
+
+    <h3>Migratie &amp; onboarding</h3>
+    <p>Bij een overstap neemt Spott’s team de data uit het oude ATS over, “mapt” de velden, valideert in een aparte omgeving en zet live met “zero downtime” — typisch in <strong>±4 weken</strong> (tegenover 12–16+ weken bij veel concurrenten). Hosting standaard in de EU, ISO 27001, GDPR-conform; klantdata wordt nooit gebruikt om AI-modellen te trainen.</p>
+    <div class="term">
+      <p><strong>Wat is “onboarding”?</strong> Het proces om een nieuwe klant operationeel te krijgen met je product. Vlotte onboarding = klanten haken minder af.</p>
+    </div>
+    <div class="term">
+      <p><strong>Wat is GDPR?</strong> De Europese privacywet. Ze bepaalt hoe je persoonsgegevens mag verzamelen en bewaren. Voor recruitment (vol persoonsgegevens) cruciaal.</p>
+    </div>
+
+    <h3>De bouwfilosofie &amp; roadmap</h3>
+    <p>Slogan: <strong>“AI at the core, not bolted on.”</strong> Hun “bet”: een platform dat <strong>70–80% van het recruitmentproces autonoom</strong> afhandelt, zodat de recruiter zich op de 30% richt die menselijk oordeel vraagt. De komende 6–12 maanden: <strong>agentic workflows</strong> die sourcing, outreach, scheduling en presenting overnemen.</p>
+    <div class="term">
+      <p><strong>Roadmap?</strong> Het plan van wat je de komende maanden/jaren gaat bouwen — de route vooruit.</p>
+    </div>
+    <div class="term">
+      <p><strong>Tech stack?</strong> De verzameling technologieën waarmee je product gebouwd is. Spott’s stack is niet volledig publiek; we weten: vector- + relationele database, enterprise-AI onder licentie, EU-hosting, engineering-talent getraind bij Microsoft/Amazon/Salesforce.</p>
+    </div>
+  </section>
+
+  <!-- DEEL 7 -->
+  <section id="d7" class="reveal">
+    <div class="secnum">DEEL 07</div>
+    <h2 class="sec">Het businessmodel: hoe verdient Spott geld?</h2>
+
+    <h3>Het verdienmodel: SaaS per seat</h3>
+    <div class="term">
+      <p><strong>Wat betekent “per seat”?</strong> “Seat” = één gebruiker. “Per seat pricing” = je betaalt per medewerker die de software gebruikt. Hoe meer recruiters, hoe meer je betaalt — het schaalt mee met de grootte van de klant.</p>
+    </div>
+    <p>De huidige prijzen (publiek op spott.io/pricing, gecontroleerd eind mei 2026) — drie tiers, geen minimum aantal seats:</p>
+    <div class="tiers">
+      <div class="tier"><h4>Core</h4><div class="price">$119</div><small>/gebruiker/maand (promo, normaal $149; stijgt naar $139 vanaf 1 juni 2026). AI-native ATS/CRM, sync e-mail/social/WhatsApp, AI Search/Matching.</small></div>
+      <div class="tier"><h4>Pro</h4><div class="price">$179</div><small>/gebruiker/maand (promo, normaal $219; stijgt naar $199). + automations, sequences, enrichment, priority support, gratis migratie, custom sjablonen.</small></div>
+      <div class="tier"><h4>Enterprise</h4><div class="price">Op maat</div><small>±€149–189 p.p./maand, “book a demo”. Deels offerte. (Munt/prijs deels onzeker.)</small></div>
+    </div>
+    <p>Een januari-2026-snapshot (G2) toonde EUR-prijzen (Core €109, Pro €149); de prijzen/munt zijn dus geherstructureerd tussen januari en mei 2026. Spott’s eigen pagina’s noemen consequent de range <strong>$119–179/gebruiker/maand</strong>. <strong>Geen verborgen kosten:</strong> AI-tokenverbruik zit in elk plan; enige extra is enrichment credits. <strong>Migratie is gratis/inbegrepen</strong> (geen setup fee gevonden).</p>
+    <div class="term">
+      <p><strong>Wat is “token spend”?</strong> AI-modellen rekenen af per “token” (stukjes tekst). Elke keer dat de AI iets schrijft of leest, kost dat tokens (en dus geld). Dat Spott dit níét doorrekent maar inbegrepen houdt, maakt de prijs voorspelbaar.</p>
+    </div>
+    <div class="term">
+      <p><strong>Wat is een “setup fee”?</strong> Een eenmalige opstartkost bovenop het abonnement (installatie, training, migratie). Veel B2B-software rekent die aan; Spott vermeldt er geen.</p>
+    </div>
+
+    <h3>De positionering: “all-in-one” dat de hele stack vervangt</h3>
+    <p>Spott positioneert zich als het <strong>all-in-one platform</strong> dat een verouderd ATS + 6 à 8 losse add-ons vervangt. Elke losse tool is “a context loss and a separate bill”. Door alles te bundelen verlagen ze de tech-kosten van klanten met “up to 50%”.</p>
+    <div class="term">
+      <p><strong>Wat is “positionering”?</strong> Hoe je je product in het hoofd van de klant plaatst t.o.v. alternatieven. Spott’s positie: “de moderne, AI-native vervanger van Bullhorn/Loxo die je hele losse gereedschapskist vervangt.”</p>
+    </div>
+    <div class="term">
+      <p><strong>“Point solution” vs. “platform”?</strong> Een <strong>point solution</strong> lost één probleem op (enkel outreach, of enkel cv-formattering). Een <strong>platform</strong> doet alles samen. Spott koos bewust de moeilijkere, duurdere platform-aanpak — moeilijker te bouwen en te verkopen, maar met grotere prijs en sterkere lock-in als het lukt.</p>
+    </div>
+
+    <h3>De go-to-market (hoe ze verkopen)</h3>
+    <div class="term">
+      <p><strong>Wat is “go-to-market” (GTM)?</strong> Je plan om een product in de markt te zetten: wie is je doelklant, via welke kanalen bereik je hen, hoe verkoop en lever je.</p>
+    </div>
+    <div class="term">
+      <p><strong>Wat is een “ICP”?</strong> Ideal Customer Profile = profiel van je ideale klant. Voor Spott: recruitmentbureaus (exec search, perm, temp, contracting), eerst executive search, nu ook grote enterprise-bureaus.</p>
+    </div>
+    <ul>
+      <li><strong>Content marketing:</strong> een uitgebreide blog/“resources” met vergelijkingsartikelen (“Spott vs Bullhorn/Loxo/Vincere”) en gidsen. Ze groeiden van €0 → €1M+ ARR “no cold calls” — vooral via inbound/reputatie.</li>
+      <li><strong>Launches &amp; PR:</strong> Product Hunt, YC-launchpagina, perscoverage (VentureBeat, De Tijd, HRmagazine, Made-in, The Global Recruiter).</li>
+      <li><strong>Awards/sponsoring:</strong> sponsorde de categorie “Agency Recruiter of the Year” bij de Talent Business Awards.</li>
+      <li><strong>Migratie als verkoopargument:</strong> snelle, gratis migratie verlaagt de drempel om over te stappen.</li>
+      <li><strong>Eigen verkoopteam:</strong> de eerste toegewijde verkopers kwamen pas in 2025–2026.</li>
+    </ul>
+    <div class="term">
+      <p><strong>“Inbound” vs. “outbound” sales?</strong> Outbound = jij benadert koud prospects (cold calls/mails). Inbound = klanten komen naar jou (via content, reputatie, doorverwijzingen). Spott leunt sterk op inbound.</p>
+    </div>
+
+    <h3>De concurrenten en hoe Spott zich positioneert</h3>
+    <ul>
+      <li><strong>Bullhorn</strong> — de gevestigde marktleider (25+ jaar, 10.000+ klanten). Spott: krachtig maar oud, AI er bovenop geplakt.</li>
+      <li><strong>Loxo, Vincere, JobAdder, Recruiterflow, Recruit CRM, Crelate…</strong> — diverse ATS/CRM’s; Spott = AI-native, all-in-one, snelste migratie.</li>
+      <li><strong>SourceWhale, Gem</strong> — vooral outreach/sourcing-tools (point solutions) die terugsyncen naar jóuw ATS. Spott bouwt outreach rechtstreeks ín het platform.</li>
+    </ul>
+    <p>Kernboodschap tegen alle concurrenten: <strong>“AI depth, not AI marketing”</strong> — is de AI in het fundament gebakken, of er later bovenop geschroefd?</p>
+  </section>
+
+  <!-- DEEL 8 -->
+  <section id="d8" class="reveal">
+    <div class="secnum">DEEL 08</div>
+    <h2 class="sec">Team &amp; groei</h2>
+    <ul>
+      <li><strong>Teamgrootte:</strong> van 3 oprichters → ±21 mensen begin 2026, ambitie ±60 wereldwijd tegen eind 2026.</li>
+      <li><strong>Wie ze aanwerven:</strong> vooral <strong>engineers</strong>. Met de funding: 4 extra engineers + een “Founders Associate”. Ook sales in NY ($100K–$300K + aandelen) en engineers in Leuven (€60K–€90K).</li>
+      <li><strong>Reputatie:</strong> noemt zichzelf “one of the fastest-growing Belgian startups” — grotendeels zelf-gerapporteerd/marketing, niet onafhankelijk bevestigd voor déze Spott.</li>
+    </ul>
+    <div class="term">
+      <p><strong>Wat is een “Founders Associate”?</strong> Een rechterhand van de oprichters die van alles oppakt (operations, strategie, projecten) — een brede rol in jonge startups.</p>
+    </div>
+    <div class="term">
+      <p><strong>Wat is “equity” in een vacature?</strong> Naast loon bieden startups vaak een klein percentage aandelen (of opties), zodat werknemers meeprofiteren als het bedrijf groeit (bv. “0.05%–0.40%”).</p>
+    </div>
+    <div class="term">
+      <p><strong>De recruitmentmarkt (de taart)?</strong> De wereldwijde recruitment-/staffing-industrie is enorm — schattingen van ±$650 miljard tot $750+ miljard per jaar; Spott noemt het zelf een “$1T+ industry”. De VS alleen ±$200 miljard. Zo’n grote markt is precies wat investeerders willen zien: zelfs een klein stukje is veel geld.</p>
+    </div>
+    <p><em>Let op: er bestaat een ándere Belgische “Spott” (video-commerce, Aalst). Dat is NIET dezelfde Spott.</em></p>
+  </section>
+
+  <!-- DEEL 9 -->
+  <section id="d9" class="reveal">
+    <div class="secnum">DEEL 09</div>
+    <h2 class="sec">De grote vergelijking: Spott vs. Rocadelo HR</h2>
+    <p class="lead">Dit is het deel dat voor jou het belangrijkst is.</p>
+
+    <h3>Wat is Rocadelo HR (jouw model)?</h3>
+    <p>Jij en Mathias bouwen een <strong>AI-gestuurd LinkedIn-outreach-systeem</strong>, eerst intern voor Rocadelo HR, daarna als dienst aan andere bedrijven. Kern:</p>
+    <ul>
+      <li>Het is een <strong>done-for-you managed service</strong> — een “outsourced top-of-funnel team dat AI gebruikt”. Géén software die de klant zelf bedient.</li>
+      <li><strong>Differentiator:</strong> de klant koppelt NOOIT zijn eigen LinkedIn-profiel. Rocadelo beheert eigen <strong>opgewarmde accounts met eigen Belgische IP’s</strong>.</li>
+      <li><strong>Niche:</strong> recruitment. <strong>Prijs:</strong> ±€1.500 setup + €1.500/maand.</li>
+    </ul>
+    <div class="term">
+      <p><strong>Wat is “top-of-funnel”?</strong> De “funnel” (trechter) gaat van breed naar smal: veel mensen aanschrijven (top) → enkele reageren → enkele worden klant/kandidaat (bottom). “Top-of-funnel” = het bovenste, brede deel: prospects vinden en eerste contact leggen. Precies wat Rocadelo doet.</p>
+    </div>
+    <div class="term">
+      <p><strong>“Managed service” / “done-for-you”?</strong> Een dienst waarbij jíj het werk doet vóór de klant, i.p.v. de klant een tool te geven die hij zelf moet bedienen. De klant koopt een resultaat, geen gereedschap.</p>
+    </div>
+
+    <h3>Waar lijken ze op elkaar?</h3>
+    <ol>
+      <li>Zelfde grote inzicht: recruiters verspillen tijd aan repetitief werk; AI neemt dat over.</li>
+      <li>Zelfde niche: recruitment.</li>
+      <li>Zelfde kernactiviteit in het hart: multichannel/LinkedIn-outreach met AI-personalisatie.</li>
+      <li>Beide gebruiken AI als motor, niet als gimmick.</li>
+      <li>Beide draaien op terugkerende maandinkomsten (Spott: abonnement; Rocadelo: retainer).</li>
+    </ol>
+
+    <h3>Waar verschillen ze FUNDAMENTEEL?</h3>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Aspect</th><th>Spott</th><th>Rocadelo HR</th></tr></thead>
+        <tbody>
+          <tr><td>Type bedrijf</td><td>SaaS-product (software)</td><td>Managed service (dienst)</td></tr>
+          <tr><td>Wie doet het werk?</td><td>De klant zelf, in de tool</td><td>Rocadelo doet het vóór de klant</td></tr>
+          <tr><td>Wat koopt de klant?</td><td>Een gereedschap (tool)</td><td>Een resultaat (afspraken/leads)</td></tr>
+          <tr><td>LinkedIn-accounts</td><td>Klant koppelt zijn eigen account</td><td>Eigen opgewarmde accounts + Belgische IP’s; klant-account loopt nooit risico</td></tr>
+          <tr><td>Schaalbaarheid</td><td>Zeer hoog (software kost weinig per extra klant)</td><td>Lager (meer klanten = meer werk)</td></tr>
+          <tr><td>Brutomarge</td><td>Zeer hoog (typisch SaaS)</td><td>Lager (dienst is arbeidsintensief)</td></tr>
+          <tr><td>Kapitaalbehoefte</td><td>Hoog (eerst veel bouwen)</td><td>Laag (starten met weinig)</td></tr>
+          <tr><td>Prijsmodel</td><td>Per seat per maand ($119–179+)</td><td>€1.500 setup + €1.500/maand</td></tr>
+          <tr><td>Verkoopdrempel</td><td>Hoog (klant moet migreren)</td><td>Lager (klant hoeft niets te veranderen)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="term">
+      <p><strong>Waarom is “schaalbaarheid” zo belangrijk?</strong> Software is bijna oneindig kopieerbaar: of Spott nu 100 of 1.000 klanten heeft, het product is hetzelfde — daarom kan SaaS exploderen in omzet zonder evenveel meer mensen. Een dienst vereist per extra klant méér werk. Diensten zijn dus makkelijker te starten en sneller winstgevend, maar moeilijker om gigantisch te worden — tenzij je het werk standaardiseert en automatiseert (jouw AI-kans).</p>
+    </div>
+    <div class="term">
+      <p><strong>Wat is “brutomarge”?</strong> Wat overblijft van je omzet ná de directe leveringskosten, in procent. SaaS heeft vaak 80–90% (een extra klant kost bijna niets). Een managed service heeft lagere marge (menselijk werk per klant). LinkedIn-outreach-agencies draaien typisch rond 60–65% brutomarge vóór arbeidskosten.</p>
+    </div>
+
+    <h3>Welke grote schakels heeft Spott al die Rocadelo nog moet opbouwen?</h3>
+    <ol>
+      <li><strong>Funding &amp; netwerk:</strong> Spott haalde $3,2M op en zit in YC. Rocadelo start (waarschijnlijk) bootstrapped — geen schande, geeft je controle, maar Spott bouwt sneller.</li>
+      <li><strong>Een echt product/team:</strong> 20+ mensen, vooral engineers, 1M+ regels code.</li>
+      <li><strong>All-in-one platform &amp; ATS-integratie:</strong> Spott heeft een volledig systeem; Rocadelo doet (voorlopig) één stuk.</li>
+      <li><strong>Merk &amp; autoriteit:</strong> pers, awards, content.</li>
+      <li><strong>Herhaalbaar verkoopproces:</strong> sales-team + content-machine.</li>
+      <li><strong>Bewijs/case studies &amp; cijfers:</strong> zero churn, €1M+ ARR, named klanten.</li>
+    </ol>
+    <div class="term">
+      <p><strong>Wat is “bootstrapping”?</strong> Een bedrijf groot maken met eigen middelen/omzet, zonder externe investeerders. Voordeel: 100% controle en aandelen. Nadeel: trager groeien.</p>
+    </div>
+
+    <h3>Spott’s sterktes — en Rocadelo’s witte ruimte</h3>
+    <p><strong>Spott’s sterktes (moeilijk te kopiëren):</strong> kapitaal, een diep technisch product, een vector-database, enterprise-klanten, een internationaal merk.</p>
+    <p><strong>Rocadelo’s witte ruimte (waar Spott NIET zit):</strong></p>
+    <ol>
+      <li><strong>Accountveiligheid als kernbelofte</strong> — actueler dan ooit. LinkedIn ging in Q1 2026 hard tegen automatiserings­tools tekeer; volgens een analyse (Northlight.ai via joinvalley.co) kreeg “roughly 40% of accounts using non-compliant automation tools — HeyReach, Expandi, Dripify, Waalaxy — some form of restriction between January and March 2026.” Op 25 maart 2026 verwijderde LinkedIn permanent de bedrijfspagina (16.400 volgers) van HeyReach én bande het profiel van oprichter Nikola Velkovski. Het risico bij self-service tools: de klant koppelt zíjn eigen profiel en dat raakt beschadigd. Rocadelo lost dat op door <strong>nooit het klantprofiel te gebruiken</strong>. Spott erkent dit risico zelfs (paste de Chrome-extensie aan “to keep your accounts safe”).</li>
+      <li><strong>Volledig ontzorgen (done-for-you).</strong> Veel kleine bureaus willen géén nieuwe tool leren. Rocadelo levert het resultaat zonder dat de klant iets moet doen.</li>
+      <li><strong>Lage drempel &amp; snelle start.</strong> Geen jarenlange data-migratie nodig.</li>
+      <li><strong>Hyper-niche + lokaal (Belgisch/Vlaams).</strong> Spott mikt globaal en op grote enterprise-bureaus; Rocadelo bedient de kleine/middelgrote Belgische bureaus die Spott links laat liggen.</li>
+    </ol>
+    <div class="term">
+      <p><strong>Waarom is een Belgisch IP belangrijk?</strong> LinkedIn vertrouwt accounts meer als de locatie (het IP-adres) consistent en geloofwaardig is. Een Belgisch profiel dat plots vanuit een ander land actief is, lijkt verdacht. Eigen Belgische IP’s laten de activiteit natuurlijk en lokaal lijken — minder kans op blokkering.</p>
+    </div>
+
+    <h3>Wat kan Nathan concreet leren van Spott’s pad?</h3>
+    <ol class="lessons">
+      <li><strong>Begin met één scherp, pijnlijk probleem.</strong> Spott begon met rapporten schrijven, niet met “we vervangen Bullhorn”. Jij begint met top-of-funnel outreach. Doe dat uitmuntend vóór je uitbreidt.</li>
+      <li><strong>Bouw eerst intern, bewijs het, verkoop het dan.</strong> Spott testte met echte bureaus en pivotte. Jij: eerst voor Rocadelo HR, dan extern.</li>
+      <li><strong>Durf te pivoten op klantfeedback.</strong> Spott’s meest gestelde vraag was “is it integrated?” — ze luisterden en bouwden hun strategie daarrond.</li>
+      <li><strong>Verkoop op waarde, niet op prijs.</strong> De Tom-Blomfield-les: een te lage prijs zendt “ik ben tien keer slechter”. €1.500/maand kan zelfs laag zijn als je echte plaatsingen oplevert.</li>
+      <li><strong>Maak je inkomsten “recurring”.</strong> Jouw maandelijkse retainer is ook recurring — koester en verleng contracten; meet en verlaag churn.</li>
+      <li><strong>Content &amp; reputatie als motor.</strong> Spott groeide “no cold calls”. Gebruik je eigen outreach-expertise om jezelf te verkopen + verzamel case studies.</li>
+      <li><strong>Standaardiseer en automatiseer je dienst.</strong> Gebruik AI en strakke processen om per klant zo weinig mogelijk manueel werk te hebben — richting SaaS-marges.</li>
+      <li><strong>Kies bewust je positionering tegenover “tools”.</strong> “Een tool zoals Spott of HeyReach laat jóu het werk doen én jóuw account riskeren. Wij doen het werk vóór jou, op onze eigen veilige accounts.”</li>
+      <li><strong>Overweeg later een hybride model.</strong> Veel bedrijven groeien van dienst → product. Pas wanneer de dienst bewezen en winstgevend is.</li>
+    </ol>
+  </section>
+
+  <!-- ACTIES -->
+  <section id="acties" class="reveal">
+    <div class="secnum">ACTIEPLAN</div>
+    <h2 class="sec">Concrete volgende stappen</h2>
+    <div class="phase">
+      <h4>Fase 1 (nu → 3 maanden): bewijs het intern</h4>
+      <p>Draai het systeem volledig voor Rocadelo HR zelf en meet keiharde cijfers: berichten verstuurd, acceptatiegraad, antwoordgraad, geboekte afspraken, plaatsingen. Dit worden je eerste case-studies. <strong>Drempel:</strong> pas wanneer je intern een stabiele, herhaalbare “X afspraken/maand per account” haalt, ben je klaar om extern te verkopen.</p>
+    </div>
+    <div class="phase">
+      <h4>Fase 2 (3 → 9 maanden): eerste 3–5 betalende klanten</h4>
+      <p>Verkoop aan kleine/middelgrote Belgische bureaus met je scherpe pitch (accountveiligheid + done-for-you + recruitment-niche). Houd je prijs, maar test of je niet te goedkoop zit. <strong>Benchmark:</strong> streef naar (near) zero churn na 3 maanden. Zeggen klanten na 1–2 maanden op, onderzoek dat vóór je opschaalt.</p>
+    </div>
+    <div class="phase">
+      <h4>Fase 3 (9 → 18 maanden): standaardiseren &amp; schalen</h4>
+      <p>Automatiseer per-klant-werk met AI zodat je marge richting SaaS-niveau gaat. Bouw een mini content/reputatie-motor. <strong>Drempel:</strong> als manueel werk per klant niet daalt naarmate je groeit, overweeg dan ofwel mensen aanwerven, ofwel (een deel van) je systeem productiseren.</p>
+    </div>
+    <div class="phase">
+      <h4>Doorlopend</h4>
+      <p>Houd de LinkedIn-regels nauwlettend in de gaten (Q1 2026 toonde hoe snel dit verandert) — jouw veiligheidsbelofte is enkel geloofwaardig als je ze waarmaakt. Leer van Spott’s transparante origin story: het is gratis cursusmateriaal in hoe je een recruitment-tech-bedrijf bouwt en positioneert.</p>
+    </div>
+  </section>
+
+  <!-- CAVEATS -->
+  <section id="caveats" class="reveal">
+    <div class="secnum">EERLIJKHEID</div>
+    <h2 class="sec">Kanttekeningen — wat we NIET zeker weten</h2>
+    <div class="caveats">
+      <ul>
+        <li><strong>Exacte waardering</strong> bij de seed-ronde: niet publiek.</li>
+        <li><strong>Volledige klantenlijst &amp; interne cijfers per klant:</strong> niet publiek; €1M+ ARR, zero churn en 1.000+ dagelijkse gebruikers zijn zelf-gerapporteerd, niet onafhankelijk geverifieerd.</li>
+        <li><strong>Oprichtingsdatum:</strong> september vs. november 2024 verschilt per bron.</li>
+        <li><strong>Rolverdeling oprichters:</strong> bronnen wisselen CEO/COO/CPO af.</li>
+        <li><strong>Exacte tech stack:</strong> grotendeels niet publiek.</li>
+        <li><strong>Prijzen</strong> veranderen snel (EUR→USD, promo’s, verhogingen vanaf 1 juni 2026); behandel bedragen als momentopname.</li>
+        <li><strong>“Snelst groeiende Belgische startup”:</strong> zelf-gerapporteerde claim.</li>
+        <li><strong>De LinkedIn-ban-cijfers</strong> komen van blogs van concurrerende tools en zijn mogelijk gekleurd; de richting (strenger handhaven) wordt wel breed bevestigd, ook door Spott’s eigen aanpassingen.</li>
+        <li><strong>$3,2M ≈ €2,8–2,9M</strong> afhankelijk van wisselkoers en bron.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- PIPELINE -->
+  <section id="pipeline" class="reveal">
+    <div class="secnum">EXTRA · PIPELINE</div>
+    <h2 class="sec">Hoe hun LinkedIn- &amp; outreach-pipeline exact werkt</h2>
+    <p class="lead">Aanvulling op Deel 6 (de feature-lijst): hier zie je de <em>operationele stroom</em> — hoe die features in elkaar haken tot één werkende pijplijn. Hun proces valt in twee helften: <strong>kandidaten binnenhalen</strong> (LinkedIn → Spott) en <strong>berichten versturen</strong> (Spott → prospect). Daarna volgt wat er met een antwoord gebeurt, en één scherpe les.</p>
+    <p><strong>Belangrijk vooraf:</strong> Spott werkt met het <strong>eigen account van de recruiter</strong> (eigen LinkedIn, eigen e-maildomeinen). Niet met een eigen vloot opgewarmde accounts zoals jullie. Onthoud dat — daar draait de hele vergelijking om.</p>
+
+    <h3>Helft 1 — Sourcing: van LinkedIn naar Spott</h3>
+    <p>Dit gebeurt via hun <strong>Chrome-extensie</strong> (een zijpaneel in je browser). Sinds Q1 2026 hebben ze dit bewust hervormd tot twee paden:</p>
+    <ul>
+      <li><strong>Public profile lookup</strong> — je bezoekt een publiek LinkedIn-profiel of plakt een publieke LinkedIn-URL in de extensie (werkt ook vanaf Recruiter- en Sales Navigator-pagina’s). Spott zoekt de publiek beschikbare info op en haalt werkervaring binnen.</li>
+      <li><strong>Manuele invoer</strong> — je tikt zelf gegevens in, of uploadt een LinkedIn-cv-PDF die Spott parseert (automatisch uitleest).</li>
+    </ul>
+    <p>Daarnaast kun je <strong>LinkedIn Recruiter-lijsten in bulk importeren</strong> en pre-geverifieerde zakelijke e-mailadressen ophalen om meteen e-mailcampagnes te starten. De extensie flagt ook of een profiel al in Spott zit.</p>
+    <p><strong>Waarom die hervorming?</strong> Toen LinkedIn zijn gebruikersovereenkomst strenger ging handhaven, kozen ze bewust voor accountveiligheid en compliance bóven snelheid — ze gaven toe dat de oude workflow sneller was, maar stapten af van agressief scrapen, terug naar publiek-only + manueel.</p>
+    <div class="term">
+      <p><strong>Wat is “scrapen”?</strong> Geautomatiseerd data van een website plukken door de pagina’s na te bootsen alsof je een mens bent. LinkedIn verbiedt dit in zijn voorwaarden en detecteert het steeds beter — accounts die het doen, riskeren blokkering. Daarom schakelde Spott terug naar enkel publiek beschikbare info + manuele invoer.</p>
+    </div>
+
+    <h3>Helft 2 — Outreach: van Spott naar de prospect</h3>
+    <p>Een campagne is een <strong>sequence</strong>: een reeks stappen met tijdsintervallen ertussen. Spott combineert <strong>e-mail, LinkedIn, WhatsApp, taken en call-stappen in één campagne</strong>, met personalisatie via vaste variabelen óf AI-gegenereerde inhoud per bericht, en houdt een volledige historiek bij van wat verstuurd is, wanneer, en hoe er gereageerd werd.</p>
+    <div class="term">
+      <p><strong>Wat is een “sequence”?</strong> Een vooraf uitgetekend actiepad dat de tool stap voor stap volgt, met intervallen ertussen (bv. dag 1 connectieverzoek, dag 3 e-mail, dag 5 LinkedIn-bericht). Vaak met conditionele logica: “áls verbonden → stuur LinkedIn-bericht; zo niet → stuur e-mail.” Zo volg je automatisch op zonder elke stap manueel te plannen.</p>
+    </div>
+    <p>Aan de verzendkant doen ze aan <strong>deliverability-engineering</strong>: meerdere sending domains koppelen om volume te spreiden, een gebrande handtekening, en controle over verzendvensters, afzenderinstellingen en reply-regels per sequence. De rest is standaard sequence-mechaniek (geldt voor alle tools van dit type): zodra een prospect op om het even welk kanaal antwoordt, stopt de sequence automatisch en verschuift de lead naar de unified inbox voor manuele afhandeling — en daglimieten per account beschermen de LinkedIn-accountgezondheid en e-mail-deliverability.</p>
+
+    <h3>Wat erna gebeurt: de volledige kandidaatreis</h3>
+    <p>Zo haken alle losse features uit Deel 6 aan elkaar tot één pijplijn:</p>
+    <ol class="chain">
+      <li><strong>Sourcen</strong> — kandidaat komt binnen via de Chrome-extensie (publiek profiel of manueel).</li>
+      <li><strong>Verrijken</strong> — Spott vult automatisch ontbrekende e-mails, telefoonnummers en LinkedIn-URL’s aan (“living database”).</li>
+      <li><strong>Matchen</strong> — de AI rangschikt de kandidaat tegen de vacature op betekenis (niet trefwoorden), mét een reden per match. De recruiter beslist.</li>
+      <li><strong>Outreach</strong> — de kandidaat gaat in een multichannel-sequence; verstuurde berichten en gevoerde calls worden gelogd (de AI note-taker transcribeert gesprekken).</li>
+      <li><strong>Antwoord</strong> — een reactie stopt de sequence; de lead landt in de Unibox (alle kanalen in één draad per kandidaat).</li>
+      <li><strong>Presenteren</strong> — de recruiter deelt de kandidaat via een gebrand klantportaal/rapport met zijn klant.</li>
+      <li><strong>Inplannen</strong> — via de scheduler boekt de kandidaat/klant zelf een gesprek.</li>
+      <li><strong>Plaatsen &amp; meten</strong> — analytics volgen de hele trechter: wat drijft plaatsingen, waar zitten bottlenecks.</li>
+    </ol>
+
+    <h3>Nog specifieker: 3 dingen die ze technisch slim doen</h3>
+    <h4>1. Matchen op betekenis (vector-zoek), niet op trefwoorden</h4>
+    <p>In plaats van te zoeken op exacte woorden, doorzoekt Spott de <em>betekenis</em> van alles — cv’s, notities, call-transcripties, socials — en levert een gerangschikte shortlist mét uitleg waarom elke kandidaat past. Technisch draait dat op een vector-database náást de gewone database (zie Deel 1). Het is geen black box: de AI rangschikt, de mens beslist.</p>
+    <h4>2. Deliverability als engineering, niet als toeval</h4>
+    <p>“Niet geflagd worden” behandelen ze als een systeem: meerdere sending domains, gespreide verzendvensters, daglimieten per account, en — sinds de crackdown — enkel publieke LinkedIn-acties. Dit is exact hetzelfde probleem dat jullie moeten oplossen — alleen doen zij het op de accounts van de klant, en jullie op eigen accounts.</p>
+    <h4>3. De richting: agentic — de pijplijn die zichzelf draait</h4>
+    <p>Hun roadmap is dat AI-<strong>agents</strong> (software die zélf handelt) stap voor stap sourcing, outreach, scheduling en presenteren overnemen — naar 70–80% autonoom, terwijl de recruiter de 30% met menselijk oordeel houdt (onderhandelen, inschatten). De pijplijn hierboven wordt dus steeds meer door agents gedraaid in plaats van met manuele klikken.</p>
+
+    <div class="key">
+      <h4>De les: zelfde crackdown, tegengestelde strategie</h4>
+      <p>Spott en jullie staan voor dezelfde LinkedIn-crackdown van begin 2026, maar reageren tegengesteld:</p>
+      <p><strong>Spott</strong> beschermt het account van de klant door <strong>minder</strong> te automatiseren — terug naar manueel en compliant, want het is het profiel van de klant zélf dat op het spel staat.</p>
+      <p><strong>Rocadelo</strong> beschermt het account van de klant door het <strong>helemaal uit de vergelijking te halen</strong> — eigen opgewarmde accounts, eigen Belgische IP’s. Daardoor kunnen jullie wél agressiever blijven automatiseren.</p>
+      <p>Maar recht voor de raap: diezelfde crackdown betekent dat <strong>júllie accounts nu degene zijn die gebrand kunnen worden.</strong> Spott schuift dat risico af op de klant; jullie nemen het op je eigen infrastructuur. De vaardigheid waar jullie model op staat of valt, is dus <strong>account-warming, -rotatie en -beheer.</strong> Beheers dat, en je differentiator is echt. Onderschat het, en het is je achilleshiel.</p>
+    </div>
+  </section>
+
+  <!-- BACKEND -->
+  <section id="backend" class="reveal">
+    <div class="secnum">EXTRA · BACKEND</div>
+    <h2 class="sec">Hoe je in een backend tools connecteert</h2>
+    <p class="lead">Het geheim dat je al kent: de manier waarop je met de Claude API praat, is <em>exact</em> dezelfde manier waarop je met élke andere tool praat. Je hoeft een tool nooit zelf na te bouwen — je belt aan de juiste deur.</p>
+
+    <h3>1. Het grote idee: een API is een deur, geen broncode</h3>
+    <p>Je vroeg je terecht af: “je kan toch niet een hele tool zelf gaan coderen?” Klopt — en dat hoeft ook niet. Elke serieuze tool (LinkedIn, je database, Claude) publiceert een <strong>API</strong>. Je krijgt niet de broncode van LinkedIn; je krijgt een <em>menu</em> van toegelaten acties en een adres om die op te vragen.</p>
+    <div class="term">
+      <p><strong>Wat is een API?</strong> Application Programming Interface = de “deur met regels” die een tool openstelt voor andere programma’s. Vergelijking: je gaat in een restaurant niet zelf de keuken in koken. Je bestelt van een <em>menu</em> via de ober. De ober = de API: hij neemt je bestelling (“stuur dit bericht”), geeft die door aan de keuken (de tool), en brengt het antwoord terug. Jij hoeft niet te weten hóe de keuken werkt.</p>
+    </div>
+
+    <h3>2. De universele taal: HTTP-requests</h3>
+    <p>Bijna elke web-API praat via <strong>HTTP</strong> — hetzelfde protocol als websites. Je backend stuurt een <strong>request</strong> (een vraag) en krijgt een <strong>response</strong> (een antwoord) terug. Een request bestaat altijd uit dezelfde onderdelen:</p>
+    <ul>
+      <li><strong>Method</strong> — wát je wil: <code class="inl">GET</code> (iets ophalen/lezen), <code class="inl">POST</code> (iets aanmaken/doen), <code class="inl">PUT/PATCH</code> (wijzigen), <code class="inl">DELETE</code> (verwijderen).</li>
+      <li><strong>Endpoint (URL)</strong> — de specifieke deur, bv. <code class="inl">api.unipile.com/.../chats</code>.</li>
+      <li><strong>Headers</strong> — extra info, waaronder je sleutel die zegt “ik ben het” (zie punt 3).</li>
+      <li><strong>Body</strong> — de data die je meestuurt, meestal in <strong>JSON</strong>.</li>
+    </ul>
+    <p>Het antwoord heeft een <strong>status code</strong> die in één getal zegt hoe het ging: <code class="inl">200</code> = gelukt, <code class="inl">401</code> = niet ingelogd/foute sleutel, <code class="inl">429</code> = te snel/te veel (rate limit), <code class="inl">500</code> = de tool zelf had een fout. Plus een body met de gevraagde data.</p>
+    <div class="term">
+      <p><strong>Wat is JSON?</strong> JavaScript Object Notation: een simpele tekstmanier om data te schrijven als “sleutel: waarde”-paren, bv. <code class="inl">{"naam": "Sarah", "rol": "developer"}</code>. Het is de standaardtaal waarin API’s data heen en weer sturen — leesbaar voor mensen én voor machines.</p>
+    </div>
+    <p><strong>Dit is de hele truc:</strong> Claude, Unipile én je database spreken állemaal deze taal. Leer het één keer, en je kan met alles connecteren.</p>
+
+    <h3>3. Authenticatie: hoe de tool weet dat jij het bent</h3>
+    <p>Een tool laat niet zomaar iedereen binnen. Je bewijst wie je bent met een geheime sleutel of een ingelogde sessie.</p>
+    <div class="term">
+      <p><strong>API key, OAuth, token — wat is wat?</strong> Een <strong>API key</strong> is een geheim wachtwoord dat je in een header meestuurt (zo werkt Claude, en zo werkt Unipile). <strong>OAuth</strong> is het “Log in met Google”-systeem: een gebruiker geeft jouw app toestemming, en jij krijgt een <strong>token</strong> (een tijdelijk toegangsbewijs) om namens hem te handelen — zo connecteer je bv. iemands Gmail of Outlook. Unipile gebruikt voor Gmail Google-OAuth, voor Outlook Microsoft-OAuth, en voor LinkedIn cookie-/login-authenticatie.</p>
+    </div>
+    <div class="key">
+      <h4>Waarom je hiervoor een backend nodig hébt</h4>
+      <p>Een API key is een wachtwoord dat toegang geeft (en geld kost). Zet je hem in <strong>frontend</strong>-code, dan kan iederéén die de pagina opent hem stelen. Daarom horen sleutels <strong>uitsluitend</strong> in de backend, opgeslagen als “environment variables” (geheime instellingen op je server), nooit zichtbaar voor de buitenwereld.</p>
+      <p>Dít is het echte antwoord op je intuïtie dat frontend “iedereen kan”: het waardevolle, veilige, verbindende werk gebeurt juist in de backend.</p>
+    </div>
+
+    <h3>4. Twee richtingen: jij vraagt (requests) vs. de tool vertelt (webhooks)</h3>
+    <p>Soms wil je niet blijven vragen “is er al een antwoord? en nu? en nu?” (dat heet <strong>polling</strong> en is verspilling). Je wil dat de tool jóu een seintje geeft zodra er iets gebeurt. Dat is een <strong>webhook</strong>.</p>
+    <div class="term">
+      <p><strong>Polling vs. webhook.</strong> <strong>Polling</strong> = jij vraagt herhaaldelijk aan de tool of er nieuws is. <strong>Webhook</strong> = jij geeft de tool een URL op jouw backend, en de tool stuurt dáárheen een <code class="inl">POST</code> zodra er een gebeurtenis is (bv. “nieuw LinkedIn-antwoord binnen”). Je backend moet binnen 30 seconden een <code class="inl">200</code> terugsturen, anders probeert Unipile het opnieuw. Webhooks zijn de motor achter jullie reply-handling en triggers.</p>
+    </div>
+
+    <h3>5. Je hoeft niet alles met de hand te schrijven: SDK’s</h3>
+    <div class="term">
+      <p><strong>Wat is een SDK / library?</strong> Een Software Development Kit is een kant-en-klaar codepakket dat de rauwe API-aanroepen verpakt in nette functies. In plaats van zelf de HTTP-request op te bouwen, schrijf je bv. <code class="inl">anthropic.messages.create(...)</code>. Claude heeft een SDK, Unipile heeft een SDK. Hetzelfde idee, minder werk, minder fouten.</p>
+    </div>
+
+    <h3>6. De lijm: een orchestrator + een database</h3>
+    <p>Losse API-aanroepen worden pas een systeem als iets ze coördineert en onthoudt. Daarvoor heb je twee dingen:</p>
+    <div class="term">
+      <p><strong>Orchestrator.</strong> Software die bepaalt wélke tool wanneer in welke volgorde wordt aangeroepen. <strong>n8n</strong> (jullie keuze) is precies dat: een visuele backend-motor met kant-en-klare “nodes” die de API’s al voor je aanroepen. Je hebt dus telkens twee opties om iets te connecteren: (a) zelf Python-code schrijven die de API belt, of (b) een n8n-node erop slepen. Vaak een mix.</p>
+    </div>
+    <div class="term">
+      <p><strong>Database = het geheugen.</strong> API-aanroepen zijn “stateless”: ze onthouden niets. Je database (jullie SQLite of Supabase) is waar je systeem bijhoudt wie je al benaderde, wat de status is, welke berichten verstuurd zijn. Zonder database geen geheugen.</p>
+    </div>
+    <p>Twee dingen die echte backends óók moeten regelen: <strong>rate limits</strong> (API’s beperken hoe vaak je mag bellen → bij <code class="inl">429</code> even wachten en opnieuw proberen) en <strong>retries/queues</strong> (mislukte of trage taken later opnieuw uitvoeren). Voor outreach is dit cruciaal: LinkedIn heeft strikte daglimieten, dus je moet bewust traag en menselijk doseren.</p>
+
+    <h3>7. Concreet voor Rocadelo: jullie stack als één keten</h3>
+    <p>Zo connecteert elk stuk van jullie systeem — en welk soort connectie het is:</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Tool</th><th>Soort connectie</th><th>Wat je ermee doet</th></tr></thead>
+        <tbody>
+          <tr><td>Claude API</td><td>REST-API (API key in header)</td><td>De hersenen van je agents: je stuurt een prompt, krijgt tekst terug (scoren, schrijven, classificeren).</td></tr>
+          <tr><td>Unipile</td><td>REST-API + webhooks</td><td>Eén deur naar LinkedIn/WhatsApp/e-mail: <code class="inl">POST /chats</code> om te versturen, webhooks om antwoorden op te vangen. Lost op dat LinkedIn geen nette publieke API heeft.</td></tr>
+          <tr><td>NodeMaven</td><td>Proxy (infrastructuur)</td><td>Geen feature-API, maar de “tunnel” waar je verkeer doorheen gaat, zodat LinkedIn een Belgisch residentieel IP ziet.</td></tr>
+          <tr><td>n8n</td><td>Orchestrator</td><td>Plant, triggert en verbindt alle nodes (Claude, Unipile, database, webhooks).</td></tr>
+          <tr><td>Hetzner</td><td>Server</td><td>De computer in de cloud waar je backend 24/7 draait.</td></tr>
+          <tr><td>Database</td><td>Opslag</td><td>Het geheugen: leads, statussen, verstuurde berichten.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="term">
+      <p><strong>Wat is een proxy?</strong> Een tussenstation waarlangs je internetverkeer loopt. In plaats van dat LinkedIn ziet dat je vanuit een datacenter komt, ziet het een gewoon Belgisch thuis-IP. (Interessant: Unipile koppelt zelf al automatisch vaste proxies per account; NodeMaven gebruik je als je een specifiek Belgisch residentieel IP wil garanderen. Hoe je die twee exact combineert, hangt af van jullie opzet — dat test je uit.)</p>
+    </div>
+    <p><strong>Eén volledige cyclus, in woorden:</strong></p>
+    <ol class="chain">
+      <li>n8n start volgens schema (bv. elke ochtend).</li>
+      <li>Via Unipile zoek je Belgische profielen en haal je hun data op.</li>
+      <li>Je slaat ze op in de database.</li>
+      <li>Claude API scoort de lead en schrijft een gepersonaliseerd bericht.</li>
+      <li>Via Unipile verstuur je het — vanaf een opgewarmd account, over het NodeMaven-IP.</li>
+      <li>Komt er een antwoord, dan stuurt Unipile een webhook naar je backend.</li>
+      <li>Claude classificeert het antwoord en schrijft een vervolgbericht; de database wordt bijgewerkt.</li>
+    </ol>
+    <p><strong>En kijk nu hoe gelijk de code eruitziet</strong> — links Claude, rechts “een andere tool”. Het is letterlijk hetzelfde patroon (vereenvoudigd, Python):</p>
+    <pre class="code"><span class="c"># Claude API — een bericht laten schrijven</span>
+requests.post(
+  <span class="s">"https://api.anthropic.com/v1/messages"</span>,
+  headers={<span class="s">"x-api-key"</span>: SLEUTEL},
+  json={<span class="s">"model"</span>: <span class="s">"claude-..."</span>, <span class="s">"messages"</span>: [...]}
+)
+
+<span class="c"># Unipile — datzelfde patroon, andere deur</span>
+requests.post(
+  <span class="s">"https://api.unipile.com/.../chats"</span>,
+  headers={<span class="s">"X-API-KEY"</span>: SLEUTEL},
+  json={<span class="s">"provider"</span>: <span class="s">"linkedin"</span>, <span class="s">"to"</span>: id, <span class="s">"content"</span>: bericht}
+)</pre>
+    <p>Zie je het? <code class="inl">post</code> naar een URL, een sleutel in de headers, data als JSON. Dat is het. Wie de Claude-connectie snapt, kan élke tool connecteren.</p>
+
+    <h3>8. Vergelijking: hoe Spott het doet (of heeft gedaan)</h3>
+    <p>Spott speelt dit spel op een andere, zwaardere manier — en daar zit een belangrijke les in.</p>
+    <ul>
+      <li><strong>Spott bouwt veel integraties zélf (“native”).</strong> Ze synchroniseren rechtstreeks met mail, WhatsApp, LinkedIn, agenda en VoIP, en bouwden een diep platform met een vector-database náást een gewone database. Meer controle en diepte — maar traag en duur, enkel haalbaar met funding en een groot engineering-team.</li>
+      <li><strong>Spott biedt zélf óók een API/MCP-server aan.</strong> Andere AI-assistenten (Claude, ChatGPT) kunnen met Spott’s data praten. Spott is dus een <em>platform waarop anderen bouwen</em> — zij staan aan de andere kant van de deur.</li>
+      <li><strong>Browser-integratie.</strong> Voor LinkedIn gebruiken ze een Chrome-extensie, die ze in Q1 2026 moesten aanpassen om compliant en accountveilig te blijven.</li>
+      <li><strong>Ze huren óók in.</strong> Hun AI-modellen nemen ze onder licentie (net zoals jullie de Claude API gebruiken). Zelfs Spott bouwt niet álles zelf.</li>
+    </ul>
+    <div class="key">
+      <h4>De kernles: build vs. buy</h4>
+      <p><strong>Spott bouwt; jullie kopen/huren.</strong> Met funding en 20+ engineers kan Spott zich permitteren om integraties zelf te bouwen. Jullie kracht als klein team is het tegenovergestelde: <strong>bestaande API’s slim aan elkaar knopen</strong> — Unipile voor de connecties, n8n voor de orkestratie, Claude voor de intelligentie. Sneller, goedkoper, en met een team van twee haalbaar.</p>
+      <p>Verschil in houding: <strong>Spott biedt API’s aan</strong> (een platform), <strong>jullie verbruiken API’s</strong> (een dienst). Allebei geldig — weet gewoon wie je bent. En onthoud: niemand bouwt alles zelf; de échte vaardigheid is kiezen wát je bouwt en wat je koopt.</p>
+    </div>
+    <p>Voor jou betekent dit: je hoeft de komende maanden geen enkele “tool” na te bouwen. Je moet leren hoe je API’s aanroept (punt 1–5), hoe je ze in n8n aan elkaar knoopt (punt 6), en die ene keten draaiend krijgt (punt 7). Dát is jullie backend.</p>
+  </section>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <h2>Bronnen (publiek)</h2>
+    <ul>
+      <li>spott.io — homepage, origin story, pricing, features, press kit, resources</li>
+      <li>VentureBeat — “Spott’s AI-native recruiting platform scores $3.2M” (28 mei 2025)</li>
+      <li>HRmagazine.be · Made-in.be · The Global Recruiter — funding &amp; US-expansie</li>
+      <li>Y Combinator (companies/spott) · Tracxn · G2 — profiel, team, pricing</li>
+      <li>Northlight.ai · joinvalley.co — LinkedIn-handhaving Q1 2026 (mogelijk gekleurd)</li>
+    </ul>
+    <p class="sig">Samengesteld als naslagwerk voor je AgenticOS. Diepte boven breedte — ken je arena koud.</p>
+    <div class="endmark">✦</div>
+  </div>
+</footer>
+
+<script>
+  // reading progress
+  var bar=document.getElementById('bar');
+  function onScroll(){
+    var h=document.documentElement;
+    var max=h.scrollHeight-h.clientHeight;
+    bar.style.width=(max>0?(h.scrollTop/max*100):0)+'%';
+  }
+  document.addEventListener('scroll',onScroll,{passive:true});onScroll();
+  // staggered reveal — robust: trigger on any intersection + safety fallback so tall sections never stay hidden
+  var reveals = document.querySelectorAll('.reveal');
+  function showAll(){ reveals.forEach(function(el){ el.classList.add('in'); }); }
+  if(('IntersectionObserver' in window) && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+    },{threshold:0, rootMargin:'200px 0px 200px 0px'});
+    reveals.forEach(function(el){io.observe(el);});
+    // safety net: never let content stay invisible (e.g. sections taller than the screen)
+    setTimeout(showAll, 1500);
+  } else {
+    showAll();
+  }
+</script>
+</body>
+</html>
