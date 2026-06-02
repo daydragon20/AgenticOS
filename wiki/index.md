@@ -21,6 +21,8 @@ _(wie Nathan is, hoe hij werkt — begin hier voor elk advies)_
 _(people, places, organizations, products — pages that describe a thing)_
 
 - [[Agency Website Business]] — E-mail funnel + prijsstructuur voor lokale bedrijven zonder website; demo, contactgegevens, resultaten
+- [[Rocadelo Concurrentie En Strategie]] — **Brein-synthese** outreach business: positionering, Spott/Elvatix, LinkedIn-crackdown, account-warming, stack, 9 lessen
+- [[Battlecard Concurrenten]] — Battle card Spott & Elvatix: wat ze zijn, zwaktes die wij uitspelen, hoe je tegen hen speelt
 - [[AI Automation Agency]] — B2B AI Operations Studio: revenue roadmap van €0 naar €100K+ MRR, eerste offer, 90-dagenplan
 - [[Manhattan Droomappartementen]] — Research naar NYC premium woonlocaties: Billionaires' Row, Steinway Tower, FiDi — prijzen en strategie
 - [[Ruimtevaartsector]] — ESA BIC Belgium funding (€60K), Belgische spelers, hybrid SaaS→space-tech pad voor Nathan op 22–24
@@ -53,6 +55,9 @@ _(summaries of specific sources you've ingested)_
 
 - [[Instagram DM Links]] — 16 externe links uit Instagram DM's (export 2026-05-01): AI tools, communities, YouTube, events
 - [[AI Dev Resources]] — Manueel verzamelde AI/Claude Code links: guides, GitHub repos, APIs, communities, build-tools
+- [[Spott Onderzoek]] (HTML) — Volledig dossier concurrent Spott: verhaal, product, funding, pipeline, backend, vergelijking met Rocadelo
+- [[Businessplan Outbound Engine]] (HTML) — Werkdocument businessplan v0.1: probleem, model, verdienmodel, route, open punten
+- [[Stappenplan Uitbreiding Accounts Warming]] (HTML) — Fase 1½ (accounts & warming) + Fase 7 (note-taker, CV-reformat) met Claude Code prompts
 
 ---
 
