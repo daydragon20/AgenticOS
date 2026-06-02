@@ -23,6 +23,7 @@ _(people, places, organizations, products — pages that describe a thing)_
 - [[Agency Website Business]] — E-mail funnel + prijsstructuur voor lokale bedrijven zonder website; demo, contactgegevens, resultaten
 - [[Rocadelo Concurrentie En Strategie]] — **Brein-synthese** outreach business: positionering, Spott/Elvatix, LinkedIn-crackdown, account-warming, stack, 9 lessen
 - [[Battlecard Concurrenten]] — Battle card Spott & Elvatix: wat ze zijn, zwaktes die wij uitspelen, hoe je tegen hen speelt
+- [[Arena Intelligence Systeem]] — "Niemand verrast mij": 3-tier nieuwssysteem, battle card, n8n-digest, 3 benen van confidence
 - [[AI Automation Agency]] — B2B AI Operations Studio: revenue roadmap van €0 naar €100K+ MRR, eerste offer, 90-dagenplan
 - [[Manhattan Droomappartementen]] — Research naar NYC premium woonlocaties: Billionaires' Row, Steinway Tower, FiDi — prijzen en strategie
 - [[Ruimtevaartsector]] — ESA BIC Belgium funding (€60K), Belgische spelers, hybrid SaaS→space-tech pad voor Nathan op 22–24

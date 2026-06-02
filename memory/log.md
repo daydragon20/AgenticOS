@@ -7,6 +7,7 @@
   - `wiki/spott-onderzoek.html` — volledig concurrent-dossier Spott
   - `wiki/stappenplan-uitbreiding-accounts-warming.html` — Fase 1½ + Fase 7
   - (leiderschap-doc niet gedupliceerd: bestaat al als `wiki/leiderschapsidentiteit-strict-just.md`, rijkere versie)
+- `wiki/arena-intelligence-systeem.md` toegevoegd (3-tier nieuwssysteem + battle card + n8n-digest)
 - Brein-synthese aangemaakt: `wiki/rocadelo-concurrentie-en-strategie.md` (positionering, concurrenten, LinkedIn-crackdown, account-warming, stack, 9 lessen, open punten)
 - `wiki/index.md` bijgewerkt met de nieuwe pagina's
 - Kerninzicht voor de business: onze witte ruimte = outsourced outbound-team dat het accountrisico volledig overneemt. Make-or-break = account-warming/-rotatie/-beheer.
