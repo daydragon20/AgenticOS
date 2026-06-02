@@ -16,6 +16,7 @@
 - **Huidig:** Weg A (handmatige Claude.ai flow), Weg B in voorbereiding (Python pipeline)
 - **Prijs:** €1.500 setup + €1.500/maand | marge >90%
 - **Detail:** `memory/rocadelo-hr.md`
+- **Concurrentie & strategie:** `wiki/rocadelo-concurrentie-en-strategie.md` (Spott/Elvatix, account-warming, positionering, 9 lessen)
 
 ## 2. Website Automation Business
 - **Status:** actief, basisstructuur staat, nog in ontwikkeling
