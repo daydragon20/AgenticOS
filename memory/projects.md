@@ -18,6 +18,14 @@
 - **Detail:** `memory/rocadelo-hr.md`
 - **Concurrentie & strategie:** `wiki/rocadelo-concurrentie-en-strategie.md` (Spott/Elvatix, account-warming, positionering, 9 lessen)
 
+## 4. Mijn Weg — Video Journey Project
+- **Status:** gepland, start september 2026
+- **Wat:** alles wat ik doe buiten school filmen — thuis, onderweg, overal. Mijn pad vastleggen op video.
+- **Waarom:** mezelf uitleggen wat ik bouw/doe, alles documenteren, en daardoor ook beter begrijpen
+- **Hardware:** oude lichtring (al aanwezig)
+- **Aanpak:** raw, authentiek — geen perfectie, gewoon consistent filmen
+- **Detail:** `wiki/mijn-weg-video-journey.md`
+
 ## 2. Website Automation Business
 - **Status:** actief, basisstructuur staat, nog in ontwikkeling
 - **Wat:** automatisch websites bouwen voor klanten via n8n
