@@ -1,5 +1,11 @@
 # Dagelijks Log
 
+## 2026-06-06
+- Nieuw project vastgelegd: **Mijn Weg — Video Journey**
+- Start september 2026: alles filmen buiten school, met lichtring
+- Doel: pad documenteren, beter begrijpen door uit te leggen
+- Bestanden: `memory/projects.md` bijgewerkt, `wiki/mijn-weg-video-journey.md` aangemaakt
+
 ## 2026-06-02
 - 5 documenten geüpload en in `wiki/` gezet:
   - `wiki/battlecard-concurrenten.md` — battle card Spott & Elvatix
