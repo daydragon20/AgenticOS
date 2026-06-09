@@ -96,6 +96,12 @@ AgenticOS/
 - Log belangrijke beslissingen in `memory/log.md`
 - Lees deze bestanden actief als context voor mijn vragen
 
+### E-maildigest opvragen
+Als ik vraag "wat is de e-mail van vandaag" of iets gelijkaardig:
+1. Zoek direct het bestand `memory/daily/email-digest-YYYY-MM-DD.md` voor de huidige datum
+2. Toon de **volledige tekst** van dat bestand — geen samenvatting, geen tabel, gewoon de volledige inhoud
+3. Als het bestand nog niet bestaat, haal de e-mails op via Gmail en toon ze direct
+
 ## Start van elke sessie
 Als ik een nieuwe sessie begin, doe dan het volgende:
 1. Lees `memory/projects.md` voor de huidige projectstatus
