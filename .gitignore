@@ -1,0 +1,21 @@
+# Ruwe bronbestanden — persoonlijke documenten
+raw/
+
+# Obsidian workspace-instellingen (machine-specifiek)
+.obsidian/
+
+# RAG vectordatabase (lokaal gegenereerd, niet commiten)
+memory/rag-db/
+
+# MCP Knowledge Graph (bevat privé-herinneringen)
+memory/knowledge-graph.jsonl
+
+# API keys (nooit committen)
+memory/api-keys-reference.md
+
+# AI model cache
+models/
+
+# Windows
+desktop.ini
+Thumbs.db
