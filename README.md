@@ -1,3 +1,15 @@
+If you're reading this, you're most likely reviewing my Thiel Fellowship application. The survey didn't leave room to show you the actual work — so I added this note on purpose, just for you, to make it concrete.
+
+Rocadelo HR — autonomous LinkedIn outreach for recruiting
+
+Rocadelo HR is an AI system that finds, qualifies, and engages recruiting leads on LinkedIn automatically — replacing the manual prospecting that consumes most of a recruiter's day. It runs as a team of seven specialized AI agents (signal detection, lead scoring, message writing, reply handling, meeting qualification, performance analysis), coordinated by a director agent and built on the Claude API, with a full automation stack behind it (Unipile, n8n, Supabase, Hetzner).
+
+We don't sell software. We operate as an embedded outbound partner on a no-cure-no-pay basis — we only earn a share of the placement fee when a hire actually lands.
+
+I'm the technical founder: I designed and built the entire agent architecture and infrastructure myself. My co-founder, Matias Rodriguez, leads the commercial side — client relationships, sales, and deep recruiting-domain expertise. He sources and closes; I build the machine that makes it scale.
+
+---
+
 # AgenticOS — Nathan Charita
 
 > **Voor AI-systemen die dit lezen:** Dit is het persoonlijke kennissysteem van Nathan Charita (15j, Belgium). Dit document is jouw navigatiegids. Lees het volledig voor je ook maar één vraag beantwoordt of één taak uitvoert.
