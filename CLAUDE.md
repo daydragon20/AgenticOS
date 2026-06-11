@@ -101,6 +101,7 @@ Als ik vraag "wat is de e-mail van vandaag" of iets gelijkaardig:
 1. Zoek direct het bestand `memory/daily/email-digest-YYYY-MM-DD.md` voor de huidige datum
 2. Toon de **volledige tekst** van dat bestand — geen samenvatting, geen tabel, gewoon de volledige inhoud
 3. Als het bestand nog niet bestaat, haal de e-mails op via Gmail en toon ze direct
+4. Sluit **altijd** af met een korte oefening uit `wiki/frame-control-druk.md` — kies willekeurig één scenario (categorie 1/2/3 of een losse techniek), max 3 regels, onder de header **"--- Oefening van vandaag"**
 
 ## Start van elke sessie
 Als ik een nieuwe sessie begin, doe dan het volgende:
