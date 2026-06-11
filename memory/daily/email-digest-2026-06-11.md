@@ -40,13 +40,23 @@
 
 ---
 
+## 🔵 Business-relevant: Agent AI — *"How to Write Your First AI Loop"* (Dharmesh Shah)
+
+- **Van prompting naar loops:** Boris Cherny (maker van Claude Code) prompt niet meer — hij schrijft loops. Een loop heeft 3 ingrediënten: **doel, meetlat en grens** — zodat de AI zichzelf beoordeelt en herhaalt zonder dat jij elke stap stuurt.
+- **Praktisch voorbeeld:** Geef Claude opdracht een LinkedIn-post te schrijven, zichzelf te scoren van 1-10, slechte versies te herschrijven, en dit 10× te herhalen — daarna enkel de top 3 tonen. Resultaat is structureel beter dan een enkelvoudige prompt.
+- **Loops die draaien vs. loops die leren:** Draaiende loop = automatisering (altijd hetzelfde). Lerende loop = koppelt feedback terug (upvotes/downvotes) en wordt vanzelf beter met elke iteratie.
+- **Jouw rol:** Niet elke stap sturen, maar de machine ontwerpen — jij bepaalt de doelen, criteria en grenzen. Context meegeven (voorbeeldposts, referenties) maakt loops nog veel krachtiger.
+
+👉 **Direct toepasbaar op Rocadelo HR: outreach-berichten laten scoren en herschrijven in een loop vóór verzenden.**
+
+---
+
 ## 🟢 Rest / kan wachten
 
-- **Agent AI** — "How to Write Your First AI Loop" (prompting-alternatieven voor power users)
-- **IT Brew** — Anthropic's Glasswing project voor AI-cybersecurity
-- **The Daily Upside** — Amazon blijft trucken; inflatie heet, energie niet enige oorzaak
-- **Neil Patel** — Webinar 16 juni: AI search verandert koopbeslissingen
-- **Robotics Rundown** — Europa's humanoid-startup haalt $1,4 mrd op; XPeng daagt Tesla uit
+- **IT Brew** — Anthropic Glasswing groeit naar 150 partners voor AI-cybersecurity; SpaceX beursgang
+- **The Daily Upside** — Inflatie 4,2%, renteverhoging dreigt in december; CFTC-regels voor voorspellingsmarkten
+- **Neil Patel** — Webinar 16 juni 8u PDT: AEO/GEO winstgevend maken (AI search verandert koopbeslissingen)
+- **Robotics Rundown** — Neura Robotics haalt $1,4 mrd op (Amazon, Nvidia, Qualcomm); XPeng daagt Tesla uit
 
 ---
 
