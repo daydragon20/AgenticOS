@@ -103,6 +103,20 @@ Als ik vraag "wat is de e-mail van vandaag" of iets gelijkaardig:
 3. Als het bestand nog niet bestaat, haal de e-mails op via Gmail en toon ze direct
 4. Sluit **altijd** af met een korte oefening uit `wiki/frame-control-druk.md` — kies willekeurig één scenario (categorie 1/2/3 of een losse techniek), max 3 regels, onder de header **"--- Oefening van vandaag"**
 
+### E-maildigest formaat — UITGEBREID
+De digest bestanden moeten **zo volledig mogelijk** zijn. Regels:
+- Kopieer de **volledige plaintext body** van elke e-mail — geen samenvatting, geen inkorten
+- Bewaar alle details: marktcijfers, lijstjes, quotes, linkjes, secties, alles
+- Structuur per e-mail:
+  ```
+  ## [Nummer]. [Afzender] — [Onderwerp]
+  **Van:** ... | **Tijd:** ...
+
+  [VOLLEDIGE e-mailtekst hier, letterlijk gekopieerd]
+  ```
+- Liever te lang dan te kort — dit is een archief, geen samenvatting
+- Bij nieuwsbrieven (Morning Brew etc.): bewaar alle artikelen, marktdata, community-secties, sponsorteksten, alles
+
 ## Start van elke sessie
 Als ik een nieuwe sessie begin, doe dan het volgende:
 1. Lees `memory/projects.md` voor de huidige projectstatus
