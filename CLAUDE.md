@@ -130,10 +130,11 @@ Oefening van vandaag
 ```
 
 **Regels:**
-- Nooit de volledige e-mailtekst dumpen — altijd filteren en samenvatten
+- Altijd filteren op relevantie — maar als iets écht relevant is, geef dan de volledige tekst of het volledige relevante stuk letterlijk
 - Cijfers, bedragen en concrete feiten altijd bewaren
 - Reclame, community-secties, kruiswoordpuzzels, Open House → maximaal 1 zin of weglaten
 - Nieuwsbrieven zoals Morning Brew: alleen de echte nieuwsartikelen, niet de fluff
+- "Écht relevant" = direct gelinkt aan Nathans actieve projecten, ruimtevaartambities, AI/automation, finance/investeren, of ondernemerschap
 
 ## Start van elke sessie
 Als ik een nieuwe sessie begin, doe dan het volgende:
