@@ -98,31 +98,51 @@ AgenticOS/
 
 ### E-maildigest opvragen
 Als ik vraag "wat is de e-mail van vandaag" of iets gelijkaardig:
-1. Haal de e-mails op via Gmail (of lees `memory/daily/email-digest-YYYY-MM-DD.md` als dat al bestaat)
-2. Lees de hele repo voor context: `memory/projects.md`, `wiki/nathans-levensplan.md`, `wiki/ruimtevaartsector.md`, `wiki/ai-automation-agency.md`, `wiki/financieel-plan.md`
+1. Zoek via Gmail alle mails van de **vaste afzenders** (zie lijst hieronder) die binnengekomen zijn since de laatste digest
+2. Lees de repo voor context: `memory/projects.md`, `wiki/nathans-levensplan.md`, `wiki/ruimtevaartsector.md`
 3. Presenteer de digest volgens het formaat hieronder
 4. Sla het resultaat op in `memory/daily/email-digest-YYYY-MM-DD.md`
-5. Sluit **altijd** af met een korte oefening uit `wiki/frame-control-druk.md` — kies willekeurig één scenario, max 3 regels, onder de header **"--- Oefening van vandaag"**
+5. Sluit **altijd** af met een korte oefening uit `wiki/frame-control-druk.md` — kies willekeurig één scenario, max 3 regels
+
+### Vaste afzenders — altijd controleren
+
+Elke keer dat de digest gemaakt wordt, controleer de meest recente mail van elk van deze afzenders. Als er geen nieuwe mail is since de vorige digest, vermeld dat dan expliciet ("geen nieuwe mail").
+
+| Afzender | Adres | Frequentie |
+|---|---|---|
+| Morning Brew | `crew@morningbrew.com` | dagelijks (ma–za) |
+| The Rundown AI | `news@daily.therundown.ai` | dagelijks (ma–vr) |
+| TLDR Newsletter | `dan@tldrnewsletter.com` | dagelijks (ma–vr) |
+| The Daily Upside | `squad@thedailyupside.com` | dagelijks (ma–vr) |
+| IT Brew | `itbrew@morningbrew.com` | ma/wo/do/vr |
+| The Rundown Tech | `crew@technews.therundown.ai` | wekelijks (vr) |
+| The Rundown Robotics | `hi@robotics.therundown.ai` | wekelijks (zo) |
+| Agent AI | `agentai@mail.beehiiv.com` | wekelijks |
+| Import AI | `importai@substack.com` | wekelijks (zo) |
+| Neil Patel (forward) | `nathan.charita@outlook.com` (FW: np@neilpatel.com) | 3×/week |
+| Revid.ai | `hello@revid.ai` | sporadisch |
+
+Negeer altijd: Google login-notificaties (`noreply-accounts@google.com`, `no-reply@accounts.google.com`), Anthropic account-mails, en andere automatische systeemmails.
 
 ### E-maildigest formaat — GEFILTERD OP RELEVANTIE
 
-**Stap 1 — Contextualiseer**
-Lees de repo om te weten wat relevant is voor Nathan: AI/tech, automation, ruimtevaart, ondernemerschap, finance, LinkedIn/outreach, België/Europa, agency business, SpaceX/ESA, persoonlijke groei.
+**Structuur — van minst naar meest interessant:**
 
-**Stap 2 — Presenteer van minst naar meest interessant**
-
-Structuur:
 ```
 # Dagelijkse Mail — [datum]
 
+## Status afzenders
+[Tabel: welke vaste afzenders hebben vandaag/recently gestuurd, welke niet]
+
 ## Niet interessant
-[Spam, Google-notificaties, reclame, irrelevante secties] — één zin per item, geen verdere uitleg.
+[Spam, reclame, irrelevante secties] — één zin per item.
 
 ## Goed om te weten
-[Wereld nieuws of info die handig kan zijn maar niet direct relevant] — 2–4 zinnen per item, compact.
+[Wereld nieuws, niet direct relevant] — 2–4 zinnen per item, compact.
 
 ## Relevant voor jou
-[Nieuws over AI, tech, space, business, finance, automation, ondernemerschap — direct gelinkt aan Nathans projecten of ambities] — per item een korte kop + 3–6 zinnen met de kernfeiten. Bewaar alle cijfers, namen en concrete details.
+[AI, tech, space, business, finance, automation, ondernemerschap] — korte kop + kernfeiten.
+Als iets écht relevant is: geef het volledige stuk letterlijk.
 
 ---
 Oefening van vandaag
@@ -130,11 +150,11 @@ Oefening van vandaag
 ```
 
 **Regels:**
-- Altijd filteren op relevantie — maar als iets écht relevant is, geef dan de volledige tekst of het volledige relevante stuk letterlijk
+- Controleer ALLE vaste afzenders, niet alleen wat er in de inbox zit
+- Als iets écht relevant is (ruimtevaart, AI/automation, agency, finance, ondernemerschap), geef dan het volledige relevante stuk letterlijk
 - Cijfers, bedragen en concrete feiten altijd bewaren
-- Reclame, community-secties, kruiswoordpuzzels, Open House → maximaal 1 zin of weglaten
-- Nieuwsbrieven zoals Morning Brew: alleen de echte nieuwsartikelen, niet de fluff
-- "Écht relevant" = direct gelinkt aan Nathans actieve projecten, ruimtevaartambities, AI/automation, finance/investeren, of ondernemerschap
+- Reclame, community-vragen, kruiswoordpuzzels, Open House → weglaten of max 1 zin
+- Nieuwsbrieven: alleen de echte nieuwsartikelen, niet de fluff
 
 ## Start van elke sessie
 Als ik een nieuwe sessie begin, doe dan het volgende:
