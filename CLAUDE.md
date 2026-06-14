@@ -98,24 +98,42 @@ AgenticOS/
 
 ### E-maildigest opvragen
 Als ik vraag "wat is de e-mail van vandaag" of iets gelijkaardig:
-1. Zoek direct het bestand `memory/daily/email-digest-YYYY-MM-DD.md` voor de huidige datum
-2. Toon de **volledige tekst** van dat bestand — geen samenvatting, geen tabel, gewoon de volledige inhoud
-3. Als het bestand nog niet bestaat, haal de e-mails op via Gmail en toon ze direct
-4. Sluit **altijd** af met een korte oefening uit `wiki/frame-control-druk.md` — kies willekeurig één scenario (categorie 1/2/3 of een losse techniek), max 3 regels, onder de header **"--- Oefening van vandaag"**
+1. Haal de e-mails op via Gmail (of lees `memory/daily/email-digest-YYYY-MM-DD.md` als dat al bestaat)
+2. Lees de hele repo voor context: `memory/projects.md`, `wiki/nathans-levensplan.md`, `wiki/ruimtevaartsector.md`, `wiki/ai-automation-agency.md`, `wiki/financieel-plan.md`
+3. Presenteer de digest volgens het formaat hieronder
+4. Sla het resultaat op in `memory/daily/email-digest-YYYY-MM-DD.md`
+5. Sluit **altijd** af met een korte oefening uit `wiki/frame-control-druk.md` — kies willekeurig één scenario, max 3 regels, onder de header **"--- Oefening van vandaag"**
 
-### E-maildigest formaat — UITGEBREID
-De digest bestanden moeten **zo volledig mogelijk** zijn. Regels:
-- Kopieer de **volledige plaintext body** van elke e-mail — geen samenvatting, geen inkorten
-- Bewaar alle details: marktcijfers, lijstjes, quotes, linkjes, secties, alles
-- Structuur per e-mail:
-  ```
-  ## [Nummer]. [Afzender] — [Onderwerp]
-  **Van:** ... | **Tijd:** ...
+### E-maildigest formaat — GEFILTERD OP RELEVANTIE
 
-  [VOLLEDIGE e-mailtekst hier, letterlijk gekopieerd]
-  ```
-- Liever te lang dan te kort — dit is een archief, geen samenvatting
-- Bij nieuwsbrieven (Morning Brew etc.): bewaar alle artikelen, marktdata, community-secties, sponsorteksten, alles
+**Stap 1 — Contextualiseer**
+Lees de repo om te weten wat relevant is voor Nathan: AI/tech, automation, ruimtevaart, ondernemerschap, finance, LinkedIn/outreach, België/Europa, agency business, SpaceX/ESA, persoonlijke groei.
+
+**Stap 2 — Presenteer van minst naar meest interessant**
+
+Structuur:
+```
+# Dagelijkse Mail — [datum]
+
+## Niet interessant
+[Spam, Google-notificaties, reclame, irrelevante secties] — één zin per item, geen verdere uitleg.
+
+## Goed om te weten
+[Wereld nieuws of info die handig kan zijn maar niet direct relevant] — 2–4 zinnen per item, compact.
+
+## Relevant voor jou
+[Nieuws over AI, tech, space, business, finance, automation, ondernemerschap — direct gelinkt aan Nathans projecten of ambities] — per item een korte kop + 3–6 zinnen met de kernfeiten. Bewaar alle cijfers, namen en concrete details.
+
+---
+Oefening van vandaag
+[1 scenario uit frame-control-druk.md, max 3 regels]
+```
+
+**Regels:**
+- Nooit de volledige e-mailtekst dumpen — altijd filteren en samenvatten
+- Cijfers, bedragen en concrete feiten altijd bewaren
+- Reclame, community-secties, kruiswoordpuzzels, Open House → maximaal 1 zin of weglaten
+- Nieuwsbrieven zoals Morning Brew: alleen de echte nieuwsartikelen, niet de fluff
 
 ## Start van elke sessie
 Als ik een nieuwe sessie begin, doe dan het volgende:
