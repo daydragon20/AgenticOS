@@ -25,6 +25,9 @@ models/
 *.sqlite3
 **/rag-db/
 
+# Auto-sync log (per-clone, niet committen)
+sync.log
+
 # Windows
 desktop.ini
 Thumbs.db
