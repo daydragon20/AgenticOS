@@ -1,0 +1,30 @@
+# Secrets — NOOIT committen
+.env
+.env.*
+!.env.example
+
+# State / databases (klantdata, RAG-index) — privacy by design, klantdata niet in git
+*.db
+*.sqlite
+*.sqlite3
+memory/rag-db/
+memory/*.db
+clients/
+client-data/
+
+# Ruwe persoonlijke bronbestanden
+raw/
+
+# Obsidian workspace (machine-specifiek)
+.obsidian/
+
+# Node / Python (indien hier later code belandt)
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Windows
+desktop.ini
+Thumbs.db

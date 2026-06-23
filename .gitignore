@@ -16,6 +16,15 @@ memory/api-keys-reference.md
 # AI model cache
 models/
 
+# Secrets — NOOIT committen (ook in RocadeloOS/)
+.env
+.env.*
+!.env.example
+*.db
+*.sqlite
+*.sqlite3
+**/rag-db/
+
 # Windows
 desktop.ini
 Thumbs.db

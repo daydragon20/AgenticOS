@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rocadelo HR — Competitive Landscape & Positionering (juni 2026)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAFBFC; --card:#FFFFFF; --ink:#16263D; --ink-soft:#4A5B72; --line:#E3E9F0;
+    --accent:#0E5FD8; --signal:#F59E0B; --high:#D93B3B; --mid:#E8920A; --low:#1E9E5A; --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--ink);font-family:'Instrument Sans',system-ui,sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:780px;margin:0 auto;padding:0 20px 96px}
+  header{padding:48px 0 28px;border-bottom:1px solid var(--line)}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;}
+  h1{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(28px,5.5vw,40px);line-height:1.12;letter-spacing:-.015em;}
+  .sub{color:var(--ink-soft);margin-top:12px;font-size:16px;max-width:60ch}
+  nav{position:sticky;top:0;z-index:50;background:rgba(250,251,252,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin:0 -20px;padding:10px 20px;overflow-x:auto;white-space:nowrap;scrollbar-width:none;}
+  nav::-webkit-scrollbar{display:none}
+  nav a{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:5px 12px;margin-right:8px;background:var(--card);transition:color .15s,border-color .15s;}
+  nav a:hover{color:var(--accent);border-color:var(--accent)}
+  .tldr{margin-top:28px;background:var(--ink);color:#EAF0F8;border-radius:var(--radius);padding:26px 26px 22px;}
+  .tldr .eyebrow{color:var(--signal);margin-bottom:10px}
+  .tldr p{margin-bottom:12px;font-size:15.5px}
+  .tldr p:last-child{margin-bottom:0}
+  .tldr strong{color:#fff}
+  section{margin-top:36px}
+  h2{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px;letter-spacing:-.01em;margin-bottom:6px;scroll-margin-top:64px;}
+  .lede{color:var(--ink-soft);font-size:15px;margin-bottom:16px;max-width:62ch}
+  details{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;}
+  details[open]{border-color:#C9D6E6}
+  summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:12px;padding:14px 18px;font-weight:600;font-size:15.5px;user-select:none;}
+  summary::-webkit-details-marker{display:none}
+  summary .chev{margin-left:auto;flex:none;width:18px;height:18px;color:var(--ink-soft);transition:transform .2s ease;}
+  details[open] summary .chev{transform:rotate(180deg)}
+  .body{padding:2px 18px 18px;font-size:15px}
+  .body p{margin-bottom:12px}
+  .body ul{margin:0 0 12px 18px}
+  .body li{margin-bottom:8px}
+  .tag{flex:none;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;border-radius:6px;padding:3px 8px;}
+  .tag.direct{background:#FDEBEB;color:var(--high)}
+  .tag.naast{background:#FCF1DE;color:#9A6206}
+  .tag.ver{background:#E6F4EC;color:#19744A}
+  .meta{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--ink-soft);background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin-bottom:12px;line-height:1.7;}
+  .pm{font-weight:600}.plus{color:var(--low)}.min{color:var(--high)}
+  .board{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+  .threat{display:grid;grid-template-columns:34px 1fr;gap:14px;align-items:start;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;}
+  .rank{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px;color:var(--line);line-height:1.1;}
+  .threat.t1 .rank,.threat.t2 .rank{color:var(--high)}.threat.t3 .rank{color:var(--mid)}
+  .tname{font-weight:600;font-size:15.5px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .twhy{color:var(--ink-soft);font-size:14px;margin-top:4px}
+  .meter{display:flex;gap:3px;margin-left:auto}
+  .meter i{width:14px;height:7px;border-radius:3px;background:var(--line)}
+  .m5 i{background:var(--high)}.m3 i:nth-child(-n+3){background:var(--mid)}.m2 i:nth-child(-n+2){background:var(--mid)}
+  table{width:100%;border-collapse:collapse;font-size:14px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+  .twrap{border-radius:var(--radius);overflow-x:auto;border:1px solid var(--line)}
+  .twrap table{border:none}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);background:var(--paper)}
+  .sev{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:500;border-radius:6px;padding:2px 8px;white-space:nowrap}
+  .sev.h{background:#FDEBEB;color:var(--high)}.sev.m{background:#FCF1DE;color:#9A6206}
+  .fase{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:var(--radius);padding:18px 20px;margin-bottom:12px;}
+  .fase h3{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;margin-bottom:10px;}
+  .fase h3 span{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:4px;}
+  .check{list-style:none;margin:0}
+  .check li{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;font-size:14.5px;}
+  .check input{margin-top:4px;accent-color:var(--accent);width:15px;height:15px;flex:none}
+  .trigger{background:#FFF8EC;border:1px solid #F2DFB8;border-radius:var(--radius);padding:16px 18px;font-size:14.5px;margin-top:12px;}
+  .trigger b{display:block;font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#9A6206;margin-bottom:8px}
+  .trigger ul{margin-left:18px}
+  .caveat{background:var(--card);border:1px dashed var(--line);border-radius:var(--radius);padding:16px 18px;font-size:13.5px;color:var(--ink-soft);}
+  .caveat ul{margin-left:18px}
+  footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Rocadelo HR · Intern strategiedocument · juni 2026</div>
+  <h1>Competitive landscape AI&nbsp;recruitment &amp; positionering</h1>
+  <p class="sub">Volledige marktanalyse — van outreach-startups tot ATS-incumbents — samengevat tot één beslissingsdocument voor Nathan &amp; Matias.</p>
+</header>
+<nav aria-label="Inhoud">
+  <a href="#tldr">TL;DR</a><a href="#threats">Threat board</a><a href="#landschap">Landschap</a><a href="#markt">Markt BE/EU</a><a href="#risico">Risico's</a><a href="#strategie">Strategie</a><a href="#caveats">Caveats</a>
+</nav>
+<section id="tldr">
+  <div class="tldr">
+    <div class="eyebrow">TL;DR — 3 conclusies</div>
+    <p><strong>1. De markt is gepolariseerd, en Rocadelo valt precies in het gat.</strong> Aan de ene kant dure SaaS-tools die recruiters slimmer maken (Spott, Juicebox, Bullhorn Amplify, LinkedIn Hiring Assistant). Aan de andere kant VC-gepompte "AI recruiters" die het hele proces vervangen (ConverzAI, Tezi, Mercor). Niemand biedt done-for-you LinkedIn-outreach op puur success-fee.</p>
+    <p><strong>2. De grootste dreiging komt niet van startups maar van incumbents.</strong> Bullhorn Amplify zit al in de workflow van 10.000+ bureaus, en LinkedIn zelf bedreigt zowel het product (Hiring Assistant) als de infrastructuur (handhaving tegen Unipile-achtige automatisering).</p>
+    <p><strong>3. Positioneer als "embedded performance partner", niet als AI-tool.</strong> Verkoop uitkomsten (meetings → placements), niet software. Het no-cure-no-pay model is de enige boodschap die geen enkele SaaS-speler kan kopiëren.</p>
+  </div>
+</section>
+<section id="threats">
+  <h2>Threat board — wie is het gevaarlijkst?</h2>
+  <p class="lede">Gerangschikt op strategische dreiging voor Rocadelo's huidige model.</p>
+  <div class="board">
+    <div class="threat t1"><div class="rank">1</div><div><div class="tname">Bullhorn Amplify <span class="meter m5"><i></i><i></i><i></i><i></i><i></i></span></div><div class="twhy">Zit al in de workflow van de meeste agencies. AI "Digital Workers" doen 24/7 outreach &amp; business development — geïntegreerd, zonder LinkedIn-banrisico. Claimt 51% meer submissions en 22% hogere fill rates.</div></div></div>
+    <div class="threat t2"><div class="rank">2</div><div><div class="tname">LinkedIn zelf <span class="meter m5"><i></i><i></i><i></i><i></i><i></i></span></div><div class="twhy">Dubbele dreiging: Hiring Assistant maakt sourcing in-platform makkelijker, én de handhaving tegen automatisering (Unipile, proxies, gewarmde accounts) is existentieel voor Rocadelo's infrastructuur.</div></div></div>
+    <div class="threat t3"><div class="rank">3</div><div><div class="tname">ConverzAI <span class="meter m3"><i></i><i></i><i></i><i></i><i></i></span></div><div class="twhy">Enige full-cycle AI-speler die expliciet vóór staffing agencies bouwt (source-to-placement). $16M Series A van Menlo Ventures. Voorlopig VS &amp; high-volume gericht.</div></div></div>
+    <div class="threat t3"><div class="rank">4</div><div><div class="tname">Spott <span class="meter m3"><i></i><i></i><i></i><i></i><i></i></span></div><div class="twhy">Dichtstbijzijnde "agency-native AI"-startup, Europees (Belgische founders!), $3,2M funding, YC W25. Maar: SaaS-tool, geen done-for-you service.</div></div></div>
+    <div class="threat"><div class="rank">5</div><div><div class="tname">Elvatix <span class="meter m2"><i></i><i></i><i></i><i></i><i></i></span></div><div class="twhy">Directe Benelux-concurrent op LinkedIn-outreach, maar met tegenovergestelde positionering: compliance-first, handmatige verzending. Lost het schaalprobleem niet op.</div></div></div>
+  </div>
+</section>
+<section id="landschap">
+  <h2>Het landschap in 5 categorieën</h2>
+  <p class="lede">Tags tonen hoe direct elke categorie met Rocadelo concurreert.</p>
+  <details open><summary><span class="tag direct">Direct</span> AI outreach &amp; sourcing voor recruiters<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+    <div class="body">
+      <p><strong>Spott (YC W25)</strong></p><div class="meta">AI-native ATS/CRM · $3,2M (Fortino, Base10) · ~$990K omzet 2025 · SaaS ±$250/mnd per 10 seats</div>
+      <p>"Het moderne alternatief voor Bullhorn &amp; Loxo". Outreach is één feature naast ATS/CRM. <span class="pm plus">+</span> all-in-one, semantische matching. <span class="pm min">−</span> niet done-for-you.</p>
+      <p><strong>Elvatix</strong></p><div class="meta">AI-copilot in LinkedIn Recruiter via Chrome-extensie · Benelux · compliance-first</div>
+      <p>Spiegelbeeld van Rocadelo: "nul risico" want recruiter keurt zelf goed/verstuurt. <span class="pm min">−</span> recruiter blijft de bottleneck.</p>
+      <p><strong>Juicebox (PeopleGPT)</strong></p><div class="meta">&gt;$10M ARR · 3.000+ klanten · $36M (Sequoia) · $139–199/seat/mnd + $199–300/mnd Agents</div>
+      <p>Snelst groeiende pure sourcing-speler (800M+ profielen). <span class="pm min">−</span> alleen e-mail outreach + banrisico via Chrome-extensie.</p>
+      <p><strong>Aangrenzend:</strong> Pin, HeroHunt.ai, Fetcher, Crew, Serra — allemaal SaaS/self-serve. <strong>Geen enkele op success fee.</strong></p>
+    </div>
+  </details>
+  <details><summary><span class="tag naast">Naast</span> Sourcing &amp; talent intelligence<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+    <div class="body">
+      <p><strong>HireEZ</strong> — enterprise sourcing, 800M+ profielen, "EZ Agent" (sinds mrt 2025). ±$169–250/seat/mnd, mediaan ~$13K/jaar.</p>
+      <p><strong>SeekOut</strong> — ±$833/seat/mnd, mediaan ~$27K. <em>SeekOut Spot</em> = managed service (AI + menselijke sourcers, per rol) — bewijst dat de markt managed services accepteert.</p>
+      <p><strong>LinkedIn Hiring Assistant</strong> — eerste AI-agent, sinds sept 2025 (EN). Intake, sourcing, pre-screening, drafting. Claimt 62% minder profielen, 4+ u/rol, 69% hogere InMail-acceptatie. <em>(Eigen cijfers.)</em> Meest fundamentele productdreiging.</p>
+    </div>
+  </details>
+  <details><summary><span class="tag naast">Naast</span> Agentic AI recruiters (full-cycle)<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+    <div class="body">
+      <p><strong>ConverzAI</strong> — full-cycle "virtuele recruiters" (voice/text/email) voor staffing. $16M Series A (Menlo, feb 2025). 6x snellere fills, 183% meer placements. VS/high-volume.</p>
+      <p><strong>Mercor</strong> — $10 mrd waardering, ~$450M+ ARR, gepivoteerd naar AI-data-labeling. Geen directe concurrent meer.</p>
+      <p><strong>Overige:</strong> Tezi "Max" ($9M), Alex ($20M voice), Apriora, Micro1 "Zara" ($50M ARR).</p>
+    </div>
+  </details>
+  <details><summary><span class="tag ver">Ver</span> Interview- &amp; screeningtools<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+    <div class="body"><p><strong>Paradox (Olivia)</strong> — high-volume hiring. <strong>Overgenomen door Workday</strong> (2025). <strong>HireVue</strong> — video-interviews. Beide complementair (screening vs top-of-funnel).</p></div>
+  </details>
+  <details><summary><span class="tag direct">Direct</span> ATS-incumbents met ingebouwde AI<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+    <div class="body">
+      <p><strong>Bullhorn</strong> — dé incumbent (10.000+ klanten). Mei 2025 <strong>Amplify</strong>: "Digital Workers" voor 24/7 sourcing, screening, outreach, BD. Persbericht: 51% meer submissions, 22% hogere fill rates, 85% positieve ervaring. <strong>Dreiging #1:</strong> agencies hébben Bullhorn al; outreach geïntegreerd, geen banrisico.</p>
+      <p><strong>Tegenargument:</strong> vereist menselijke config + capaciteit; veel kleine EU-boutiques hebben geen Bullhorn-enterprise. Slechts 10% heeft agentic AI volledig (GRID 2026).</p>
+      <p><strong>Greenhouse, Ashby ($50M Series D), Workday, SmartRecruiters</strong> — corporate TA, niet agencies.</p>
+    </div>
+  </details>
+</section>
+<section id="markt">
+  <h2>De markt: België &amp; Europa</h2>
+  <details><summary>Cijfers &amp; structuur<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+    <div class="body"><ul>
+      <li><strong>België:</strong> uitzendsector €6.948M omzet (2024, Federgon), 1.374 agentschappen. Perm recruitment volatiel: −10% H1 2024, −5% Q3.</li>
+      <li><strong>Europa:</strong> €219,6 mrd staffing (2024, SIA), −3%. Adecco passeerde Randstad.</li>
+      <li><strong>Fragmentatie = kans:</strong> top 50 EU = 45% omzet; de overige 55% verspreid over duizenden boutiques — die de VS-spelers negeren.</li>
+      <li><strong>Placement fees:</strong> 15–25% van eerstejaarssalaris (exec 25–31%+). Onze 25%-van-de-fee past hier netjes in.</li>
+      <li><strong>AI-adoptie:</strong> AI-gebruikers groeiden 3–5x vaker in 2025 (Bullhorn GRID 2026); slechts 10% heeft agentic AI volledig. De adoptiekloof ís de markt.</li>
+    </ul></div>
+  </details>
+  <details><summary>Marktdynamiek<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+    <div class="body"><ul>
+      <li><strong>AI domineerde VC 2025:</strong> ~61% van wereldwijde VC naar AI (OECD). HR-software ~$1,9 mrd opgehaald (midden sept 2025, Crunchbase).</li>
+      <li><strong>Consolidatie:</strong> Workday neemt Paradox én Sana ($1,1 mrd) over.</li>
+      <li><strong>Drie prijskampen:</strong> (a) SaaS per seat, (b) enterprise custom, (c) <strong>success/placement fee — vrijwel leeg.</strong> Precedent: Paraform (~20–25% first-year, $20M Felicis).</li>
+    </ul></div>
+  </details>
+</section>
+<section id="risico">
+  <h2>Risico's van het huidige model</h2>
+  <p class="lede">Het LinkedIn-TOS-risico is het existentiële vraagstuk van Rocadelo.</p>
+  <div class="twrap"><table>
+    <thead><tr><th>Risico</th><th>Ernst</th><th>Hoe concurrenten het oplossen</th></tr></thead>
+    <tbody>
+      <tr><td>LinkedIn account-ban (Unipile + proxies + gewarmde accounts)</td><td><span class="sev h">Hoog / existentieel</span></td><td>Elvatix: mens in de loop. LinkedIn &amp; Bullhorn: officiële API/partner. Juicebox: e-mail.</td></tr>
+      <tr><td>Schaalbaarheid gewarmde accounts</td><td><span class="sev h">Hoog</span></td><td>Multi-account rotatie (HeyReach: $799/mnd voor 50 accounts); mobiele 4G/5G ~85% vs ~50% residential.</td></tr>
+      <tr><td>Unipile als single point of failure</td><td><span class="sev m">Middel</span></td><td>Directe LinkedIn-partnerships of e-mail-first stack hebben dit niet.</td></tr>
+      <tr><td>Klantconcentratie / tweemansbedrijf</td><td><span class="sev m">Middel</span></td><td>VC-backed hebben buffer; compenseer met persoonlijke service &amp; snelheid.</td></tr>
+    </tbody>
+  </table></div>
+  <details style="margin-top:12px"><summary>Waarom dit risico verslechtert<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+    <div class="body"><ul>
+      <li>LinkedIn beperkte naar verluidt &gt;30M accounts in 2025; detectie +340% (2023–2025) <em>(vendor-cijfers)</em>.</li>
+      <li>Apollo.io en Seamless.ai verbannen in 2025; Proxycurl aangeklaagd en gesloten.</li>
+      <li>~23% restrictie binnen 90 dagen bij automatisering; permanente bans &lt;15% recovery.</li>
+      <li>Residential proxies zwaar geflagd; mobiele 4G/5G presteren beter.</li>
+      <li>Unipile adviseert zélf conservatieve limieten + gerandomiseerde spreiding.</li>
+    </ul></div>
+  </details>
+</section>
+<section id="strategie">
+  <h2>Positioneringsstrategie in 3 fasen</h2>
+  <p class="lede">Eén fase tegelijk — diepte boven breedte.</p>
+  <div class="fase"><h3><span>Fase 1 · Nu – 3 maanden</span>Positioneer en bewijs</h3><ul class="check">
+    <li><input type="checkbox"><label><strong>Kies de categorienaam bewust.</strong> Niet "AI recruitment tool". Wél: <em>"Embedded outbound partner voor recruitment agencies"</em> / <em>"je AI-gedreven BDR-team op no-cure-no-pay"</em>.</label></li>
+    <li><input type="checkbox"><label><strong>Success-fee = hart van de pitch.</strong> "Zij vragen €200–2.000/mnd of je nu plaatst of niet. Wij verdienen alleen als jij verdient."</label></li>
+    <li><input type="checkbox"><label><strong>Bewijs met 2–3 referentiebureaus in België.</strong> Verzamel harde cijfers (meetings, placements, time-to-fill).</label></li>
+  </ul></div>
+  <div class="fase"><h3><span>Fase 2 · 3 – 9 maanden</span>De-risk de infrastructuur</h3><ul class="check">
+    <li><input type="checkbox"><label><strong>Banrisico = topprioriteit.</strong> Mobiele 4G/5G-proxies, strikte per-account limits, gerandomiseerde timing, meerdere gewarmde accounts per campagne.</label></li>
+    <li><input type="checkbox"><label><strong>Verminder Unipile-afhankelijkheid.</strong> E-mail als 2e kanaal; human-in-the-loop premium-variant onderzoeken.</label></li>
+    <li><input type="checkbox"><label><strong>Verkoop het compliance-verhaal.</strong> Banrisico ligt bij Rocadelo's eigen accounts, níet bij het bureau.</label></li>
+  </ul></div>
+  <div class="fase"><h3><span>Fase 3 · 9+ maanden</span>Verdedig de niche</h3><ul class="check">
+    <li><input type="checkbox"><label><strong>Verdiep verticale niches</strong> (bv. IT/engineering in Vlaanderen) waar VS-spelers geen lokale focus hebben.</label></li>
+    <li><input type="checkbox"><label><strong>Bouw een data-moat.</strong> De Performance Analyst leert wat per niche converteert — compoundeert, niet kopieerbaar.</label></li>
+  </ul></div>
+  <div class="trigger"><b>Triggers die de strategie veranderen</b><ul>
+    <li>Account-overleving &lt; ±50% → pivot naar e-mail-first of human-in-the-loop.</li>
+    <li>Bullhorn/ConverzAI in BE-boutiquemarkt met success-fee → versnel verticale focus.</li>
+    <li>Bureau levert consistent hoog volume → overweeg hybride retainer + success-fee.</li>
+  </ul></div>
+</section>
+<section id="caveats">
+  <h2>Caveats bij de cijfers</h2>
+  <div class="caveat"><ul>
+    <li>Spott's ARR (~$990K, GetLatka) en "€1M ARR in 4 maanden" matchen niet exact; GetLatka is deels self-reported. $3,2M raise + YC W25 wél bevestigd.</li>
+    <li>Bullhorn's "80% snellere time-to-hire" = marketing; 51%/22%/85% staan in het persbericht.</li>
+    <li>LinkedIn-ban-statistieken komen van vendors — directioneel betrouwbaar, exacte % onzeker.</li>
+    <li>LinkedIn Hiring Assistant-cijfers zijn company-supplied.</li>
+    <li>Alle ARR/funding = momentopnames (2025–begin 2026).</li>
+  </ul></div>
+</section>
+<footer>Rocadelo HR · concurrentieanalyse op basis van research juni 2026 · Nathan &amp; Matias</footer>
+</div>
+</body>
+</html>

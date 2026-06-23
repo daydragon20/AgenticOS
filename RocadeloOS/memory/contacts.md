@@ -1,0 +1,1 @@
+﻿Matias Rodriguez (31) — commercial lead, Rocadelo HR (BE); oorsprong brunch Thomas Guenter; vroeg Nathan mee te bouwen om diens AI-kennis; contact (aanvullen). Thomas Guenter — connector, Forbes 30U30, warm houden. Leveranciers: Unipile, NodeMaven, Hetzner, Anthropic/Claude API, Supabase.

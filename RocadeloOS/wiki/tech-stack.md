@@ -1,0 +1,4 @@
+﻿Claude API (~$3/1M tokens → ~$3–5/mnd/klant) · Unipile (LinkedIn/WhatsApp/e-mail, REST+webhooks, outreach-sequences, accepted-invite-detectie, search; native n8n + MCP + Node SDK; DSN+token) · NodeMaven (residential/mobiel 4G/5G proxies) · n8n (orchestratie) · Hetzner cost-optimized (CX23 2/4, CAX11 ARM 2/4, CX33 4/8, … ; instap ~enkele €/mnd) · Supabase/SQLite (state).
+Eigen gewarmde accounts (meerdere per campagne, eigen mobiel IP, per-account limieten, gerandomiseerde timing) = delivery-infra + verkoopargument.
+Kostenraming/campagne (ruw): Unipile €10–30/acc, NodeMaven €15–40/acc, Claude €20–60, Hetzner €5–20, Supabase €0–25. Tegenover ~25% placement fee (€2.000–4.000/plaatsing) → marge zeer hoog mits voldoende plaatsingen.
+Risico: Unipile = single point of failure; LinkedIn-beleid → account-redundantie; keys in .env.

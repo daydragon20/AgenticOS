@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stappenplan v2 — Rocadelo HR x Nathan · Diepgaand</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0e1a;--surface:#111827;--surface2:#1a2235;--border:#1e2d45;--blue:#3b82f6;--blue-dim:#1d3a6e;--green:#22c55e;--green-dim:#14532d;--gold:#f59e0b;--gold-dim:#451a03;--purple:#a78bfa;--purple-dim:#2e1065;--red:#ef4444;--cyan:#22d3ee;--cyan-dim:#0c2a2e;--text:#e2e8f0;--muted:#64748b;--mono:'JetBrains Mono',monospace;--sans:'DM Sans',sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;padding:0 0 80px;}
+.header{background:linear-gradient(135deg,#0f1a2e 0%,#0b0e1a 100%);border-bottom:1px solid var(--border);padding:28px 24px 22px;position:sticky;top:0;z-index:100;}
+.header-top{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
+.hb{font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--blue);background:var(--blue-dim);padding:3px 8px;border-radius:3px;border:1px solid var(--blue);}
+.hv{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--green);background:var(--green-dim);padding:3px 8px;border-radius:3px;border:1px solid var(--green);}
+.header h1{font-size:20px;font-weight:700;color:#fff;line-height:1.2;}
+.header p{font-size:12px;color:var(--muted);margin-top:3px;}
+.progress-bar{display:flex;gap:3px;margin-top:14px;}
+.pb-step{flex:1;height:3px;border-radius:2px;background:var(--border);cursor:pointer;transition:background .2s;}
+.pb-step.done{background:var(--green);}
+.pb-step.active{background:var(--blue);}
+.phase-nav{display:flex;overflow-x:auto;border-bottom:1px solid var(--border);background:var(--surface);scrollbar-width:none;padding:0 12px;}
+.phase-nav::-webkit-scrollbar{display:none;}
+.phase-tab{padding:11px 14px;font-size:11px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:color .15s,border-color .15s;font-family:var(--sans);background:none;border-top:none;border-left:none;border-right:none;}
+.phase-tab.active{color:var(--blue);border-bottom-color:var(--blue);}
+.phase-tab:hover:not(.active){color:var(--text);}
+.content{padding:20px 16px;max-width:860px;margin:0 auto;}
+.phase-section{display:none;}
+.phase-section.active{display:block;}
+.step{background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:14px;overflow:hidden;}
+.step-header{display:flex;align-items:center;gap:10px;padding:14px 16px;cursor:pointer;user-select:none;}
+.step-num{font-family:var(--mono);font-size:9px;font-weight:600;padding:3px 7px;border-radius:4px;flex-shrink:0;}
+.num-do{background:var(--blue-dim);color:var(--blue);border:1px solid var(--blue);}
+.num-claude{background:var(--purple-dim);color:var(--purple);border:1px solid var(--purple);}
+.num-research{background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold);}
+.num-warn{background:#3b1a1a;color:var(--red);border:1px solid var(--red);}
+.num-insight{background:var(--cyan-dim);color:var(--cyan);border:1px solid var(--cyan);}
+.num-uitleg{background:var(--green-dim);color:var(--green);border:1px solid var(--green);}
+.step-title{font-size:13.5px;font-weight:600;flex:1;color:#fff;}
+.step-type{font-size:9px;font-family:var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.08em;flex-shrink:0;}
+.step-chevron{color:var(--muted);font-size:11px;transition:transform .2s;flex-shrink:0;}
+.step.open .step-chevron{transform:rotate(90deg);}
+.step-body{display:none;padding:0 16px 16px;border-top:1px solid var(--border);}
+.step.open .step-body{display:block;}
+.step-desc{font-size:12.5px;color:#94a3b8;line-height:1.7;padding:12px 0 8px;}
+.prompt-box{background:#060b14;border:1px solid var(--border);border-radius:8px;margin-top:10px;overflow:hidden;}
+.prompt-label{display:flex;align-items:center;justify-content:space-between;padding:7px 12px;border-bottom:1px solid var(--border);background:var(--surface2);}
+.prompt-label span{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;}
+.copy-btn{font-family:var(--mono);font-size:9px;color:var(--blue);background:var(--blue-dim);border:1px solid var(--blue);border-radius:3px;padding:2px 7px;cursor:pointer;}
+.copy-btn.copied{color:var(--green);background:var(--green-dim);border-color:var(--green);}
+.prompt-text{font-family:var(--mono);font-size:11px;color:#c8d8f0;line-height:1.75;padding:12px 14px;white-space:pre-wrap;word-break:break-word;}
+.checklist{list-style:none;margin-top:10px;}
+.checklist li{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);font-size:12.5px;color:#94a3b8;line-height:1.5;}
+.checklist li:last-child{border-bottom:none;}
+.ci{flex-shrink:0;font-size:13px;margin-top:1px;}
+.action-link{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:12px;color:var(--blue);text-decoration:none;font-weight:600;}
+.phase-intro{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:18px;display:flex;gap:14px;align-items:flex-start;}
+.phase-icon{font-size:26px;flex-shrink:0;}
+.phase-intro h2{font-size:15px;font-weight:700;color:#fff;margin-bottom:4px;}
+.phase-intro p{font-size:12px;color:var(--muted);line-height:1.6;}
+.legend{display:flex;flex-wrap:wrap;gap:8px;padding:10px 16px;background:var(--surface);border-bottom:1px solid var(--border);}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--muted);font-family:var(--mono);}
+.ld{width:7px;height:7px;border-radius:50%;}
+.ldo{background:var(--blue);}.ldc{background:var(--purple);}.ldr{background:var(--gold);}.ldw{background:var(--red);}.ldi{background:var(--cyan);}.ldu{background:var(--green);}
+/* micro verificatie */
+.micro-wrap{margin-top:12px;border:1px solid #1a2a1a;border-radius:6px;overflow:hidden;}
+.micro-hdr{display:flex;align-items:center;gap:8px;padding:8px 12px;cursor:pointer;background:#070f07;font-family:var(--mono);font-size:9px;color:var(--green);text-transform:uppercase;letter-spacing:.1em;user-select:none;}
+.micro-hdr:hover{background:#0a160a;}
+.micro-chev{font-size:9px;transition:transform .2s;}
+.micro-open .micro-chev{transform:rotate(90deg);}
+.micro-body{display:none;padding:12px 14px;background:#040c04;}
+.micro-open .micro-body{display:block;}
+.micro-block{margin-bottom:14px;}
+.micro-block:last-child{margin-bottom:0;}
+.micro-lbl{font-family:var(--mono);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid #1a2a1a;}
+.micro-item{font-size:11.5px;color:#94a3b8;line-height:1.6;padding:2px 0;}
+.micro-item::before{content:"→ ";color:var(--green);font-family:var(--mono);}
+.micro-cmd{background:#020706;border:1px solid #1a3a1a;border-radius:4px;padding:8px 10px;font-family:var(--mono);font-size:10.5px;color:#86efac;margin:6px 0;word-break:break-all;}
+.micro-exp{font-size:11px;color:#64748b;margin:2px 0 8px;}
+.micro-exp::before{content:"Verwacht: ";color:var(--green);font-family:var(--mono);font-size:9px;}
+.micro-err{background:#1a0404;border-left:2px solid var(--red);padding:6px 8px;margin:4px 0;border-radius:0 4px 4px 0;}
+.micro-err-code{font-family:var(--mono);font-size:10px;color:var(--red);}
+.micro-err-fix{font-size:11px;color:#94a3b8;margin-top:2px;}
+.micro-int{background:#040c04;border:1px solid #1a3a1a;border-radius:4px;padding:8px 10px;font-family:var(--mono);font-size:10.5px;color:#fcd34d;margin:6px 0;word-break:break-all;}
+/* uitleg blok */
+.ui-wrap{margin-top:12px;border:1px solid #14352a;border-radius:6px;overflow:hidden;}
+.ui-hdr{display:flex;align-items:center;gap:8px;padding:8px 12px;cursor:pointer;background:#06140e;font-family:var(--mono);font-size:9px;color:var(--green);text-transform:uppercase;letter-spacing:.1em;user-select:none;}
+.ui-hdr:hover{background:#081b13;}
+.ui-chev{font-size:9px;transition:transform .2s;}
+.ui-open .ui-chev{transform:rotate(90deg);}
+.ui-body{display:none;padding:4px 14px 12px;background:#04100a;}
+.ui-open .ui-body{display:block;}
+.ui-term{padding:10px 0;border-bottom:1px solid #103024;}
+.ui-term:last-child{border-bottom:none;}
+.ui-name{font-size:12px;font-weight:700;color:#86efac;margin-bottom:3px;}
+.ui-wat{font-size:11.5px;color:#94a3b8;line-height:1.65;}
+.ui-wat b{color:#cbd5e1;}
+.ui-bron{display:inline-block;margin-top:5px;font-family:var(--mono);font-size:9.5px;color:var(--cyan);text-decoration:none;word-break:break-all;}
+.ui-bron:hover{text-decoration:underline;}
+.ui-bron::before{content:"BRON → ";color:var(--muted);}
+@media(max-width:600px){.content{padding:16px 10px;}.header{padding:20px 14px 16px;}}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-top">
+    <div class="hb">Rocadelo HR x Nathan</div>
+    <div class="hv">v2 — Diepgaand · elk begrip uitgelegd met bron</div>
+  </div>
+  <h1>Stappenplan v2 — LinkedIn AI Systeem (productieversie)</h1>
+  <p>10 fases · ±48 stappen · Claude Code prompts met verificatie · Claude Managed Agents · alle technische begrippen uitgelegd met officiële bronnen</p>
+  <div class="progress-bar" id="progressBar"></div>
+</div>
+<div class="legend">
+  <div class="legend-item"><div class="ld ldo"></div>Jij doet dit</div>
+  <div class="legend-item"><div class="ld ldc"></div>Claude Code prompt</div>
+  <div class="legend-item"><div class="ld ldr"></div>Research (Claude Desktop)</div>
+  <div class="legend-item"><div class="ld ldw"></div>Opgelet</div>
+  <div class="legend-item"><div class="ld ldi"></div>Inzicht</div>
+  <div class="legend-item"><div class="ld ldu"></div>Uitleg + bron</div>
+</div>
+<div class="phase-nav" id="phaseNav"></div>
+<div class="content" id="mainContent"></div>
+<script>
+const phases = [
+/* ============================== FASE 0 — BEGRIPPEN ============================== */
+{id:"begrippen", label:"⓪ Begrippen", icon:"📖", title:"Fase 0 — Begrippenfundament", desc:"Lees dit eerst. Elk technisch woord dat verderop voorkomt, wordt hier een keer goed uitgelegd met de officiele bron. Alles wat je hierna leest gaat 2x sneller. Duurt 45-60 minuten lezen.", steps:[
+
+{type:"uitleg", num:"0.1", title:"Wat is een LLM, een model en een token — en wat kost het", desc:"Claude is een LLM (Large Language Model): een AI-model dat tekst leest en tekst teruggeeft. Je betaalt niet per vraag maar per TOKEN: een stukje tekst van ongeveer 3-4 letters. Alles wat je naar het model stuurt zijn input-tokens, alles wat terugkomt zijn output-tokens.",
+ uitleg:[
+  {term:"Model & modelversies", wat:"Anthropic heeft meerdere modellen, van goedkoop/snel naar duur/slim: <b>Haiku 4.5</b> ($1 input / $5 output per miljoen tokens), <b>Sonnet 4.6</b> ($3/$15 — beste prijs/kwaliteit, ons werkpaard), <b>Opus 4.8</b> ($5/$25 — slimste Opus, voor de moeilijkste taken) en <b>Fable 5</b> ($10/$50 — topmodel voor dagenlange autonome projecten, overkill voor ons). Model-ID's zijn exacte strings: claude-sonnet-4-6, claude-opus-4-8 — nooit zelf datums toevoegen.", bron:"https://platform.claude.com/docs/en/about-claude/models/overview", bronLabel:"platform.claude.com — Models overview"},
+  {term:"Tokens & pricing", wat:"1 miljoen tokens is ongeveer 750.000 woorden. Een lead scoren kost ±2.000 tokens, dus ±$0,008 met Sonnet 4.6. Ons hele systeem draait voor minder dan $20 per maand per klant aan AI-kosten.", bron:"https://platform.claude.com/docs/en/pricing", bronLabel:"platform.claude.com — Pricing"},
+  {term:"Waarom Sonnet 4.6 als standaard", wat:"Voor volumewerk (scoren, berichten schrijven, replies classificeren) is Sonnet 4.6 de juiste keuze: 5x goedkoper dan Fable 5, ruim slim genoeg. Voor de Performance Analyst en de Director mag je Opus 4.8 overwegen ($5/$25) — die taken draaien maar 1x per dag/week, dus de meerkost is verwaarloosbaar. Fable 5 is bedoeld voor de allerzwaarste meerdaagse projecten en heeft een eigen tokenizer (±30% meer tokens) — niet nodig voor dit systeem.", bron:"https://www.anthropic.com/claude/fable", bronLabel:"anthropic.com/claude/fable"}
+ ]},
+
+{type:"uitleg", num:"0.2", title:"Wat is een API en een API key", desc:"Een API (Application Programming Interface) is een manier waarop jouw code met de software van iemand anders praat. Jouw Python-script stuurt een verzoek (request) naar de servers van Anthropic, en krijgt een antwoord (response) terug. De API is stateless: elk verzoek staat op zichzelf, het model onthoudt niets tussen verzoeken — daarom stuur je bij een gesprek altijd de hele geschiedenis mee.",
+ uitleg:[
+  {term:"API key", wat:"Je wachtwoord voor de API. Elke request stuurt deze key mee in een header (x-api-key). Wie jouw key heeft, kan op jouw kosten het model gebruiken — daarom: <b>nooit</b> in code zetten, <b>nooit</b> naar git committen, altijd in een .env-bestand of omgevingsvariabele.", bron:"https://platform.claude.com/docs/en/api/overview", bronLabel:"platform.claude.com — API overview"},
+  {term:"SDK", wat:"Software Development Kit: een kant-en-klare bibliotheek die het API-praten voor je regelt. Voor Python: <b>pip install anthropic</b>. Je schrijft dan client.messages.create(...) in plaats van zelf HTTP-verzoeken te bouwen. De SDK regelt ook automatisch retries bij fouten (429/5xx).", bron:"https://github.com/anthropics/anthropic-sdk-python", bronLabel:"github.com/anthropics/anthropic-sdk-python"},
+  {term:"System prompt", wat:"De vaste instructie die je aan het model geeft over WIE het is en HOE het zich moet gedragen ('Je bent een lead scoring expert voor Belgische recruitment...'). Staat los van het bericht van de gebruiker. Elke agent in ons systeem heeft zijn eigen system prompt.", bron:"https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/system-prompts", bronLabel:"platform.claude.com — System prompts"}
+ ]},
+
+{type:"uitleg", num:"0.3", title:"Workflow vs agent — wanneer bouw je wat", desc:"Niet alles hoeft een 'agent' te zijn. Anthropic zelf adviseert: begin zo simpel mogelijk. Een enkele API-call (classificeren, samenvatten, scoren) is geen agent. Een workflow is een vaste pijplijn die JIJ in code stuurt. Een agent is pas nodig als het model ZELF moet beslissen welke stappen het neemt.",
+ uitleg:[
+  {term:"De 4 criteria voor een agent", wat:"Bouw alleen een agent als alle vier kloppen: <b>Complexiteit</b> (meerdere stappen, vooraf niet volledig te specificeren), <b>Waarde</b> (resultaat rechtvaardigt hogere kost en latency), <b>Haalbaarheid</b> (kan Claude dit soort taak aan?), <b>Foutkost</b> (zijn fouten op te vangen — review, tests, rollback?). Zo niet: blijf bij een simpele call of workflow.", bron:"https://www.anthropic.com/engineering/building-effective-agents", bronLabel:"anthropic.com/engineering — Building effective agents"},
+  {term:"Wat ons systeem eigenlijk is", wat:"Ons LinkedIn-systeem is grotendeels een <b>workflow</b>: Signal Detector → Lead Scorer → Message Writer is een vaste volgorde die de Director in Python-code stuurt. Elke 'agent' is in de praktijk een API-call met een eigen system prompt. Alleen de Performance Analyst (open analyse-opdracht, schrijft zelf rapporten en bestanden) is een echte agent-taak — daar gebruiken we Claude Managed Agents (fase 4).", bron:"https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview", bronLabel:"platform.claude.com — Tool use overview"}
+ ]},
+
+{type:"uitleg", num:"0.4", title:"Claude API + tool use vs Claude Managed Agents — het grote verschil", desc:"Er zijn twee manieren om agents te bouwen op Claude. Optie 1: Claude API + tool use — JIJ draait de loop op je eigen server (Hetzner), jij voert tools uit, maximale controle. Optie 2: Claude Managed Agents — ANTHROPIC draait de agent-loop en geeft de agent een eigen beveiligde container (sandbox) waarin hij bestanden kan schrijven, bash kan draaien en code kan uitvoeren. Jij praat ermee via sessies en een event-stream.",
+ uitleg:[
+  {term:"Managed Agents — de 4 kernbegrippen", wat:"<b>Agent</b> = de opgeslagen configuratie (model, system prompt, tools) — maak je 1x aan, krijgt een ID en versienummers. <b>Environment</b> = sjabloon voor de sandbox (netwerk-instellingen). <b>Session</b> = een draaiende run van de agent in een container. <b>Events</b> = de berichtenstroom heen en weer (user.message in, agent.message / agent.tool_use / session.status_idle uit).", bron:"https://platform.claude.com/docs/en/managed-agents", bronLabel:"platform.claude.com/docs/en/managed-agents"},
+  {term:"Wanneer welke kiezen", wat:"Gebruik <b>Claude API + tool use</b> als je zelf de compute wil hosten en strakke controle wil (onze verzendmodule: max 20 invites/dag, menselijke timing — dat wil je zelf in de hand hebben). Gebruik <b>Managed Agents</b> als de agent een werkruimte nodig heeft (bestanden schrijven, code draaien) en op schema moet draaien — perfect voor onze wekelijkse Performance Analyst die een PDF-rapport bouwt.", bron:"https://platform.claude.com/docs/en/managed-agents/overview", bronLabel:"platform.claude.com — Managed Agents overview"},
+  {term:"Beta header", wat:"Managed Agents is beta. Elke request heeft de header anthropic-beta: managed-agents-2026-04-01 nodig. Goed nieuws: de Python SDK zet die header <b>automatisch</b> bij alles onder client.beta.* — jij hoeft er niets voor te doen.", bron:"https://platform.claude.com/docs/en/managed-agents/quickstart", bronLabel:"platform.claude.com — Managed Agents quickstart"}
+ ]},
+
+{type:"uitleg", num:"0.5", title:"Prompt caching en structured outputs — 90% goedkoper en altijd geldige JSON", desc:"Twee technieken die we in elke agent gebruiken. Prompt caching: als je dezelfde lange system prompt telkens opnieuw stuurt, kan Anthropic die cachen — herhaalde stukken kosten dan ~10% van de normale prijs. Structured outputs: je dwingt het model om EXACT jouw JSON-schema terug te geven, zodat je code nooit crasht op een verkeerd geformatteerd antwoord.",
+ uitleg:[
+  {term:"Prompt caching", wat:"Werkt op prefix-match: alles vooraan in je prompt dat byte-voor-byte gelijk blijft, wordt gecached. Regel 1: hou je system prompt bevroren (geen datum of timestamp erin!). Regel 2: zet cache_control: {type: 'ephemeral'} op het laatste stabiele blok. Cache-reads kosten ~0,1x de normale prijs; schrijven kost 1,25x. Bij onze Lead Scorer die honderden keren per dag dezelfde system prompt gebruikt, scheelt dit ±85% van de input-kosten.", bron:"https://platform.claude.com/docs/en/build-with-claude/prompt-caching", bronLabel:"platform.claude.com — Prompt caching"},
+  {term:"Structured outputs", wat:"Via output_config: {format: {type: 'json_schema', schema: {...}}} garandeert de API dat het antwoord geldige JSON is die exact jouw schema volgt. In Python nog makkelijker: client.messages.parse(...) met een Pydantic-model — je krijgt een gevalideerd Python-object terug. Dit vervangt het oude 'antwoord ALTIJD als JSON' in de prompt smeken (dat ging soms mis).", bron:"https://platform.claude.com/docs/en/build-with-claude/structured-outputs", bronLabel:"platform.claude.com — Structured outputs"},
+  {term:"Adaptive thinking", wat:"Nieuwere Claude-modellen kunnen 'nadenken' voor ze antwoorden. Op Sonnet 4.6 en Opus 4.8 zet je dit aan met thinking: {type: 'adaptive'} — het model beslist zelf wanneer en hoeveel. Het oude budget_tokens-systeem is vervallen. Voor simpele classificatie (Reply Handler) laat je thinking uit; voor de Analyst zet je het aan.", bron:"https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking", bronLabel:"platform.claude.com — Adaptive thinking"}
+ ]},
+
+{type:"uitleg", num:"0.6", title:"MCP — Model Context Protocol", desc:"MCP is een open standaard (gestart door Anthropic) waarmee AI-modellen op een uniforme manier met externe diensten praten: GitHub, Linear, Notion, je eigen database. Een MCP-server stelt 'tools' beschikbaar; het model kan die aanroepen. Vergelijk het met USB: 1 stekker-standaard voor alle apparaten.",
+ uitleg:[
+  {term:"Waar wij MCP tegenkomen", wat:"1) In Claude Code en Claude Desktop gebruik je MCP-servers als plugins (n8n-mcp heb je al draaien). 2) In Managed Agents kun je MCP-servers aan een agent koppelen via mcp_servers (alleen type/naam/url — GEEN credentials) plus een mcp_toolset tool. De inloggegevens gaan apart, via een Vault (zie fase 4.9).", bron:"https://modelcontextprotocol.io", bronLabel:"modelcontextprotocol.io"},
+  {term:"MCP in Managed Agents", wat:"De agent declareert de server, de sessie koppelt een vault_id met het OAuth-token. Anthropic injecteert het token pas NA de sandbox — code in de container kan je credentials dus nooit lezen of lekken, zelfs niet bij prompt injection. Dat is een bewuste veiligheidsgrens.", bron:"https://platform.claude.com/docs/en/managed-agents/mcp-connector", bronLabel:"platform.claude.com — MCP connector"}
+ ]},
+
+{type:"uitleg", num:"0.7", title:"Welk Claude-gereedschap gebruik je waarvoor + hoe schrijf je een goede prompt", desc:"Dit document gebruikt vier verschillende 'Claudes' en het is belangrijk dat je weet welke wanneer. En: de kwaliteit van wat je terugkrijgt hangt vooral af van hoe je je prompt opbouwt.",
+ uitleg:[
+  {term:"De 4 gereedschappen", wat:"<b>Claude Desktop / claude.ai</b> = research en denkwerk (gouden RESEARCH-stappen in dit plan). <b>Claude Code</b> = code schrijven en bestanden aanmaken op jouw machine (paarse CLAUDE CODE-stappen). <b>Claude API</b> = de motor die 24/7 in je product draait (de 7 agents). <b>Console (platform.claude.com)</b> = beheer: API keys, billing, usage, webhooks, en de sessie-viewer voor Managed Agents.", bron:"https://platform.claude.com/docs", bronLabel:"platform.claude.com/docs"},
+  {term:"Promptstructuur die werkt", wat:"Bouw elke serieuze prompt zo op: <b>1. Doel</b> (wat moet er af zijn — niet de stappen, maar het eindresultaat), <b>2. Context</b> (waarom, voor wie, wat is er al), <b>3. Beperkingen</b> (max 75 woorden, alleen NL, geen externe libraries), <b>4. Outputformaat</b> (JSON-schema, bestandsnaam, taal). Nieuwere modellen werken beter met een duidelijk doel dan met een micromanagement-stappenlijst — te prescriptieve prompts verlagen zelfs de kwaliteit.", bron:"https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview", bronLabel:"platform.claude.com — Prompt engineering"},
+  {term:"Geef de reden, niet alleen het verzoek", wat:"Claude presteert beter als het de bedoeling achter een vraag begrijpt. Template: 'Ik werk aan [groter doel] voor [doelgroep]. Zij hebben [wat de output mogelijk maakt] nodig. Met dat in gedachten: [verzoek].' Gebruik dit patroon in elke Claude Code prompt in dit document — de context-blokken bovenaan onze prompts doen precies dit.", bron:"https://www.anthropic.com/claude/fable", bronLabel:"anthropic.com/claude/fable + migration guide"}
+ ]}
+]},
+
+/* ============================== FASE 1 — SETUP & BILLING ============================== */
+{id:"setup", label:"① Setup & Billing", icon:"💳", title:"Fase 1 — Setup & Billing", desc:"Zonder API key en credit werkt niets. Doe dit voor je een regel code schrijft. Maximaal 30 minuten.", steps:[
+
+{type:"do", num:"1.1", title:"Anthropic Console — account, credit en budgetbescherming", desc:"De Claude API kost geld per gebruik. Zonder credit weigert elke call. Voeg minimaal 10 dollar toe en bescherm jezelf meteen tegen verrassingen.", link:"https://console.anthropic.com", linkLabel:"console.anthropic.com →",
+ checklist:[
+  {i:"→", t:"Ga naar console.anthropic.com en maak een account aan (zakelijk e-mailadres)."},
+  {i:"→", t:"Billing → voeg 10 dollar credit toe via creditcard."},
+  {i:"★", t:"Stel meteen een budget alert in op 5 dollar EN een hard spending limit op 25 dollar. Zo kan een bug in je code nooit honderden euro's kosten."},
+  {i:"→", t:"Bekijk het tabblad Usage: hier zie je straks per dag precies hoeveel tokens en geld elk model verbruikt."},
+  {i:"→", t:"Wacht tot de betaling bevestigd is (1-2 minuten) voor je API keys aanmaakt."}],
+ uitleg:[
+  {term:"Workspaces", wat:"De Console kan meerdere workspaces hebben (bijv. 'development' en 'production'), elk met eigen keys en limieten. Voor de PoC volstaat de default workspace. Bij je eerste betalende klant: maak een aparte production-workspace zodat test-verbruik en klant-verbruik gescheiden blijven.", bron:"https://platform.claude.com/docs/en/api/overview", bronLabel:"platform.claude.com — API overview"}
+ ]},
+
+{type:"do", num:"1.2", title:"API key aanmaken en veilig opslaan in .env", desc:"De API key zie je maar EEN keer. Kopieer hem meteen en zet hem op de juiste plek.",
+ checklist:[
+  {i:"→", t:"Console → API Keys → Create Key. Naam: linkedin-ai-dev."},
+  {i:"→", t:"Kopieer de key ONMIDDELLIJK (begint met sk-ant-...)."},
+  {i:"→", t:"Maak in de root van je project een bestand .env aan met: ANTHROPIC_API_KEY=sk-ant-..."},
+  {i:"→", t:"Voeg alvast lege regels toe: UNIPILE_API_KEY= en NODEMAVEN_KEY= en AGENT_ID= en ENVIRONMENT_ID= (vullen we later in)."},
+  {i:"⚠", t:"Maak .gitignore aan met daarin: .env — de key mag NOOIT in git terechtkomen. Lekt hij toch: meteen intrekken in de Console (Revoke) en een nieuwe maken."}],
+ uitleg:[
+  {term:".env en python-dotenv", wat:"Een .env-bestand bevat geheime variabelen als KEY=waarde regels. De Python-library python-dotenv laadt ze met load_dotenv(), waarna os.getenv('ANTHROPIC_API_KEY') werkt. De officiele SDK leest ANTHROPIC_API_KEY zelfs automatisch uit je omgeving — anthropic.Anthropic() zonder argumenten is dan genoeg.", bron:"https://github.com/anthropics/anthropic-sdk-python#usage", bronLabel:"anthropic-sdk-python — Usage"}
+ ]},
+
+{type:"do", num:"1.3", title:"Python 3.11+ en alle packages installeren", desc:"Een commando, alles in een keer. Python 3.11 of hoger is vereist (de SDK en FastAPI willen dat).",
+ checklist:[
+  {i:"→", t:"Controleer je versie: python --version (Windows) of python3 --version (Mac/Linux). Moet 3.11+ zijn. Zo niet: download van python.org en vink 'Add to PATH' aan."},
+  {i:"→", t:"Installeer: pip install anthropic python-dotenv requests schedule fastapi uvicorn reportlab"},
+  {i:"→", t:"Controleer: python -c \"import anthropic; print(anthropic.__version__)\""},
+  {i:"⚠", t:"Op Windows: als pip niet gevonden wordt, gebruik py -m pip install ... in plaats van pip install ..."}]},
+
+{type:"do", num:"1.4", title:"API-test uitvoeren — verifieer billing, key en packages in een keer", desc:"Voer dit script uit voor je verder gaat. Als dit werkt, weet je zeker: billing OK, key OK, packages OK. Het print ook meteen je tokenverbruik en de exacte kost.",
+ prompt:"# Sla op als test_api.py en run: python test_api.py\nimport anthropic\nfrom dotenv import load_dotenv\nimport os\n\nload_dotenv()\n\nclient = anthropic.Anthropic(api_key=os.getenv(\"ANTHROPIC_API_KEY\"))\n\nmessage = client.messages.create(\n    model=\"claude-sonnet-4-6\",\n    max_tokens=100,\n    messages=[{\"role\": \"user\", \"content\": \"Zeg alleen: API werkt correct.\"}]\n)\n\nprint(message.content[0].text)\nprint(f\"Tokens: {message.usage.input_tokens} input, {message.usage.output_tokens} output\")\nprint(f\"Kost: ~${message.usage.input_tokens * 0.000003 + message.usage.output_tokens * 0.000015:.5f}\")",
+ verify:{cmd:"python test_api.py", expected:"API werkt correct. + tokenaantallen + een kost van minder dan $0,001", errors:[
+  {code:"anthropic.AuthenticationError (401)", fix:"Key fout of leeg. Check .env: geen aanhalingstekens, geen spaties rond het =-teken."},
+  {code:"credit balance is too low (400)", fix:"Billing nog niet verwerkt of credit op. Console → Billing."},
+  {code:"ModuleNotFoundError: anthropic", fix:"pip install anthropic (of py -m pip install anthropic op Windows)."}]}},
+
+{type:"uitleg", num:"1.5", title:"Rate limits en foutcodes — wat je code moet kunnen opvangen", desc:"De API geeft duidelijke foutcodes terug. Je hoeft bijna niets zelf te bouwen: de SDK doet automatisch 2 retries met exponential backoff bij 429 en 5xx-fouten.",
+ uitleg:[
+  {term:"De belangrijkste codes", wat:"<b>400</b> = jouw request klopt niet (verkeerde parameter) — niet retryen, fixen. <b>401</b> = key fout. <b>429</b> = rate limit bereikt (te veel requests/tokens per minuut) — de response header retry-after zegt hoeveel seconden wachten. <b>500/529</b> = probleem bij Anthropic — gewoon opnieuw proberen. De SDK regelt 429/5xx-retries automatisch (max_retries=2 standaard).", bron:"https://platform.claude.com/docs/en/api/errors", bronLabel:"platform.claude.com — Errors"},
+  {term:"Rate limits per tier", wat:"Je limieten (requests per minuut, tokens per minuut) groeien mee met hoeveel je uitgeeft — nieuwe accounts beginnen in tier 1. Voor ons systeem (tientallen calls per dag) is tier 1 ruim voldoende. Check je actuele limieten in Console → Limits.", bron:"https://platform.claude.com/docs/en/api/rate-limits", bronLabel:"platform.claude.com — Rate limits"}
+ ]},
+
+{type:"do", num:"1.6", title:"Kostenraming — wat kost het hele systeem per maand", desc:"Concrete cijfers zodat je precies weet wat je marge is per klant.",
+ checklist:[
+  {i:"★", t:"Claude Sonnet 4.6: $3 per miljoen input-tokens, $15 per miljoen output-tokens. Met prompt caching dalen herhaalde input-kosten naar ~10%."},
+  {i:"→", t:"Per dag bij 20 leads scoren + berichten schrijven: $0,05 tot $0,15."},
+  {i:"→", t:"Claude API per klant per maand: $5 tot $18 (inclusief wekelijkse Analyst-runs)."},
+  {i:"→", t:"Totale toolkost per klant per maand: Unipile €49 + NodeMaven ±€30 + Hetzner €4 + Claude ±€15 = ±€100-125."},
+  {i:"★", t:"Jij factureert €1.500 per klant per maand. Toolkost is maximaal 8% van de omzet — de marge zit in het systeem."},
+  {i:"→", t:"Managed Agents sessies verbruiken gewone Messages-tokens plus sandbox-tijd; de wekelijkse Analyst-run kost naar schatting $0,10-0,50 per run."}]}
+]},
+
+/* ============================== FASE 2 — POSITIONERING ============================== */
+{id:"pos", label:"② Positionering", icon:"🎯", title:"Fase 2 — Positionering & Fundering", desc:"Doe dit voor je code schrijft. Elvatix en Spott missen allebei founder-gezicht, Belgische focus en een 'voor wie wij NIET werken' sectie.", steps:[
+
+{type:"insight", num:"2.1", title:"Positionering vastzetten — vijand, categorie, niche", desc:"Alles staat of valt hiermee. Schrijf het op; iedereen bij het project gebruikt dezelfde taal.",
+ checklist:[
+  {i:"★", t:"VIJAND: niet Lemlist of Expandi. De vijand is de spam-bende die generieke berichten stuurt vanaf het account van de recruiter zelf."},
+  {i:"★", t:"CATEGORIE: nooit 'AI outreach tool'. Altijd: outsourced outbound team dat toevallig AI gebruikt."},
+  {i:"★", t:"NICHE fase 1: Belgische tech en finance recruitmentbureaus van 3-15 mensen, plaatsingen 60k-120k euro."},
+  {i:"→", t:"Verban het woord AI uit de eerste 30 seconden van elke pitch en de eerste fold van de website."},
+  {i:"→", t:"Kernzin: Wij zijn niet zoals Lemlist, die geven jou een tool. Wij zijn een outsourced outbound-team voor jouw bureau."},
+  {i:"→", t:"Categorienaam claimen: Managed Outbound Pod. Kies een term en gebruik die overal."}]},
+
+{type:"insight", num:"2.2", title:"Founding Client programma opzetten", desc:"Max 8 plekken. Regionale schaarste op de website. Contract met testimonial en 2 referral-commitments.",
+ checklist:[
+  {i:"→", t:"Founding Client prijs: 750 euro per maand voor 6 maanden, daarna 1.500 euro per maand. Setup-fee: altijd 1.500 euro."},
+  {i:"→", t:"Regionale schaarste: max 2 bureaus per provincie. Update de teller bij elke nieuwe klant."},
+  {i:"→", t:"Contract bevat: 6 maanden minimum, testimonial na 60 dagen, 2 referral-introductie-commitments."},
+  {i:"⚠", t:"Geen pilots zonder contract. Setup-fee altijd 1.500 euro, nooit weggeven."}]},
+
+{type:"research", num:"2.3", title:"Research (Claude Desktop): LinkedIn contentstrategie — 5 posts per week", desc:"Stuur deze prompt naar Claude Desktop of claude.ai. Noch Elvatix noch Spott heeft een actief founder-gezicht — dit is je grootste gratis voordeel.",
+ prompt:"Ik bouw een AI LinkedIn outreach managed service voor Belgische recruitmentbureaus.\nConcurrenten hebben GEEN actief founder-gezicht op LinkedIn. Dit is mijn grootste gratis voordeel.\n\nMijn positionering:\n- Done-For-You managed service (geen tool)\n- Belgische IPs, NL + FR taaldetectie\n- Klant koppelt NOOIT eigen LinkedIn\n- Prijs: 1.500 euro setup + 1.500 euro per maand\n\nSchrijf een LinkedIn contentstrategie op basis van de Justin Welsh PAIPS-formule:\n\n1. Profiel-optimalisatie voor de founder:\n   - Headline (max 220 tekens met ROI-resultaat)\n   - Banner tekst, About-sectie (max 300 woorden), Featured sectie\n\n2. Eerste 30 post-ideeen:\n   - Build-in-public updates met echte cijfers\n   - Controversiele meningen over LinkedIn outreach in Belgie\n   - Wat werkt NIET bij AI outreach\n   - Enemy framing posts\n\n3. PAIPS-formule uitgewerkt voor 2 voorbeeldposts\n\n4. Welke 5 posts maken meest kans op viraal gaan bij Belgische recruiters?"},
+
+{type:"do", num:"2.4", title:"Cold email infrastructuur — tweede kanaal naast LinkedIn", desc:"Deliverability eerst: zonder correcte DNS-records gaan al je mails naar spam.",
+ checklist:[
+  {i:"→", t:"Koop 2 secundaire domeinen (.com en .io variant). NOOIT je primaire .be domein gebruiken voor cold outreach."},
+  {i:"→", t:"Per domein 2 inboxen. Totaal 4."},
+  {i:"→", t:"SPF, DKIM en DMARC instellen op alle 4 (zie uitleg hieronder)."},
+  {i:"→", t:"Warmup: 2 weken via een warmup-dienst. Doel: 50 mails per dag per inbox."},
+  {i:"★", t:"Cold email max 90 woorden. Zin 1 = waarom nu. Zin 2 = wat + getal. Zin 3 = micro-vraag."},
+  {i:"★", t:"Follow-up reeks van 5 mails, elke mail korter. Mail 5 = break-up email (hoogste reply rate)."}],
+ uitleg:[
+  {term:"SPF / DKIM / DMARC", wat:"Drie DNS-records die bewijzen dat jouw mails echt van jou komen. <b>SPF</b> = lijst van servers die namens jouw domein mogen mailen. <b>DKIM</b> = digitale handtekening op elke mail. <b>DMARC</b> = beleid dat zegt wat ontvangers moeten doen met mails die SPF/DKIM falen. Gmail en Outlook weigeren of spammen bulk-mail zonder deze drie. Instellen doe je in het DNS-paneel van je domeinregistrar; elke mailprovider (Google Workspace, Zoho) heeft er een stappenplan voor.", bron:"https://support.google.com/a/answer/2466580", bronLabel:"support.google.com — SPF/DKIM/DMARC"}
+ ]}
+]},
+
+/* ============================== FASE 3 — INFRASTRUCTUUR ============================== */
+{id:"infra", label:"③ Infrastructuur", icon:"🔧", title:"Fase 3 — Infrastructuur opzetten", desc:"Alles aanmaken en kopen voor de eerste regel agent-code. Begin stap 3.4 zo vroeg mogelijk: warmup duurt 4-6 weken.", steps:[
+
+{type:"do", num:"3.1", title:"Hetzner server aanmaken", desc:"Een 24/7 server in Duitsland (GDPR-vriendelijk). CX22 kost 4 euro per maand — ruim genoeg voor de PoC.", link:"https://hetzner.com", linkLabel:"hetzner.com →",
+ checklist:[
+  {i:"→", t:"hetzner.com → Cloud → nieuw project → nieuwe server: locatie Duitsland, Ubuntu 24.04, type CX22."},
+  {i:"→", t:"Voeg bij het aanmaken je SSH-key toe (veiliger dan wachtwoord-login)."},
+  {i:"→", t:"IP-adres noteren in .env: SERVER_IP=..."},
+  {i:"→", t:"Test de verbinding: ssh root@JOUW_SERVER_IP"}],
+ uitleg:[
+  {term:"VPS & SSH", wat:"Een VPS (Virtual Private Server) is een stukje van een fysieke server dat zich gedraagt als jouw eigen computer die altijd aanstaat. <b>SSH</b> (Secure Shell) is de versleutelde terminalverbinding waarmee je erop inlogt en commando's uitvoert. Een SSH-key is een sleutelpaar: het publieke deel zet je op de server, het private deel blijft op jouw laptop.", bron:"https://docs.hetzner.com/cloud/servers/getting-started/creating-a-server/", bronLabel:"docs.hetzner.com — Creating a server"}
+ ]},
+
+{type:"do", num:"3.2", title:"Unipile account aanmaken", desc:"Unipile geeft je een echte, geauthenticeerde LinkedIn-sessie via een nette API — geen scraping, geen cookie-hacks.", link:"https://unipile.com", linkLabel:"unipile.com →",
+ checklist:[
+  {i:"→", t:"unipile.com → gratis trial starten (7 dagen)."},
+  {i:"→", t:"API key noteren in .env: UNIPILE_API_KEY=..."},
+  {i:"→", t:"Startplan bij verdergaan: ±49 euro per maand voor 10 accounts."}],
+ uitleg:[
+  {term:"Wat Unipile precies doet", wat:"Unipile onderhoudt de LinkedIn-sessie van jouw accounts (login, cookies, hervalidatie) en geeft jou REST-endpoints: profielen zoeken, connectieverzoeken sturen, berichten lezen en sturen. Jouw code praat alleen met Unipile; Unipile praat met LinkedIn. Bekijk de API-referentie voor accounts, search en messaging.", bron:"https://developer.unipile.com", bronLabel:"developer.unipile.com"}
+ ]},
+
+{type:"do", num:"3.3", title:"Belgische residentiele IPs via NodeMaven", desc:"Een vast Belgisch thuis-IP per LinkedIn-account. Koppelen op dag 1, daarna nooit meer wisselen.", link:"https://nodemaven.com", linkLabel:"nodemaven.com →",
+ checklist:[
+  {i:"→", t:"nodemaven.com → gratis trial aanvragen."},
+  {i:"→", t:"Residentiele proxies, locatie Belgie, sticky sessions 24 uur."},
+  {i:"⚠", t:"1 IP per account. Koppelen op DAG 1 en NOOIT wisselen. Locatieverandering = rode vlag voor LinkedIn."}],
+ uitleg:[
+  {term:"Residentieel vs datacenter-IP", wat:"Een <b>datacenter-IP</b> komt herkenbaar uit een serverpark — LinkedIn herkent en blokkeert die snel. Een <b>residentieel IP</b> hoort bij een echte thuisinternetverbinding en ziet er voor LinkedIn uit als een gewone gebruiker. <b>Sticky session</b> betekent dat je hetzelfde IP behoudt in plaats van per request te roteren — essentieel, want een account dat elk uur vanuit een ander land inlogt wordt geflagd.", bron:"https://nodemaven.com", bronLabel:"nodemaven.com — Residential proxies"}
+ ]},
+
+{type:"warn", num:"3.4", title:"Agency-accounts aanmaken + opwarmen — BEGIN DIT NU", desc:"4-6 weken warmup, parallel aan al het andere. Dit zijn AGENCY-accounts (profiel: 'Talent Sourcer bij [bureau]'), geen kopieen van de klant-recruiter.",
+ checklist:[
+  {i:"★", t:"Profiel zegt: Talent Sourcer bij [Bureau Naam]. Gebruik een echte naam van iemand die akkoord gaat."},
+  {i:"⚠", t:"Belgisch NodeMaven-IP koppelen VANAF DAG 1. Nooit wisselen."},
+  {i:"→", t:"Week 1-2: elke dag inloggen, 3-5 posts liken, 2-3 connecties sturen."},
+  {i:"→", t:"Week 3-4: ophogen naar 5-8 per dag, 1-2 posts plaatsen."},
+  {i:"→", t:"Week 5-6: ophogen naar 10-15 per dag. Daarna pas koppelen aan Unipile."},
+  {i:"★", t:"Pool: altijd 6-8 actieve accounts PLUS 2-3 in warmup als backup."}],
+ uitleg:[
+  {term:"Waarom warmup werkt", wat:"LinkedIn scoort accounts op gedragspatronen. Een vers account dat meteen 20 connectieverzoeken per dag stuurt vanaf een datacenter-IP is een klassiek botprofiel en wordt beperkt of geblokkeerd. Een account dat weken lang menselijk gedrag opbouwt (inloggen, scrollen, liken, af en toe een connectie) vanaf een vast Belgisch thuis-IP bouwt vertrouwen op. Dit is geen truc om regels te omzeilen maar risicobeheer: traag, klein volume, menselijk ritme."}
+ ]}
+]},
+
+/* ============================== FASE 4 — CLAUDE MANAGED AGENTS ============================== */
+{id:"managed", label:"④ Managed Agents", icon:"🤖", title:"Fase 4 — Claude Managed Agents", desc:"De officiele Anthropic-manier om een agent met eigen werkruimte te draaien. We volgen exact de quickstart van platform.claude.com en bouwen daarmee onze Performance Analyst die elke maandag automatisch het weekrapport maakt.", steps:[
+
+{type:"uitleg", num:"4.1", title:"De architectuur — en de ene regel die je nooit mag breken", desc:"Managed Agents heeft een verplichte volgorde: eerst maak je EEN keer een Agent (de opgeslagen configuratie) en een Environment (de sandbox-instellingen). Daarna start je voor elke run een Session die ernaar verwijst. De agent-loop draait bij Anthropic; de tools (bash, bestanden schrijven, code) draaien in een container die per sessie wordt aangemaakt.",
+ uitleg:[
+  {term:"Agent (eenmalig, met versies)", wat:"Een Agent is een opgeslagen object: naam, model, system prompt, tools. Elke update maakt een nieuw onveranderlijk versienummer — zo kun je een prompt verbeteren zonder lopende sessies te breken, en terugrollen als een wijziging slechter blijkt. <b>Anti-patroon nummer 1:</b> agents.create() bij elke run aanroepen. Doe het 1x, bewaar het ID in .env, en verwijs er daarna alleen nog naar.", bron:"https://platform.claude.com/docs/en/managed-agents/agent-setup", bronLabel:"platform.claude.com — Agent setup"},
+  {term:"Environment (herbruikbaar)", wat:"Bepaalt hoe de sandbox-container gebouwd wordt, vooral het netwerk: <b>unrestricted</b> (alles mag naar buiten) of <b>limited</b> (standaard alles dicht; je whitelist hosts via allowed_hosts en zet allow_package_managers aan voor pip/npm). Voor onze Analyst die alleen onze eigen API hoeft te bereiken is limited met allowed_hosts de nette keuze.", bron:"https://platform.claude.com/docs/en/managed-agents/environments", bronLabel:"platform.claude.com — Environments"},
+  {term:"Session & Events", wat:"Een Session is een draaiende run. Je stuurt events in (user.message) en krijgt events terug via een live SSE-stream: agent.message (tekst), agent.tool_use (de agent gebruikt een tool), session.status_idle (klaar, wacht op input). Statussen: running ↔ idle → terminated.", bron:"https://platform.claude.com/docs/en/managed-agents/sessions", bronLabel:"platform.claude.com — Sessions"},
+  {term:"Tools: agent_toolset_20260401", wat:"Een kant-en-klare toolset die je op de agent aanzet: bash, read, write, edit, glob, grep, web_fetch en web_search. Je kunt per tool aan/uit zetten en permission policies instellen. Voor de Analyst zetten we de hele set aan.", bron:"https://platform.claude.com/docs/en/managed-agents/tools", bronLabel:"platform.claude.com — Tools"}
+ ]},
+
+{type:"insight", num:"4.2", title:"Waar gebruiken WIJ Managed Agents — en waar bewust niet", desc:"Niet alles hoort op Managed Agents. De beslisregel uit de docs: gebruik het als Anthropic de loop moet draaien EN de agent een werkruimte nodig heeft. Onze keuzes:",
+ checklist:[
+  {i:"★", t:"Lead Scorer, Message Writer, Reply Handler, Meeting Qualifier: gewone Messages API-calls (fase 5). Snel, goedkoop, geen sandbox nodig — het zijn classificatie/schrijftaken zonder bestanden."},
+  {i:"★", t:"Performance Analyst: WEL Managed Agents. Hij moet data analyseren, code draaien (grafieken), een markdown + PDF-rapport schrijven (bestanden!) en elke maandag 09:00 vanzelf draaien (scheduled deployment). Precies waar Managed Agents voor bestaat."},
+  {i:"→", t:"Verzendmodule (timing, daglimieten): bewust op ONZE server. Accountveiligheid wil je zelf in de hand houden, niet in een autonome loop."},
+  {i:"→", t:"Director: start als Python-script op Hetzner (fase 6). Kan later migreren naar een Managed Agent met custom tools, maar pas als het systeem bewezen draait."},
+  {i:"→", t:"Schaalvoordeel later: een aparte sessie per klant = nette isolatie per klant, met memory stores voor klant-specifieke kennis."}]},
+
+{type:"claude", num:"4.3", title:"Claude Code: create_agent.py — de Analyst-agent EENMALIG aanmaken", desc:"Volgt stap 1 van de officiele quickstart. Dit script draai je een keer; het agent-ID gaat in .env en wordt daarna alleen nog hergebruikt.",
+ prompt:"Ik bouw een LinkedIn outreach systeem voor Belgische recruitmentbureaus. De wekelijkse Performance Analyst draait als Claude Managed Agent. Maak het bestand linkedin_ai/agents/managed/create_agent.py.\n\nDit is een EENMALIG setup-script (niet voor de runtime!). Het moet:\n\n1. De anthropic SDK gebruiken (client = anthropic.Anthropic(), key komt uit .env via python-dotenv).\n2. client.beta.agents.create(...) aanroepen met:\n   - name: \"Rocadelo Performance Analyst\"\n   - model: \"claude-sonnet-4-6\"\n   - system: een system prompt die zegt: je bent een performance-analist voor LinkedIn recruitment outreach in Belgie. Je krijgt CSV-exports van de send_log en replies. Analyseer: accept rate, reply rate, welke intent signals correleren met positieve replies, beste verzenddag/uur. Schrijf een markdown weekrapport met top 3 verbeterpunten en genereer een PDF. Schrijf alle output naar /mnt/session/outputs/.\n   - tools: [{\"type\": \"agent_toolset_20260401\"}]\n3. agent.id en agent.version printen EN automatisch toevoegen aan .env als AGENT_ID=... en AGENT_VERSION=...\n4. Een guard bovenaan: als AGENT_ID al in .env staat, stop met de melding \"Agent bestaat al: gebruik update_agent.py om hem aan te passen\" — we willen NOOIT per ongeluk dubbele agents.\n\nMaak ook update_agent.py dat client.beta.agents.update(...) gebruikt (zelfde velden) zodat promptverbeteringen een nieuwe VERSIE maken in plaats van een nieuw agent-object.",
+ prep:["Fase 1 afgerond: test_api.py werkt", "pip install anthropic python-dotenv gedaan", "Je staat in de projectroot"],
+ verify:{cmd:"python linkedin_ai/agents/managed/create_agent.py", expected:"Agent ID: agent_... , version: 1 — en AGENT_ID staat nu in .env", errors:[
+  {code:"AttributeError: 'Beta' object has no attribute 'agents'", fix:"Je SDK is te oud. Upgrade: pip install -U anthropic"},
+  {code:"authentication_error", fix:"ANTHROPIC_API_KEY ontbreekt of is fout in .env."}]},
+ integration:{cmd:"python -c \"import os; from dotenv import load_dotenv; load_dotenv(); print('AGENT_ID =', os.getenv('AGENT_ID'))\"", expected:"AGENT_ID = agent_... (niet leeg)"},
+ uitleg:[
+  {term:"Waarom de guard tegen dubbele agents", wat:"De officiele docs noemen dit expliciet: agents.create() in je runtime-pad is het anti-patroon nummer 1. Je krijgt weesagents, betaalt create-latency per run en breekt het versiemodel. Het juiste patroon: create once → ID opslaan → elke run alleen sessions.create(agent=ID).", bron:"https://platform.claude.com/docs/en/managed-agents/agent-setup", bronLabel:"platform.claude.com — Agent setup"}
+ ]},
+
+{type:"claude", num:"4.4", title:"Claude Code: create_environment.py — de sandbox-omgeving", desc:"Stap 2 van de quickstart. Ook eenmalig; environments zijn herbruikbaar over agents heen.",
+ prompt:"Maak linkedin_ai/agents/managed/create_environment.py — eenmalig setup-script.\n\n1. client.beta.environments.create(...) met:\n   - name: \"rocadelo-analyst-env\"\n   - config: {\"type\": \"cloud\", \"networking\": {\"type\": \"unrestricted\"}}\n2. environment.id printen en toevoegen aan .env als ENVIRONMENT_ID=...\n3. Zelfde guard als bij create_agent.py: als ENVIRONMENT_ID al bestaat, stoppen met duidelijke melding.\n4. Voeg een commentaarblok toe dat uitlegt hoe je later naar limited networking gaat:\n   config: {\"type\": \"cloud\", \"networking\": {\"type\": \"limited\", \"allow_package_managers\": true, \"allowed_hosts\": [\"api.rocadelo.be\"]}}\n   met de waarschuwing dat MCP-servers onder limited networking ook allow_mcp_servers: true nodig hebben, anders falen die tools stil.",
+ prep:["create_agent.py is gelukt (stap 4.3)"],
+ verify:{cmd:"python linkedin_ai/agents/managed/create_environment.py", expected:"Environment ID: env_... — en ENVIRONMENT_ID staat in .env", errors:[
+  {code:"409 conflict / name already exists", fix:"Environment-namen zijn uniek. Er bestaat al een environment met deze naam — haal het bestaande ID op via client.beta.environments.list() en zet dat in .env."}]}},
+
+{type:"claude", num:"4.5", title:"Claude Code: run_session.py — eerste sessie + live event-stream (de Fibonacci-test)", desc:"Stap 3+4 van de quickstart, letterlijk. Dit is je 'hello world' van Managed Agents: de agent schrijft een script in zijn sandbox, voert het uit en verifieert het resultaat — en jij kijkt live mee.",
+ prompt:"Maak linkedin_ai/agents/managed/run_session.py — dit is RUNTIME-code (mag vaak draaien).\n\n1. Laad AGENT_ID en ENVIRONMENT_ID uit .env. Als een van beide leeg is: stoppen met de melding dat eerst create_agent.py en create_environment.py moeten draaien.\n2. session = client.beta.sessions.create(agent=AGENT_ID, environment_id=ENVIRONMENT_ID, title=\"Test: fibonacci\")\n3. Print direct de Console-link zodat ik live kan meekijken: https://platform.claude.com/workspaces/default/sessions/{session.id}\n4. Open EERST de stream, stuur DAARNA het bericht (stream-first, anders mis je vroege events):\n\nwith client.beta.sessions.events.stream(session.id) as stream:\n    client.beta.sessions.events.send(\n        session.id,\n        events=[{\n            \"type\": \"user.message\",\n            \"content\": [{\"type\": \"text\", \"text\": \"Create a Python script that generates the first 20 Fibonacci numbers and saves them to fibonacci.txt\"}],\n        }],\n    )\n    for event in stream:\n        match event.type:\n            case \"agent.message\":\n                for block in event.content:\n                    print(block.text, end=\"\")\n            case \"agent.tool_use\":\n                print(f\"\\n[Tool: {event.name}]\")\n            case \"session.status_idle\":\n                if event.stop_reason.type != \"requires_action\":\n                    print(\"\\n\\nAgent klaar.\")\n                    break\n            case \"session.status_terminated\":\n                break\n\n5. Na de loop: archiveer de sessie met client.beta.sessions.archive(session.id) (sessies archiveren is normale cleanup).\n\nBelangrijk: de idle-check MOET stop_reason controleren — een sessie gaat ook tijdelijk idle als hij op een tool-bevestiging wacht; alleen breken op idle zonder die check is een bekende bug.",
+ prep:["AGENT_ID en ENVIRONMENT_ID staan in .env", "Python 3.10+ (het script gebruikt match/case)"],
+ verify:{cmd:"python linkedin_ai/agents/managed/run_session.py", expected:"Je ziet live: tekst van de agent, [Tool: write], [Tool: bash], en als afsluiting 'Agent klaar.' Open ook de geprinte Console-link: daar zie je dezelfde sessie grafisch.", errors:[
+  {code:"not_found_error op agent", fix:"AGENT_ID klopt niet of hoort bij een andere workspace. Check met: python -c \"...agents.list()...\""},
+  {code:"Stream stopt nooit", fix:"Je breekt waarschijnlijk niet op session.status_idle. Check de match/case en de stop_reason-logica."}]},
+ uitleg:[
+  {term:"Wat er achter de schermen gebeurt", wat:"Bij je user.message: 1) Anthropic provisiont een sandbox volgens jouw environment, 2) de agent-loop beslist welke tools nodig zijn, 3) write/bash draaien IN de sandbox, 4) jij krijgt elk event realtime via de stream, 5) de agent meldt zich idle als hij klaar is. Dit is exact de 'What's happening'-sectie van de quickstart.", bron:"https://platform.claude.com/docs/en/managed-agents/quickstart", bronLabel:"platform.claude.com — Quickstart (Python-tab)"},
+  {term:"Stream-first en reconnect", wat:"De SSE-stream heeft geen replay: hij levert alleen events die NA het openen gebeuren. Daarom: eerst stream openen, dan pas senden. Valt de verbinding weg, dan haal je de historie op via events.list() en ontdubbel je op event-ID voor je verder leest.", bron:"https://platform.claude.com/docs/en/managed-agents/events-and-streaming", bronLabel:"platform.claude.com — Events & streaming"}
+ ]},
+
+{type:"uitleg", num:"4.6", title:"Bestanden in en uit de sandbox — Files API en /mnt/session/outputs/", desc:"De Analyst moet onze CSV-data IN de sandbox krijgen en zijn PDF-rapport eruit. Daar zijn twee nette mechanismen voor.",
+ uitleg:[
+  {term:"Input: file resources", wat:"Upload eerst via de Files API (client.beta.files.upload), koppel daarna bij sessions.create via resources: [{\"type\": \"file\", \"file_id\": ..., \"mount_path\": \"/workspace/send_log.csv\"}]. Het bestand staat dan read-only klaar in de container voor de agent begint. mount_path moet absoluut zijn.", bron:"https://platform.claude.com/docs/en/managed-agents/files", bronLabel:"platform.claude.com — Files"},
+  {term:"Output: /mnt/session/outputs/", wat:"Alles wat de agent naar /mnt/session/outputs/ schrijft (ons weekrapport.pdf!) wordt automatisch opgevangen. Na afloop lijst je het op met client.beta.files.list(scope_id=session.id, betas=[\"managed-agents-2026-04-01\"]) en download je met files.download(file_id). Let op: die extra betas-parameter is verplicht bij scope_id, en er zit 1-3 seconden indexvertraging tussen idle en zichtbaarheid — even retryen als de lijst leeg is.", bron:"https://platform.claude.com/docs/en/managed-agents/files", bronLabel:"platform.claude.com — Files (session outputs)"}
+ ]},
+
+{type:"claude", num:"4.7", title:"Claude Code: scheduled deployment — de Analyst draait elke maandag 09:00 vanzelf", desc:"Een deployment is een cron-schema dat zelfstandig sessies start. Geen eigen cron-server nodig: Anthropic vuurt hem af. Elke run krijgt een controleerbaar run-record.",
+ prompt:"Maak linkedin_ai/agents/managed/create_deployment.py (eenmalig setup-script) en run_analyst_now.py (handmatige test).\n\ncreate_deployment.py:\n1. Laad AGENT_ID en ENVIRONMENT_ID uit .env.\n2. deployment = client.beta.deployments.create(\n       name=\"Weekrapport Rocadelo\",\n       agent=AGENT_ID,\n       environment_id=ENVIRONMENT_ID,\n       initial_events=[{\n           \"type\": \"user.message\",\n           \"content\": [{\"type\": \"text\", \"text\": \"Genereer het wekelijkse performance-rapport. Lees de data uit de gemounte CSV-bestanden, analyseer accept rate / reply rate / signal-correlaties / beste verzendtijden, en schrijf rapport.md en rapport.pdf naar /mnt/session/outputs/.\"}]\n       }],\n       schedule={\"type\": \"cron\", \"expression\": \"0 9 * * 1\", \"timezone\": \"Europe/Brussels\"}\n   )\n3. Print deployment.id (depl_...) en de eerstvolgende geplande runs uit schedule.upcoming_runs_at zodat ik kan checken dat het schema klopt. Sla DEPLOYMENT_ID op in .env.\n4. Guard tegen dubbel aanmaken, zoals bij de agent.\n\nrun_analyst_now.py:\n1. POST een handmatige run: client.beta.deployments.run(DEPLOYMENT_ID) — dit test de deployment meteen zonder op maandag te wachten (werkt ook als de deployment gepauzeerd is).\n2. Poll daarna client.beta.deployment_runs.list(deployment_id=...) tot er een run is, print run.session_id of run.error.\n3. Download na afloop de outputs van die sessie via files.list(scope_id=session_id, betas=[\"managed-agents-2026-04-01\"]) naar ./reports/.\n\nAls de SDK-versie client.beta.deployments nog niet heeft (check met hasattr), val terug op raw HTTP naar POST https://api.anthropic.com/v1/deployments met headers x-api-key, anthropic-version: 2023-06-01 en anthropic-beta: managed-agents-2026-04-01.",
+ prep:["Fase 4.3 t/m 4.5 werken", "SDK actueel: pip install -U anthropic"],
+ verify:{cmd:"python linkedin_ai/agents/managed/create_deployment.py", expected:"depl_... + een lijst upcoming_runs_at met maandagen 09:00 Brusselse tijd", errors:[
+  {code:"hasattr(client.beta, 'deployments') is False", fix:"SDK te oud voor deployments — upgrade met pip install -U anthropic, of gebruik het raw-HTTP-fallbackpad uit de prompt."}]},
+ integration:{cmd:"python linkedin_ai/agents/managed/run_analyst_now.py", expected:"Een session_id, daarna 1+ bestanden (rapport.md / rapport.pdf) in ./reports/"},
+ uitleg:[
+  {term:"Deployments & deployment runs", wat:"Elke trigger (gepland of handmatig) schrijft een run-record (drun_...) met ofwel het session_id, ofwel een foutcode (agent_archived, vault_not_found, session_rate_limited...). Zo kun je falen monitoren los van de sessies zelf. Pauzeren kan (pause/unpause); archiveren is definitief. DST-randgeval: tijden tussen 01:00-03:00 lokale tijd vermijden, 09:00 zit veilig.", bron:"https://platform.claude.com/docs/en/managed-agents", bronLabel:"platform.claude.com — Managed Agents (deployments)"}
+ ]},
+
+{type:"uitleg", num:"4.8", title:"Vaults — geheimen die de sandbox nooit kan lezen", desc:"De Analyst heeft straks misschien onze eigen API of Unipile nodig. API keys horen NIET in de system prompt of in berichten (die worden bewaard in de sessie-historie!). Daarvoor bestaan Vaults.",
+ uitleg:[
+  {term:"Hoe een vault werkt", wat:"Een vault (vlt_...) bevat credentials die Anthropic namens jou beheert. Je koppelt hem aan een sessie via vault_ids=[...]. Twee soorten: <b>mcp_oauth / static_bearer</b> voor MCP-servers (gematcht op server-URL, OAuth wordt automatisch ge-refresht) en <b>environment_variable</b> voor gewone API keys: de sandbox ziet alleen een opaque placeholder, het echte geheim wordt pas bij het verlaten van de sandbox (egress) in de request gesubstitueerd — en alleen naar hosts die jij in allowed_hosts whitelist.", bron:"https://platform.claude.com/docs/en/managed-agents/vaults", bronLabel:"platform.claude.com — Vaults"},
+  {term:"Voor ons concreet", wat:"Wil je dat de Analyst zelf data ophaalt bij onze FastAPI of Unipile: maak een vault, voeg een environment_variable-credential toe (secret_name: UNIPILE_API_KEY, allowed_hosts: [\"api.unipile.com\"]) en geef vault_ids mee aan de sessie/deployment. Code in de container kan de key nooit lezen — zelfs niet bij prompt injection. Tot die tijd is CSV's mounten (stap 4.6) de simpelste weg.", bron:"https://platform.claude.com/docs/en/managed-agents/mcp-connector", bronLabel:"platform.claude.com — MCP connector"}
+ ]},
+
+{type:"uitleg", num:"4.9", title:"Permission policies en webhooks — controle en notificaties", desc:"Twee opties die je niet op dag 1 nodig hebt, maar wel moet kennen.",
+ uitleg:[
+  {term:"Permission policies", wat:"Per tool kun je instellen: always_allow (standaard, draait automatisch) of <b>always_ask</b> — de sessie pauzeert dan en stuurt een agent.tool_use-event met evaluated_permission 'ask'; jij antwoordt met een user.tool_confirmation-event (allow/deny + optionele reden). Handig als je de Analyst ooit bash-commando's wil laten voorstellen die jij eerst goedkeurt.", bron:"https://platform.claude.com/docs/en/managed-agents/permission-policies", bronLabel:"platform.claude.com — Permission policies"},
+  {term:"Webhooks", wat:"In plaats van een stream open te houden kan Anthropic JOU pingen: registreer in de Console (Manage → Webhooks) een HTTPS-endpoint en abonneer op bijvoorbeeld session.status_idled. Payloads zijn dun (alleen IDs) en HMAC-ondertekend — verifieer altijd met client.beta.webhooks.unwrap() en de whsec_-signing key. Perfect om straks een Telegram/mail-notificatie te sturen zodra het maandagrapport klaar is.", bron:"https://platform.claude.com/docs/en/managed-agents/webhooks", bronLabel:"platform.claude.com — Webhooks"}
+ ]},
+
+{type:"warn", num:"4.10", title:"De 6 valkuilen van Managed Agents — uit de officiele docs", desc:"Deze fouten maakt iedereen de eerste keer. Jij niet.",
+ checklist:[
+  {i:"⚠", t:"Agent EERST, dan session — model/system/tools horen op agents.create(), NOOIT op sessions.create(). De sessie krijgt alleen een verwijzing (het agent-ID)."},
+  {i:"⚠", t:"Agent EEN keer, niet per run. agents.create() in je runtime-pad = weesagents + kapot versiemodel. Gebruik de guard uit stap 4.3."},
+  {i:"⚠", t:"Stream openen VOOR je het bericht stuurt. De stream heeft geen replay — events van voor het openen ben je kwijt (of krijg je gebufferd in een klap)."},
+  {i:"⚠", t:"Niet breken op session.status_idle alleen: check stop_reason. requires_action betekent 'ik wacht op JOU' (tool-bevestiging), niet 'klaar'."},
+  {i:"⚠", t:"Archive is PERMANENT op agents en environments: read-only, geen unarchive, nieuwe sessies kunnen er niet meer naar verwijzen. Sessies archiveren is prima cleanup; agents/environments archiveren doe je alleen bewust."},
+  {i:"⚠", t:"Geen API keys in system prompts of berichten — die staan voor altijd in de sessie-historie. Geheimen gaan via vaults (4.9) of gemounte bestanden."}]}
+]},
+
+/* ============================== FASE 5 — DE 7 AGENTS ============================== */
+{id:"agents", label:"⑤ De 7 Agents", icon:"⚙️", title:"Fase 5 — De 7 agents bouwen (Messages API)", desc:"Claude Code bouwt de kern: zes agents als slimme API-calls plus de basis voor de Director. Elke stap heeft een verificatieprocedure — run die ALTIJD voor je doorgaat.", steps:[
+
+{type:"claude", num:"5.1", title:"Claude Code: projectstructuur aanmaken", desc:"De volledige mappenstructuur, basis voor alle volgende stappen.",
+ prompt:"Ik bouw een LinkedIn AI outreach systeem (managed service voor Belgische recruitmentbureaus). Maak de volledige projectstructuur:\n\nlinkedin_ai/\n  __init__.py\n  main.py\n  config.py\n  database.py\n  agents/\n    __init__.py\n    director.py\n    signal_detector.py\n    lead_scorer.py\n    message_writer.py\n    reply_handler.py\n    meeting_qualifier.py\n    performance_analyst.py\n    managed/\n      __init__.py\n      create_agent.py\n      create_environment.py\n      run_session.py\n      create_deployment.py\n      run_analyst_now.py\n  unipile/\n    __init__.py\n    client.py\n    search.py\n    messaging.py\n  utils/\n    __init__.py\n    language.py\n    timing.py\n    logger.py\n  reports/\n    __init__.py\n    weekly_report.py\n  tests/\n    __init__.py\n    test_lead_scorer.py\n    test_message_writer.py\n  requirements.txt\n  .env.example\n\nVul elk bestand met imports, klassen en lege functies met docstrings.\ndatabase.py: SQLite met tabellen leads (incl. status, score, taal, signals), send_log, hot_leads, weekly_reports en een init_db()-functie.\nrequirements.txt: anthropic, python-dotenv, requests, schedule, fastapi, uvicorn, reportlab, pydantic",
+ prep:["Python 3.11+", "pip install gedaan (stap 1.3)", "Je staat in de map waar het project moet komen"],
+ verify:{cmd:"python -c \"import linkedin_ai; from linkedin_ai.database import init_db; init_db(); print('imports + db OK')\"", expected:"imports + db OK (en er is een .db-bestand aangemaakt)", errors:[
+  {code:"ModuleNotFoundError: linkedin_ai", fix:"Je staat niet in de parent-map van linkedin_ai/. Navigeer ernaartoe en probeer opnieuw."}]},
+ uitleg:[
+  {term:"SQLite", wat:"Een database in een enkel bestand — geen aparte server nodig, zit standaard in Python (import sqlite3). Perfect voor 1-5 klanten. Bij 10+ klanten migreer je naar PostgreSQL (fase 6.3).", bron:"https://docs.python.org/3/library/sqlite3.html", bronLabel:"docs.python.org — sqlite3"}
+ ]},
+
+{type:"research", num:"5.2", title:"Research (Claude Desktop): Unipile API begrijpen", desc:"Stuur dit naar Claude Desktop als voorbereiding op stap 5.3.",
+ prompt:"Zoek op hoe de Unipile API werkt voor LinkedIn outreach (documentatie: https://developer.unipile.com).\n\n1. Hoe koppel ik een LinkedIn-account aan Unipile via de API?\n2. Hoe zoek ik naar profielen (locatie Belgie, sector recruitment)?\n3. Hoe stuur ik een connectieverzoek met bericht?\n4. Hoe lees ik inkomende berichten uit?\n5. Wat zijn de rate limits?\n\nGeef voor elke vraag een Python code-snippet met requests."},
+
+{type:"claude", num:"5.3", title:"Claude Code: Unipile client + dagelijkse health check", desc:"De API-wrapper waar alle LinkedIn-verkeer doorheen gaat.",
+ prompt:"In linkedin_ai/unipile/client.py: bouw een Python client voor de Unipile API.\n\nContext: dit is de enige laag die met LinkedIn praat; accountveiligheid is belangrijker dan snelheid.\n\n- UNIPILE_API_KEY uit .env via python-dotenv.\n- Functies: get_accounts() -> list, check_account_status(account_id) -> dict, alert_on_warning(account_id) -> None.\n- Retry-decorator: bij API-fout 3x opnieuw met exponential backoff (1s, 2s, 4s).\n- Alle requests loggen via utils/logger.py.\n- daily_health_check(): controleert alle accounts en print een samenvatting (actief, warnings, account-IDs). Bij 2+ warnings op een account: log CRITICAL.",
+ prep:["Projectstructuur bestaat (5.1)", "UNIPILE_API_KEY in .env"],
+ verify:{cmd:"python -c \"from linkedin_ai.unipile.client import UnipileClient; c = UnipileClient(); print('Client OK:', type(c).__name__)\"", expected:"Client OK: UnipileClient", errors:[
+  {code:"KeyError: UNIPILE_API_KEY", fix:"Voeg UNIPILE_API_KEY=... toe aan .env."}]},
+ integration:{cmd:"python -c \"from linkedin_ai.unipile.client import UnipileClient; print(len(UnipileClient().get_accounts()), 'accounts in Unipile')\"", expected:"0 of meer accounts (0 is OK zolang er geen account gekoppeld is)"}},
+
+{type:"claude", num:"5.4", title:"Claude Code: zoekmodule + NL/FR/EN-taaldetectie + 15 intent signals", desc:"NL voor Vlaanderen, FR voor Wallonie/Brussel, EN voor internationale profielen.",
+ prompt:"Bouw twee bestanden voor mijn LinkedIn outreach systeem:\n\nBESTAND 1: linkedin_ai/utils/language.py\ndetect_language(profile: dict) -> str  — retourneert 'NL', 'FR' of 'EN'.\nLogica:\nFR als locatie bevat: Wallonie, Bruxelles, Liege, Namur, Hainaut, Luxembourg (BE), Charleroi, Mons — OF als de profielsamenvatting overwegend Frans is.\nEN als company_country niet BE of NL is — OF als het profiel volledig Engels is EN locatie Brussel.\nNL als default.\n\nBESTAND 2: linkedin_ai/unipile/search.py\n1. search_candidates(criteria: dict) -> list — criteria: location, keywords, industry, max_results. Retourneert naam, titel, bedrijf, url, locatie, taal.\n2. detect_intent_signals(profile: dict) -> list — herkent 15 signaaltypen:\n   open_to_work, recent_job_change, new_skills_added, active_poster, active_commenter,\n   profile_updated_recently, company_recently_downsized, industry_layoffs_detected,\n   seniority_promotion_overdue, competitor_company_growth, education_recently_completed,\n   location_recently_changed, engagement_spike, recruiter_connection_pattern, profile_views_spiked\n3. Rate limiting: max 100 profielen per uur, random delay 3-8 seconden tussen calls (menselijk gedrag, accountveiligheid).",
+ prep:["unipile/client.py werkt (5.3)", "utils/ bestaat met __init__.py"],
+ verify:{cmd:"python -c \"from linkedin_ai.utils.language import detect_language; print(detect_language({'location':'Liege'}), detect_language({'location':'Antwerpen'}), detect_language({'company_country':'US'}))\"", expected:"FR NL EN", errors:[
+  {code:"ModuleNotFoundError", fix:"Controleer of utils/__init__.py bestaat."}]},
+ integration:{cmd:"python -c \"from linkedin_ai.unipile.search import detect_intent_signals; s = detect_intent_signals({'open_to_work': True, 'job_change_months_ago': 2}); print(len(s), 'signalen:', s)\"", expected:"2 of meer signalen, inclusief open_to_work"}},
+
+{type:"claude", num:"5.5", title:"Claude Code: Lead Scorer — structured outputs + prompt caching", desc:"Scoort elk profiel 0-100. Alleen 80+ gaat door. Dit is de eerste echte Claude-call in het systeem — we gebruiken meteen de twee technieken uit fase 0.5: gegarandeerde JSON en goedkope herhaalde prompts.",
+ prompt:"In linkedin_ai/agents/lead_scorer.py: bouw de lead scoring agent met de Anthropic Python SDK.\n\nContext: dit draait honderden keren per dag; betrouwbare JSON en lage kosten zijn cruciaal.\n\n1. Definieer een Pydantic-model:\n   class LeadScore(BaseModel):\n       score: int\n       top_signals: list[str]\n       pitch_angle: str\n\n2. score_lead(profile: dict, signals: list) -> LeadScore gebruikt client.messages.parse(\n       model=\"claude-sonnet-4-6\",\n       max_tokens=1024,\n       system=[{\"type\": \"text\", \"text\": SYSTEM_PROMPT, \"cache_control\": {\"type\": \"ephemeral\"}}],\n       messages=[{\"role\": \"user\", \"content\": ...profiel+signalen als JSON...}],\n       output_format=LeadScore,\n   )\n   en retourneert response.parsed_output — gegarandeerd geldig, geen json.loads-gedoe.\n\n3. SYSTEM_PROMPT (BEVROREN — geen datum/tijd erin, anders breekt de cache):\n   Je bent een lead scoring expert voor Belgische recruitment outreach.\n   Je krijgt een LinkedIn-profiel plus gevonden intent signals.\n   Score 0-100 met gewichten: open_to_work 30, recent_job_change 25, new_skills_added 15,\n   profile_updated_recently 10, active_poster/commenter 8, seniority_promotion_overdue 7,\n   company_recently_downsized 7, recruiter_connection_pattern 6, engagement_spike 5,\n   profile_views_spiked 5, education_recently_completed 5, industry_layoffs_detected 5,\n   location_recently_changed 4, competitor_company_growth 3, overige context max 5.\n   pitch_angle = 1 zin: de beste invalshoek voor het eerste bericht.\n\n4. Sla elke score op in SQLite (database.py); log elke score 80+ als qualified_lead.\n5. Log na elke call response.usage.cache_read_input_tokens zodat we kunnen zien dat caching werkt (eerste call 0, daarna > 0).\n6. Schrijf tests/test_lead_scorer.py: test dat de score tussen 0 en 100 ligt en dat top_signals een lijst is.",
+ prep:["ANTHROPIC_API_KEY actief en getest (fase 1)", "database.py heeft een leads-tabel", "pip install pydantic"],
+ verify:{cmd:"python -c \"from linkedin_ai.agents.lead_scorer import score_lead; r = score_lead({'name':'Jan','title':'Developer','location':'Antwerpen'}, ['open_to_work','recent_job_change']); print('Score:', r.score)\"", expected:"Score: [getal tussen 50 en 100]", errors:[
+  {code:"anthropic.AuthenticationError", fix:"ANTHROPIC_API_KEY fout of leeg."},
+  {code:"credit balance too low", fix:"Credit toevoegen via Console → Billing."},
+  {code:"cache_read_input_tokens blijft 0", fix:"Er zit iets variabels in je system prompt (datum? volgorde?). De cache werkt op exacte byte-match van de prefix."}]},
+ integration:{cmd:"python -m pytest linkedin_ai/tests/test_lead_scorer.py -v", expected:"1+ passed"},
+ uitleg:[
+  {term:"messages.parse + Pydantic", wat:"client.messages.parse() stuurt jouw Pydantic-model als JSON-schema mee; de API dwingt het antwoord in dat schema en de SDK valideert het. response.parsed_output is een echt Python-object — response.parsed_output.score is gewoon een int. Geen kapotte JSON meer, nooit.", bron:"https://platform.claude.com/docs/en/build-with-claude/structured-outputs", bronLabel:"platform.claude.com — Structured outputs"},
+  {term:"cache_control op de system prompt", wat:"De marker {\"type\": \"ephemeral\"} cachet alles tot en met dat blok 5 minuten (verlengt bij gebruik). Scoren we 50 leads na elkaar, dan betaalt alleen de eerste call de volle systemprompt-prijs; de rest leest uit cache aan ~10%. Controleer het via usage.cache_read_input_tokens in de response.", bron:"https://platform.claude.com/docs/en/build-with-claude/prompt-caching", bronLabel:"platform.claude.com — Prompt caching"}
+ ]},
+
+{type:"claude", num:"5.6", title:"Claude Code: Message Writer — NL + FR + EN + GDPR Article 14", desc:"Drie talen, max 75 woorden, en de wettelijk verplichte transparantiezin in elk eerste bericht.",
+ prompt:"In linkedin_ai/agents/message_writer.py: bouw de message writer.\n\nContext: gepersonaliseerde eerste berichten voor LinkedIn outreach namens Belgische recruiters. Kwaliteit > volume; een mens keurt elk bericht goed voor verzending.\n\nInput: profiel (dict), signals (list), recruiter_naam (str), taal ('NL', 'FR' of 'EN').\n\nSystem prompt (BEVROREN, met cache_control zoals in lead_scorer.py):\n   Je bent een expert recruiter die persoonlijke outreach schrijft.\n   Schrijf in de opgegeven taal. Max 75 woorden per bericht — tel ze.\n   Open met het sterkste intent signal van de lead (concreet, niet 'ik zag je profiel').\n   Schrijf in de ik-vorm van de recruiter. Eindig met een open vraag, nooit een harde CTA.\n   Noem nooit dat het AI-gegenereerd is.\n   Sluit ELK eerste bericht af met de transparantiezin:\n   NL: 'Je vond mijn profiel via LinkedIn. Je kan je uitschrijven door me dat te laten weten.'\n   FR: 'Tu as trouve mon profil via LinkedIn. Tu peux te desabonner en me le faisant savoir.'\n   EN: 'You found my profile via LinkedIn. You can unsubscribe at any time by letting me know.'\n\nFuncties:\n- write_messages(profile, signals, recruiter_naam, taal) -> list[str] van exact 3 varianten (gebruik structured outputs: Pydantic-model met variant_1, variant_2, variant_3).\n- CLI-review: toon de 3 varianten met taal-badge, vraag keuze (1/2/3 of s voor skip).\n- Goedgekeurde variant opslaan in database.\n- Model: claude-sonnet-4-6, prompt caching aan.",
+ prep:["lead_scorer.py werkt (5.5)", "utils/language.py werkt (5.4)"],
+ verify:{cmd:"python -c \"from linkedin_ai.agents.message_writer import write_messages; msgs = write_messages({'name':'Jan','title':'Developer','location':'Gent'}, ['open_to_work'], 'Matias', 'NL'); print(len(msgs), 'berichten; eerste:', msgs[0][:80])\"", expected:"3 berichten; eerste: [Nederlands bericht, opent met het signaal]", errors:[
+  {code:"Bericht langer dan 75 woorden", fix:"Voeg toe aan de system prompt: 'Tel de woorden. Een bericht boven 75 woorden is fout.'"},
+  {code:"Transparantiezin ontbreekt", fix:"Check of de drie zinnen letterlijk in de system prompt staan."}]},
+ integration:{cmd:"python -c \"from linkedin_ai.agents.message_writer import write_messages; msgs = write_messages({'name':'Marie','location':'Liege'}, ['open_to_work'], 'Matias', 'FR'); print('FR OK:', msgs[0][:50])\"", expected:"FR OK: [Frans bericht]"},
+ uitleg:[
+  {term:"GDPR Artikel 14", wat:"Artikel 14 AVG/GDPR regelt je informatieplicht als je persoonsgegevens verwerkt die je NIET bij de persoon zelf hebt verzameld (wij halen ze van LinkedIn). Je moet o.a. vertellen waar de data vandaan komt en hoe iemand bezwaar maakt. De korte zin in elk eerste bericht ('je vond mijn profiel via LinkedIn... uitschrijven kan') dekt dat pragmatisch af, samen met de Legitimate Interest Assessment uit fase 6.4.", bron:"https://gdpr-info.eu/art-14-gdpr/", bronLabel:"gdpr-info.eu — Article 14"}
+ ]},
+
+{type:"claude", num:"5.7", title:"Claude Code: verzendmodule met menselijke timing", desc:"Verstuurt goedgekeurde berichten. Random delays, alleen Belgische kantooruren, hard dagmaximum. Dit blijft bewust op ONZE server (zie 4.2).",
+ prompt:"In linkedin_ai/unipile/messaging.py: bouw de verzendmodule.\n\nContext: accountveiligheid is heilig — liever een bericht te weinig dan een account geblokkeerd.\n\n1. send_connection_request(account_id, profile_url, message) -> bool\n   - Random delay random.uniform(30, 480) seconden voor elk verzoek.\n   - Alleen werkdagen 08:00-18:00 Europe/Brussels.\n   - Dagcounter in database: max 20 verzoeken per account per dag. Bij limiet: return False + warning-log.\n2. check_pending_invites(account_id) -> list — haalt openstaande verzoeken op; trekt verzoeken ouder dan 14 dagen automatisch in.\n3. get_new_replies(account_id) -> list — nieuwe berichten via Unipile, gefilterd op profielen die in onze database staan.\n4. Alles loggen met timestamp in tabel send_log.",
+ prep:["unipile/client.py werkt (5.3)", "Minstens 1 account gekoppeld in het Unipile-dashboard", "database.py heeft send_log"],
+ verify:{cmd:"python -c \"from linkedin_ai.unipile.messaging import check_pending_invites; print(len(check_pending_invites('TEST_ID')), 'openstaande invites')\"", expected:"[getal] openstaande invites (0 is OK)", errors:[
+  {code:"404 Not Found", fix:"Account-ID klopt niet. Haal het juiste op: UnipileClient().get_accounts()[0]['id']"}]}},
+
+{type:"claude", num:"5.8", title:"Claude Code: Reply Handler — classificatie en opvolging", desc:"Vier categorieen, elk met eigen vervolgactie. Structured outputs zodat de classificatie nooit kapot parsed.",
+ prompt:"In linkedin_ai/agents/reply_handler.py: bouw de reply handler.\n\nPydantic-model:\n   class ReplyAnalysis(BaseModel):\n       classificatie: Literal[\"POSITIEF\", \"NEUTRAAL\", \"NEGATIEF\", \"BEZWAAR\"]\n       taal: str\n       vervolgbericht: str\n       follow_up_datum: str\n\nSystem prompt (bevroren, cache_control):\n   Classificeer het inkomende bericht: POSITIEF (geinteresseerd), NEUTRAAL (beleefd vaag, misschien later), NEGATIEF (niet geinteresseerd), BEZWAAR (specifieke reden).\n   POSITIEF: schrijf een vervolgbericht dat een 15-min kennismaking voorstelt, zelfde taal.\n   BEZWAAR: adresseer empathisch, geen druk.\n   NEUTRAAL: vervolgbericht leeg, follow_up_datum = vandaag + 7 dagen.\n   NEGATIEF: vervolgbericht leeg, markeer do_not_contact.\n\nFuncties:\n- classify_reply(message: str, taal: str, naam: str) -> ReplyAnalysis via client.messages.parse, model claude-sonnet-4-6.\n- Update de lead-status in de database; NEGATIEF zet do_not_contact=True (permanent).\n- POSITIEF triggert meeting_qualifier (import-stub is genoeg, die bouwen we in 5.9).",
+ prep:["ANTHROPIC_API_KEY actief", "database.py leads-tabel heeft status- en do_not_contact-kolommen"],
+ verify:{cmd:"python -c \"from linkedin_ai.agents.reply_handler import classify_reply; print(classify_reply('Ja dat klinkt interessant, vertel meer!', 'NL', 'Jan').classificatie)\"", expected:"POSITIEF", errors:[
+  {code:"ValidationError op Literal", fix:"Het model gaf een onverwachte categorie — check of de vier categorieen letterlijk en exclusief in de system prompt staan."}]},
+ integration:{cmd:"python -c \"from linkedin_ai.agents.reply_handler import classify_reply; [print(m[:20], '->', classify_reply(m,'NL','X').classificatie) for m in ['Ja interessant!','Nee bedankt','Misschien later','Ik zit goed waar ik zit, wat maakt dit anders?']]\"", expected:"POSITIEF, NEGATIEF, NEUTRAAL, BEZWAAR"}},
+
+{type:"claude", num:"5.9", title:"Claude Code: Meeting Qualifier — CHAMP-framework", desc:"Draait bij elke POSITIEVE reply. Beoordeelt of het een koopklare lead is voor er een agenda-uitnodiging vertrekt.",
+ prompt:"In linkedin_ai/agents/meeting_qualifier.py: bouw de meeting qualifier.\n\nPydantic-model:\n   class ChampAnalysis(BaseModel):\n       kwalificatie_score: int  # 0-10\n       challenge: str\n       authority: str\n       money: str\n       priority: str\n       actie: str\n\nSystem prompt (bevroren, cache_control):\n   Analyseer via het CHAMP-framework of deze lead gekwalificeerd is voor een salesgesprek.\n   CHallenge: heeft hij/zij een concreet probleem met de huidige outreach?\n   Authority: is dit de beslisser (eigenaar of managing director)?\n   Money: budget voor 1.500 euro per maand? Bureau met 3+ recruiters = ja.\n   Priority: nu urgent of later misschien?\n   Score 7+: direct meeting boeken. 4-6: nurture. Onder 4: lage prioriteit.\n\nFuncties:\n- qualify_lead(profile: dict, conversation: list) -> ChampAnalysis via client.messages.parse, model claude-sonnet-4-6, thinking={\"type\": \"adaptive\"} (dit is een afweging, geen simpele classificatie).\n- Score 7+ opslaan in tabel hot_leads + terminal-notificatie printen.",
+ prep:["reply_handler.py werkt (5.8)", "database.py heeft hot_leads-tabel"],
+ verify:{cmd:"python -c \"from linkedin_ai.agents.meeting_qualifier import qualify_lead; r = qualify_lead({'name':'Jan','title':'Managing Director'}, ['Ja wij hebben echt een probleem met prospectie, dit is urgent']); print('Score:', r.kwalificatie_score)\"", expected:"Score: [6-9] voor een geinteresseerde Managing Director", errors:[
+  {code:"Lage score bij duidelijk positief gesprek", fix:"Geef meer conversatie-context mee; de agent heeft de letterlijke berichten nodig, niet een samenvatting."}]},
+ integration:{cmd:"python -c \"from linkedin_ai.agents.meeting_qualifier import qualify_lead; r = qualify_lead({'name':'Anke','title':'HR Medewerker'}, ['Misschien']); print('Lage score:', r.kwalificatie_score, '(moet onder 5)')\"", expected:"Lage score: [onder 5]"}},
+
+{type:"claude", num:"5.10", title:"Claude Code: Performance Analyst — lokale versie + data-export voor de Managed Agent", desc:"Twee sporen: een lokale functie voor snelle analyses, en de CSV-export die de Managed Agent uit fase 4 elke maandag als input krijgt.",
+ prompt:"In linkedin_ai/agents/performance_analyst.py: bouw twee dingen.\n\n1. generate_weekly_report(client_id: int) -> str (lokale versie):\n   - Haalt uit SQLite: verzonden berichten, accept rate, reply rate, positieve replies (7 dagen); welke intent signals correleerden met positieve replies; beste verzenduren/-dagen.\n   - Stuurt dat als compacte JSON naar claude-sonnet-4-6 met thinking={\"type\": \"adaptive\"} en een system prompt die vraagt om een markdown-rapport met: top 3 verbeterpunten (concreet), best presterend signaal + waarom, beste verzendmoment, tekenen van account-verdenking, en een verbeterde versie van de slechtst presterende berichttemplate.\n   - Rapport opslaan in tabel weekly_reports.\n\n2. export_analyst_data(client_id: int) -> tuple[str, str]:\n   - Schrijft ./exports/send_log.csv en ./exports/replies.csv (laatste 30 dagen) — dit zijn de bestanden die we via de Files API mounten in de Managed Agent-sessie van fase 4.8.\n   - Retourneert de twee paden.\n\nVoeg in agents/managed/run_analyst_now.py de upload toe: client.beta.files.upload voor beide CSV's, en geef ze als resources mee aan de sessie met mount_path /workspace/send_log.csv en /workspace/replies.csv.",
+ prep:["Database heeft minimaal 7 dagen send_log-data (of vul dummy-data in voor de test)", "Fase 4.8 bestaat"],
+ verify:{cmd:"python -c \"from linkedin_ai.agents.performance_analyst import generate_weekly_report; r = generate_weekly_report(1); print(r[:300])\"", expected:"Markdown-rapport met verbeterpunten", errors:[
+  {code:"Leeg rapport", fix:"Geen data in de database. Voeg dummy-rows toe aan send_log voor de test."}]},
+ integration:{cmd:"python -c \"from linkedin_ai.agents.performance_analyst import export_analyst_data; print(export_analyst_data(1))\"", expected:"('./exports/send_log.csv', './exports/replies.csv') en beide bestanden bestaan"}}
+]},
+
+/* ============================== FASE 6 — DIRECTOR & DEPLOYMENT ============================== */
+{id:"director", label:"⑥ Orchestratie", icon:"🧠", title:"Fase 6 — Master Director, deployment & veiligheid", desc:"Verbindt alle agents tot een dagelijkse flow en zet alles 24/7 op de Hetzner-server. Daarna: GDPR en key-beheer.", steps:[
+
+{type:"claude", num:"6.1", title:"Claude Code: Master Director — de dagelijkse flow orkestreren", desc:"De Director is een Python-workflow (geen LLM-loop): vaste tijden, vaste volgorde, mens-in-de-loop op de juiste momenten. Quality gate: na 3 menselijke afwijzingen gaat een lead naar handmatige review.",
+ prompt:"In linkedin_ai/agents/director.py + main.py: bouw de Master Director.\n\nContext: dit is een geplande workflow die de agents uit fase 5 aanroept — bewust GEEN autonome agent-loop; voorspelbaarheid en accountveiligheid eerst.\n\nDagelijkse flow:\n1. 08:00 — Signal detection: zoek 50-100 profielen via search.py.\n2. Lead scorer: scoor alles; filter score 80+.\n3. 08:30 — Terminal-review: overzicht tonen, wacht op y/n.\n4. 09:00-17:00 — Per goedgekeurde lead: message_writer (3 varianten, taal-badge), wacht op review (1/2/3/s), daarna versturen via messaging.py. Na 3x skip door de mens: lead markeren voor handmatige review (quality gate).\n5. Elk uur — get_new_replies + reply_handler per bericht. Bij POSITIEF: meeting_qualifier. Bij score 7+: terminal-notificatie HOT LEAD.\n6. 18:00 — Dagrapport printen + daily_health_check van de accounts.\n7. Maandag 09:00 — export_analyst_data() draaien zodat de Managed Agent verse CSV's heeft (de deployment uit 4.8 doet de analyse).\n\nCLI:\n- python main.py --status   → laatste 24u: verzonden, replies, hot leads, account-status\n- python main.py --dry-run  → doorloop de hele flow maar verstuur NIETS (print wat er zou gebeuren)\n- python main.py --run-director → de echte dagflow (voor cron)",
+ prep:["ALLE verificaties van fase 5 zijn groen", "Minstens 1 Unipile-account actief", "init_db() gedraaid"],
+ verify:{cmd:"python main.py --status", expected:"Dashboard met account-status, openstaande invites, nieuwe replies", errors:[
+  {code:"ImportError: cannot import name X", fix:"Een agent uit fase 5 is niet correct gebouwd — kijk welke import faalt en herbouw die stap."},
+  {code:"sqlite3.OperationalError: no such table", fix:"python -c \"from linkedin_ai.database import init_db; init_db()\""}]},
+ integration:{cmd:"python main.py --dry-run", expected:"Volledige flow doorlopen, toont wat er ZOU gebeuren, verstuurt niets"}},
+
+{type:"claude", num:"6.2", title:"Claude Code: deployment op Hetzner — systemd + cron", desc:"Het systeem 24/7 op de server, herstart automatisch na reboot, logs netjes geroteerd.",
+ prompt:"Maak deploy.sh voor een Hetzner Ubuntu 24.04 server.\n\nHet script (idempotent — mag vaker draaien):\n1. apt-get update + python3.11 en pip installeren.\n2. Project naar /opt/linkedin_ai (rsync of git clone).\n3. python3 -m venv /opt/linkedin_ai/venv + pip install -r requirements.txt.\n4. .env-template klaarzetten met placeholders (NOOIT echte keys in het script of in git).\n5. Systemd-service /etc/systemd/system/linkedin_ai.service: draait main.py --daemon, Restart=on-failure, start bij boot.\n6. Cron (crontab van root):\n   0 8 * * 1-5  → main.py --run-director\n   0 9 * * 1    → export_analyst_data + run_analyst_now.py (de Managed Agent-deployment doet de analyse; dit script zorgt voor verse data en haalt daarna het rapport op)\n7. Logging naar /var/log/linkedin_ai.log met logrotate-config (7 dagen bewaren).\n\nGeef apart:\n- De exacte SSH-commando's voor de eerste setup.\n- journalctl-commando om logs te bekijken; systemctl stop/start/restart.\n- Een health-check-script dat de service-status en de laatste logregel print.",
+ prep:["Hetzner-server bereikbaar: ssh root@SERVER_IP werkt (3.1)", "main.py --status werkt lokaal (6.1)"],
+ verify:{cmd:"ssh root@SERVER_IP 'systemctl status linkedin_ai'", expected:"active (running)", errors:[
+  {code:"Failed to start", fix:"journalctl -u linkedin_ai -n 30 toont de echte fout (meestal: .env niet ingevuld of venv-pad fout)."}]},
+ integration:{cmd:"ssh root@SERVER_IP 'python3 /opt/linkedin_ai/main.py --status'", expected:"Zelfde dashboard als lokaal — het systeem draait 24/7"},
+ uitleg:[
+  {term:"systemd & cron", wat:"<b>systemd</b> is de procesmanager van Linux: een service-bestand zegt 'draai dit programma, herstart het als het crasht, start het bij boot'. <b>cron</b> is de klassieke taakplanner: een regel als '0 8 * * 1-5' betekent elke werkdag om 08:00. Samen vervangen ze 'ik moet het script handmatig starten'.", bron:"https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html", bronLabel:"freedesktop.org — systemd.service"}
+ ]},
+
+{type:"research", num:"6.3", title:"Research (Claude Desktop): multi-klant architectuur", desc:"Voor na de PoC: van 1 naar 10-50 klanten.",
+ prompt:"Ik heb een Python LinkedIn outreach systeem voor 1 klant (SQLite, 7 agents, Hetzner, Claude API, deels Claude Managed Agents voor de wekelijkse analyse).\nIk wil schalen naar 10-50 klanten met eigen LinkedIn-accounts, eigen Belgische IPs en een eigen tone-of-voice per klant.\n\nGeef me:\n1. Een multi-tenant databaseschema (en wanneer SQLite → PostgreSQL).\n2. Hoe ik de codebase structureer per klant (config-object vs aparte processen).\n3. Hoe ik per klant een aparte Managed Agents-sessie + memory store gebruik voor klantspecifieke kennis.\n4. Hoe wekelijkse rapporten per klant automatisch genereren en mailen."},
+
+{type:"warn", num:"6.4", title:"GDPR compliance checklist — VOOR de eerste externe klant", desc:"Niet optioneel. Doe dit voor je live gaat bij een betalende klant.",
+ checklist:[
+  {i:"⚠", t:"Legitimate Interest Assessment (LIA) schrijven: waarom jullie een gerechtvaardigd belang hebben om publieke profielen te contacteren (recruitment-doeleinden, professionele context, opt-out aangeboden)."},
+  {i:"⚠", t:"Article 14-zin staat in elk eerste bericht — dubbelcheck NL, FR en EN (stap 5.6)."},
+  {i:"⚠", t:"Data Processing Agreements (DPA) afsluiten met Unipile en Anthropic (beide bieden die standaard aan)."},
+  {i:"⚠", t:"Bewaartermijn: profieldata max 24 maanden. Bouw een cleanup-script dat oude leads anonimiseert."},
+  {i:"⚠", t:"Een 'nee' is permanent: do_not_contact-lijst wordt nooit geleegd."}],
+ uitleg:[
+  {term:"Legitimate Interest (Art. 6.1.f)", wat:"Een van de zes wettelijke grondslagen om persoonsgegevens te verwerken. Je documenteert in een LIA: het doel (recruitment-matching), de noodzaak (kan het zonder deze data?) en de belangenafweging (professionele LinkedIn-context, lage impact, makkelijke opt-out). Geen verplicht format, wel verplicht aantoonbaar.", bron:"https://gdpr-info.eu/art-6-gdpr/", bronLabel:"gdpr-info.eu — Article 6"}
+ ]},
+
+{type:"uitleg", num:"6.5", title:"API-keys en geheimen in productie — de regels", desc:"Een gelekte key = iemand anders draait op jouw kosten, of erger: leest jouw klantdata. Vijf regels die alles afdekken.",
+ uitleg:[
+  {term:"De 5 regels", wat:"1) Keys staan alleen in .env-bestanden (lokaal) of systemd Environment-directives (server), nooit in code of git. 2) Aparte keys per omgeving: linkedin-ai-dev en linkedin-ai-prod — lekt dev, dan blijft prod veilig. 3) Spending limits in de Console begrenzen de schade altijd. 4) Lekt een key: meteen Revoke in de Console en een nieuwe maken (rotatie kost 2 minuten). 5) In Managed Agents-sandboxes: geheimen via vaults of gemounte bestanden, nooit in prompts (4.9/4.11).", bron:"https://platform.claude.com/docs/en/api/overview", bronLabel:"platform.claude.com — API overview"}
+ ]}
+]},
+
+/* ============================== FASE 7 — DASHBOARD & RAPPORTAGE ============================== */
+{id:"dash", label:"⑦ Dashboard", icon:"📊", title:"Fase 7 — Dashboard & rapportage", desc:"Het demo-dashboard (rocadelo-agent-dashboard.html) bestaat al met nepdata. Nu koppelen we het aan het echte systeem en automatiseren we het weekrapport naar de klant.", steps:[
+
+{type:"insight", num:"7.1", title:"Van demo-dashboard naar echt dashboard", desc:"Het bestaande dashboard heeft alles al: 7 agent-kaarten, pipeline, prospects-tabel, rapporten-view, tokenteller. De mock-engine (het state-object en de ambient-simulatie in het script) wordt vervangen door fetch-calls naar onze eigen FastAPI.",
+ checklist:[
+  {i:"★", t:"Het dashboard is al gebouwd en getest — we vervangen alleen de databron. UI-werk is klaar."},
+  {i:"→", t:"Endpoints die het dashboard nodig heeft: /api/dashboard (metrics + pipeline-counts), /api/prospects (tabel), /api/agents/status, /api/feed (laatste events), /api/reports/latest."},
+  {i:"→", t:"De Run Demo-knop blijft bestaan voor sales-demo's — die draait altijd op de mock-engine."}]},
+
+{type:"claude", num:"7.2", title:"Claude Code: FastAPI-laag + dashboard koppelen", desc:"Een dunne, read-only API bovenop de SQLite-database, plus de fetch-laag in het dashboard.",
+ prompt:"Context: ik heb een werkend LinkedIn outreach systeem (SQLite, tabellen leads/send_log/hot_leads/weekly_reports) en een dashboard-HTML met een mock data-engine. Verbind ze.\n\nDEEL 1 — linkedin_ai/api/server.py (FastAPI):\n- GET /api/dashboard → {response_rate, meeting_rate, prospects_total, revenue_estimate, pipeline: {detected, scored, messaged, replied, qualified, meeting}}\n- GET /api/prospects?stage=&lang=&q= → lijst voor de tabel (naam, titel, bedrijf, stad, taal, score, top_signal, stage, dagen, waarde)\n- GET /api/agents/status → per agent: laatste activiteit + teller vandaag (uit send_log/logs)\n- GET /api/feed?limit=40 → laatste events uit send_log + replies, geformatteerd als feed-items\n- GET /api/reports/latest → laatste weekly_report (markdown)\n- CORS aan voor localhost; alles read-only; consistente envelope {success, data, error}.\n- Start: uvicorn linkedin_ai.api.server:app --port 8800\n\nDEEL 2 — pas rocadelo-agent-dashboard.html aan:\n- Voeg bovenaan het script een DATA_MODE toe: 'mock' | 'live' (default mock zodat de demo blijft werken zonder backend).\n- In live-mode: haal elke 10 seconden /api/dashboard, /api/agents/status en /api/feed op en update de bestaande render-functies; prospects-view haalt /api/prospects met de actieve filters.\n- Toon een klein badge 'LIVE' naast de klok als live-mode actief is en de API bereikbaar; val automatisch terug op mock met een console.warn als de API niet antwoordt.",
+ prep:["Fase 5 + 6.1 werken (er zit data in de database)", "pip install fastapi uvicorn gedaan"],
+ verify:{cmd:"curl http://localhost:8800/api/dashboard", expected:"JSON met response_rate, pipeline-counts enz. (eerst uvicorn starten)", errors:[
+  {code:"CORS-fout in de browser-console", fix:"CORSMiddleware toevoegen met allow_origins=['*'] voor lokaal gebruik."},
+  {code:"Dashboard blijft op mock", fix:"DATA_MODE op 'live' zetten en checken of poort 8800 bereikbaar is."}]}},
+
+{type:"claude", num:"7.3", title:"Claude Code: wekelijks klantrapport — e-mail + PDF", desc:"De Managed Agent (4.8) maakt de analyse; dit onderdeel verstuurt hem netjes naar de klant. Het rapport is het wekelijkse bewijs dat de service werkt.",
+ prompt:"In linkedin_ai/reports/weekly_report.py: bouw de rapportverzending.\n\nFlow (draait maandag na de Analyst-run, zie cron in 6.2):\n1. Haal het nieuwste rapport op: eerst kijken of run_analyst_now.py een rapport.md + rapport.pdf in ./reports/ heeft gezet (de Managed Agent-output); zo niet, val terug op generate_weekly_report() lokaal.\n2. FORMAAT 1 — HTML-e-mail via smtplib: zet de markdown om naar nette HTML (koppen, lijsten), onderwerp 'Weekrapport [bureau] — week [nr]'. SMTP-server + credentials uit .env (SMTP_HOST, SMTP_USER, SMTP_PASS — gebruik bij Gmail een App Password, geen gewoon wachtwoord).\n3. FORMAAT 2 — de PDF als bijlage (de Managed Agent maakt hem al; lokaal fallback via reportlab).\n4. FORMAAT 3 — JSON in tabel weekly_reports voor het client portal later.\n5. send_weekly_report(client_id, send_email: bool = True) als hoofdfunctie; --no-email vlag voor testen.",
+ prep:["Fase 4.8 of 5.10 levert een rapport", "SMTP-gegevens in .env", "pip install reportlab"],
+ verify:{cmd:"python -c \"from linkedin_ai.reports.weekly_report import send_weekly_report; send_weekly_report(1, send_email=False); print('Rapport klaar')\"", expected:"Rapport klaar + bestand in ./reports/1/", errors:[
+  {code:"SMTPAuthenticationError", fix:"Bij Gmail: App Password aanmaken (Google Account → Security → App passwords), niet je gewone wachtwoord."}]}}
+]},
+
+/* ============================== FASE 8 — WEBSITE & DEMO ============================== */
+{id:"website", label:"⑧ Website", icon:"🌐", title:"Fase 8 — Marketing website & interactieve demo", desc:"De Next.js-site met demo-widget, ROI-calculator en Founding Client-schaarste. De demo hergebruikt onze echte lead_scorer en message_writer via de FastAPI uit fase 7.", steps:[
+
+{type:"insight", num:"8.1", title:"De interactieve demo — steal & improve van Elvatix", desc:"Elvatix toont 1 generiek bericht na een LinkedIn-URL. Wij tonen intent signals, een score-opbouw en 2 taalspecifieke varianten — met onze echte agents.",
+ checklist:[
+  {i:"★", t:"Demo werkt zonder login. Volledig rapport downloaden vereist e-mail (lead capture)."},
+  {i:"→", t:"Technisch: een publiek FastAPI-endpoint /api/demo/score dat lead_scorer + message_writer aanroept met rate limiting (max 5 per IP per uur — anders betaal jij andermans API-kosten)."},
+  {i:"★", t:"Tier 1 prospects krijgen een persoonlijke Loom (3 min) met hun eigen LinkedIn-pool en 3 voorbeeldberichten."}]},
+
+{type:"claude", num:"8.2", title:"Claude Code: Next.js marketing website — complete instructie", desc:"PAS DE CONFIG AAN voor gebruik (rode draad onderaan de prompt). Dark premium design, decoy pricing, demo-widget, vergelijkingstabel, FAQ.",
+ prompt:"DEZE PROMPT HEEFT AANPASSINGEN NODIG — zie RODE DRAAD onderaan.\n\nContext: marketing-site voor een Belgische 'Managed Outbound Pod' voor recruitmentbureaus. Gebaseerd op wat werkt bij Spott (dark premium, decoy pricing) en Elvatix (interactieve demo, pain-messaging), maar met founder-gezicht en Belgische focus.\n\nBouw een complete Next.js 14 (App Router) + TypeScript site.\nStack: Tailwind CSS, Framer Motion, Cal.com embed, Posthog, deploy op Vercel.\n\nMAAK EERST /lib/config.ts:\nconst config = {\n  bedrijfsnaam: \"[AANPASSEN]\",\n  tagline: \"[AANPASSEN]\",\n  email: \"[AANPASSEN]\",\n  cal_link: \"[AANPASSEN]\",\n  primaire_kleur: \"#22d3ee\",\n  founding_client_max: 8,\n  slots: { antwerpen:{gebruikt:0,max:2}, gent:{gebruikt:0,max:2}, brussel:{gebruikt:0,max:2}, limburg:{gebruikt:0,max:2} },\n  pricing_setup: 1500,\n  pricing_maand: 1500,\n  demo_api: \"https://api.[AANPASSEN].be/api/demo/score\",\n}\n\nDESIGN: dark (bg #0b0e1a), Bricolage Grotesque + DM Sans. VERBODEN: paarse gradients, AI-illustraties, stockfoto's.\n\n13 COMPONENTEN:\n[1] Navbar (sticky) [2] Hero met founding-slots-badge en 2 CTA's [3] PainSection: 4 dark cards [4] HowItWorks: 4 stappen [5] SafetyDiagram: SVG rood (jouw account) vs groen (onze agency-accounts) [6] DemoWidget: LinkedIn-URL input → score + signalen + 2 berichten via config.demo_api, met mock-fallback [7] ROICalculator: 3 sliders, live berekening [8] ComparisonTable: wij vs tools vs bureau [9] CaseStudies (placeholders) [10] NotForWho: rode border card [11] Pricing: 3-tier decoy + Founding Client slots per provincie [12] FAQ-accordion met 7 bezwaren [13] FooterCTA + Footer.\n\nRODE DRAAD — invullen voor launch:\n[ ] Bedrijfsnaam/tagline/email in config.ts\n[ ] Cal.com account + link\n[ ] Founding-slots actueel houden bij elke klant\n[ ] Demo-API koppelen zodra fase 7.2 live staat\n[ ] Case studies na eerste klanten\n[ ] Domein aan Vercel koppelen"},
+
+{type:"claude", num:"8.3", title:"Claude Code: ROI-calculator — standalone deelbare versie", desc:"Een los HTML-bestand zonder dependencies, voor in cold emails en LinkedIn-posts.",
+ prompt:"Bouw roi-calculator.html als single self-contained HTML-bestand (geen dependencies behalve Google Fonts).\n\nINPUTS (sliders, live update):\n- Plaatsingsfee: 3.000-20.000 euro, default 10.000\n- Plaatsingen per recruiter per maand: 1-8, default 2\n- Aantal recruiters: 1-15, default 3\n\nBEREKENINGEN:\nextra_omzet = fee * 2 * 12 * recruiters\npayback_maanden = Math.ceil(3000 / fee)\nroi = Math.round((extra_omzet - 18000) / 18000 * 100)\n\nOUTPUTS groot en groen. Design: dark bg #0b0e1a, DM Sans, zelfde stijl als het dashboard.\nCTA-knop: [AANPASSEN: Cal.com-link of mailto]."},
+
+{type:"research", num:"8.4", title:"Research (Claude Desktop): SEO-architectuur en vergelijkingspagina's", desc:"Spott heeft 12 vergelijkingspagina's, Elvatix een blog en glossary. Wij doen hetzelfde, maar Belgisch en tweetalig.",
+ prompt:"Ik bouw een marketing website voor een Belgische AI LinkedIn outreach managed service.\nConcurrenten: Elvatix (NL-markt), Spott (internationaal), HeyReach, Expandi.\n\nGeef me:\n1. 10 'Wij vs X' pagina-ideeen gericht op Belgische recruiters.\n2. 15 blogpost-ideeen met hoog zoekvolume (NL en FR).\n3. Top zoektermen in het Nederlands en Frans rond recruitment outreach.\n4. Welke pagina bouw ik als eerste voor de hoogste conversie?"}
+]},
+
+/* ============================== FASE 9 — EERSTE KLANT ============================== */
+{id:"klant", label:"⑨ Eerste Klant", icon:"💼", title:"Fase 9 — Van systeem naar betalende klant", desc:"Het systeem werkt. Nu verkoopbaar maken: pricing valideren, pitch, discovery script, KPI-discipline en het referral-mechanisme.", steps:[
+
+{type:"research", num:"9.1", title:"Research (Claude Desktop): pricing benchmarken", desc:"20 procent van de prospects moet 'te duur' zeggen — dat is de sweet spot.",
+ prompt:"Ik heb een LinkedIn outreach managed service voor Belgische recruitmentbureaus.\nToolkost per klant per maand: 100-125 euro. Belgische bureaus: 7.500-15.000 euro plaatsingsfee.\nPricing: 1.500 euro setup + 1.500 euro per maand. Founding Clients: 750/maand voor 6 maanden.\n\nVragen:\n1. Is 1.500 euro per maand correct of laat ik geld liggen?\n2. Is de Founding Client korting te diep?\n3. Hoe test ik de 20/60/20 pricing sweet spot in mijn eerste 30 gesprekken?\n4. Wanneer verhoog ik de prijs voor nieuwe klanten?"},
+
+{type:"research", num:"9.2", title:"Research (Claude Desktop): pitch schrijven — Dunford-structuur", desc:"Insight → Alternatieven → Differentiator → Value → Bewijs. De agenda-link heet altijd 'Discovery Call', nooit 'Demo'.",
+ prompt:"Schrijf de volledige sales pitch voor Belgische recruitmentbureaus volgens de positioneringsstructuur van April Dunford (Insight, Alternatieven, Differentiator, Value, Bewijs).\n\nContext:\n- Gemiddelde recruiter verliest 5+ uur per week aan handmatige prospectie\n- Onze reply rate: 40-60 procent (sectorgemiddelde koude outreach: ±5 procent)\n- De klant koppelt NOOIT zijn eigen LinkedIn — eigen agency-accounts, Belgische IPs\n- Enige Belgische aanbieder met NL en FR\n- Prijs: 1.500 euro setup + 1.500 euro per maand\n\nSchrijf ook:\n1. LinkedIn connectieverzoek zonder bericht\n2. Eerste DM na acceptatie\n3. Follow-up DM na 5 dagen\n4. Cold email van max 90 woorden\n5. 30-seconden elevator pitch\n6. Post-call recap e-mail"},
+
+{type:"do", num:"9.3", title:"KPI's wekelijks meten — doelen en stop-signalen", desc:"De Performance Analyst levert de cijfers automatisch (fase 4.8); jij interpreteert en stuurt bij.",
+ checklist:[
+  {i:"→", t:"Accept rate: doel ≥ 35%. Stop-signaal: < 25% → targeting of profielkwaliteit herzien."},
+  {i:"→", t:"Reply rate: doel ≥ 10%. Stop-signaal: < 8% na 60 dagen → berichten en signalen herzien."},
+  {i:"→", t:"Hot leads (CHAMP 7+): doel 2-4 per maand per klant."},
+  {i:"⚠", t:"Account-status: 0 warnings. Bij 2 warnings: account stoppen, backup uit de warmup-pool activeren."},
+  {i:"★", t:"Eerste 30 sales calls: noteer elke prijsreactie. 20% 'te duur' = perfecte sweet spot."}]},
+
+{type:"research", num:"9.4", title:"Research + DO: discovery call script met de 7 bezwaren", desc:"Discovery call altijd voor demo. Na de prijs: stilte, tel tot 10. Wekelijks oefenen en bijwerken.",
+ prompt:"Maak een volledig discovery call script voor Belgische recruitmentbureaus.\n\nRegels:\n- Discovery call ALTIJD voor de demo. De agenda heet 'Discovery Call', nooit 'Demo'.\n- Trial close halverwege: 'Als we dit oplossen, starten we dan deze maand?'\n- Na de prijs: STILTE, tel tot 10 — wie eerst spreekt verliest.\n- Post-call recap binnen 15 minuten.\n\nSCRIPT:\n1. Opening (2 min)\n2. Discovery-vragen (10 min): pijn, urgentie, budget, alternatieven\n3. Pitch (5 min): Dunford-structuur\n4. Prijs noemen + stilte\n5. Trial close\n6. Closing: concrete startdatum voorstellen\n7. De 7 bezwaren met exacte antwoorden:\n   - 'AI-berichten voelen niet authentiek'\n   - 'We hebben dit intern geprobeerd'\n   - '1.500 euro per maand is veel'\n   - 'Wat als LinkedIn jullie accounts blokkeert?'\n   - 'Geef me een case study'\n   - 'We moeten erover nadenken'\n   - 'Stuur maar info'\n8. Post-call recap e-mailstructuur"},
+
+{type:"do", num:"9.5", title:"Triple Asks referral-mechaniek — na maand 2", desc:"Specifieke namen vragen converteert 5-10x beter dan 'ken je nog iemand?'.",
+ checklist:[
+  {i:"★", t:"Timing: na maand 2, zodra de eerste resultaten binnen zijn."},
+  {i:"→", t:"Voor elke check-in: zoek zelf 3 passende namen in het LinkedIn-netwerk van de klant."},
+  {i:"→", t:"De vraag: 'Wie van deze drie — [naam], [naam] of [naam] — kan ik via jou benaderen?'"},
+  {i:"★", t:"Het Founding Client-contract bevat al 2 referral-commitments. Herinner de klant daar vriendelijk aan."}]}
+]}
+];
+
+/* ============================== RENDERER ============================== */
+function typeLabel(t){
+  return {do:"JIJ DOET DIT", claude:"CLAUDE CODE", research:"RESEARCH", warn:"OPGELET", insight:"INZICHT", uitleg:"UITLEG"}[t] || "";
+}
+function numClass(t){
+  return {do:"num-do", claude:"num-claude", research:"num-research", warn:"num-warn", insight:"num-insight", uitleg:"num-uitleg"}[t] || "";
+}
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+const PROMPTS = [];
+
+function renderUitleg(step, pi, si){
+  if(!step.uitleg || !step.uitleg.length) return "";
+  let html = '<div class="ui-wrap" id="uw-'+pi+'-'+si+'">';
+  html += '<div class="ui-hdr" onclick="toggleUi('+pi+','+si+')"><span class="ui-chev" id="uchev-'+pi+'-'+si+'">&#9654;</span>Uitleg — begrippen &amp; bronnen ('+step.uitleg.length+')</div>';
+  html += '<div class="ui-body" id="ub-'+pi+'-'+si+'">';
+  step.uitleg.forEach(function(u){
+    html += '<div class="ui-term"><div class="ui-name">'+esc(u.term)+'</div><div class="ui-wat">'+u.wat+'</div>';
+    if(u.bron) html += '<a class="ui-bron" href="'+esc(u.bron)+'" target="_blank" rel="noopener">'+esc(u.bronLabel||u.bron)+'</a>';
+    html += '</div>';
+  });
+  html += '</div></div>';
+  return html;
+}
+
+function renderMicro(step, pi, si){
+  if(!step.prep && !step.verify && !step.integration) return "";
+  let html = '<div class="micro-wrap" id="mw-'+pi+'-'+si+'">';
+  html += '<div class="micro-hdr" onclick="toggleMicro('+pi+','+si+')"><span class="micro-chev" id="mchev-'+pi+'-'+si+'">&#9654;</span>Voorbereiding &amp; Verificatie</div>';
+  html += '<div class="micro-body" id="mb-'+pi+'-'+si+'">';
+  if(step.prep){
+    html += '<div class="micro-block"><div class="micro-lbl">Voorbereiding — wat moet klaarstaan</div>';
+    step.prep.forEach(function(p){ html += '<div class="micro-item">'+esc(p)+'</div>'; });
+    html += '</div>';
+  }
+  if(step.verify){
+    html += '<div class="micro-block"><div class="micro-lbl">Verificatie — run dit na de stap</div>';
+    html += '<div class="micro-cmd">'+esc(step.verify.cmd)+'</div>';
+    html += '<div class="micro-exp">'+esc(step.verify.expected)+'</div>';
+    if(step.verify.errors){
+      step.verify.errors.forEach(function(e){
+        html += '<div class="micro-err"><div class="micro-err-code">&#9888; '+esc(e.code)+'</div><div class="micro-err-fix">'+esc(e.fix)+'</div></div>';
+      });
+    }
+    html += '</div>';
+  }
+  if(step.integration){
+    html += '<div class="micro-block"><div class="micro-lbl">Integratietest</div>';
+    html += '<div class="micro-int">'+esc(step.integration.cmd)+'</div>';
+    html += '<div class="micro-exp">'+esc(step.integration.expected)+'</div>';
+    html += '</div>';
+  }
+  html += '</div></div>';
+  return html;
+}
+
+function renderStep(step, pi, si){
+  let html = '<div class="step" id="step-'+pi+'-'+si+'">';
+  html += '<div class="step-header" onclick="toggleStep('+pi+','+si+')">';
+  html += '<span class="step-num '+numClass(step.type)+'">'+esc(step.num)+'</span>';
+  html += '<span class="step-title">'+esc(step.title)+'</span>';
+  html += '<span class="step-type">'+typeLabel(step.type)+'</span>';
+  html += '<span class="step-chevron">&#9654;</span></div>';
+  html += '<div class="step-body">';
+  if(step.desc) html += '<div class="step-desc">'+esc(step.desc)+'</div>';
+  if(step.link) html += '<a class="action-link" href="'+esc(step.link)+'" target="_blank" rel="noopener">'+esc(step.linkLabel||step.link)+'</a>';
+  if(step.prompt){
+    const idx = PROMPTS.length; PROMPTS.push(step.prompt);
+    const lbl = step.type==="research" ? "Prompt voor Claude Desktop" : step.type==="claude" ? "Prompt voor Claude Code" : "Script / code";
+    html += '<div class="prompt-box"><div class="prompt-label"><span>'+lbl+'</span>';
+    html += '<button class="copy-btn" onclick="copyPrompt(this,'+idx+');event.stopPropagation();">kopieer</button></div>';
+    html += '<div class="prompt-text">'+esc(step.prompt)+'</div></div>';
+  }
+  if(step.checklist){
+    html += '<ul class="checklist">';
+    step.checklist.forEach(function(c){ html += '<li><span class="ci">'+esc(c.i)+'</span><span>'+esc(c.t)+'</span></li>'; });
+    html += '</ul>';
+  }
+  html += renderUitleg(step, pi, si);
+  html += renderMicro(step, pi, si);
+  html += '</div></div>';
+  return html;
+}
+
+let activePhase = 0;
+
+function renderProgress(){
+  document.getElementById("progressBar").innerHTML = phases.map(function(p,i){
+    return '<div class="pb-step '+(i<activePhase?"done":i===activePhase?"active":"")+'" onclick="switchPhase('+i+')" title="'+esc(p.label)+'"></div>';
+  }).join("");
+}
+function renderTabs(){
+  document.getElementById("phaseNav").innerHTML = phases.map(function(p,i){
+    return '<button class="phase-tab '+(i===activePhase?"active":"")+'" onclick="switchPhase('+i+')">'+esc(p.label)+'</button>';
+  }).join("");
+}
+function renderContent(){
+  document.getElementById("mainContent").innerHTML = phases.map(function(phase, pi){
+    let html = '<div class="phase-section '+(pi===activePhase?"active":"")+'" id="phase-'+pi+'">';
+    html += '<div class="phase-intro"><div class="phase-icon">'+phase.icon+'</div><div><h2>'+esc(phase.title)+'</h2><p>'+esc(phase.desc)+'</p></div></div>';
+    phase.steps.forEach(function(step, si){ html += renderStep(step, pi, si); });
+    html += '</div>';
+    return html;
+  }).join("");
+}
+function switchPhase(i){
+  activePhase = i;
+  renderProgress(); renderTabs();
+  document.querySelectorAll(".phase-section").forEach(function(s,idx){ s.classList.toggle("active", idx===i); });
+  window.scrollTo({top:0, behavior:"smooth"});
+  try{ localStorage.setItem("sp2-phase", String(i)); }catch(e){}
+}
+function toggleStep(pi,si){ document.getElementById("step-"+pi+"-"+si).classList.toggle("open"); }
+function toggleMicro(pi,si){ document.getElementById("mw-"+pi+"-"+si).classList.toggle("micro-open"); }
+function toggleUi(pi,si){ document.getElementById("uw-"+pi+"-"+si).classList.toggle("ui-open"); }
+function copyPrompt(btn, idx){
+  const text = PROMPTS[idx];
+  function done(){ btn.textContent = "gekopieerd ✓"; btn.classList.add("copied"); setTimeout(function(){ btn.textContent="kopieer"; btn.classList.remove("copied"); }, 1800); }
+  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(done); }
+  else{
+    const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select();
+    try{ document.execCommand("copy"); done(); }catch(e){}
+    ta.remove();
+  }
+}
+(function init(){
+  try{ const saved = parseInt(localStorage.getItem("sp2-phase")); if(!isNaN(saved) && saved>=0 && saved<phases.length) activePhase = saved; }catch(e){}
+  renderProgress(); renderTabs(); renderContent();
+})();
+</script>
+</body>
+</html>

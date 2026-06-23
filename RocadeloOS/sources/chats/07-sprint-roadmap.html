@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rocadelo Sprint · Agents, MCP & Orkestratie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c1a17;
+    --ink-soft:#4a463f;
+    --muted:#857e72;
+    --paper:#f5f1e8;
+    --paper-2:# efe9db;
+    --card:#fffdf8;
+    --line:#e2dac9;
+    --amber:#c08322;
+    --amber-soft:#f3e4c4;
+    --green:#5b7553;
+    --rule:#d8cfba;
+    --shadow:0 1px 2px rgba(28,26,23,.04), 0 8px 24px -12px rgba(28,26,23,.18);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Hanken Grotesk',sans-serif;
+    background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(192,131,34,.07), transparent 60%),
+      radial-gradient(900px 500px at -10% 10%, rgba(91,117,83,.06), transparent 55%),
+      #f5f1e8;
+    color:var(--ink);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    padding:clamp(18px,4vw,56px) clamp(16px,4vw,32px) 80px;
+  }
+  .wrap{max-width:760px;margin:0 auto}
+
+  /* ---- Header ---- */
+  .eyebrow{
+    font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--amber);font-weight:700;margin-bottom:14px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .eyebrow::after{content:"";flex:1;height:1px;background:var(--rule)}
+  h1{
+    font-family:'Fraunces',serif;font-weight:800;
+    font-size:clamp(2.1rem,6vw,3.4rem);line-height:1.02;
+    letter-spacing:-.02em;margin-bottom:8px;
+  }
+  h1 em{font-style:italic;font-weight:500;color:var(--amber)}
+  .lede{font-size:1.05rem;color:var(--ink-soft);max-width:54ch;margin-bottom:26px}
+
+  .goal{
+    background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:20px 22px;box-shadow:var(--shadow);margin-bottom:18px;
+    position:relative;overflow:hidden;
+  }
+  .goal::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--amber)}
+  .goal h2{font-family:'Fraunces',serif;font-size:1.02rem;font-weight:600;margin-bottom:6px}
+  .goal p{color:var(--ink-soft);font-size:.96rem}
+  .goal .you{color:var(--ink);font-weight:600}
+
+  .loop{
+    display:flex;flex-wrap:wrap;gap:8px;margin-bottom:40px;
+    font-size:.82rem;
+  }
+  .chip{
+    background:var(--paper);border:1px solid var(--line);border-radius:999px;
+    padding:6px 13px;color:var(--ink-soft);display:flex;align-items:center;gap:7px;
+  }
+  .chip b{color:var(--ink);font-weight:600}
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--amber)}
+
+  /* ---- Stepper ---- */
+  .track{position:relative}
+  .track::before{
+    content:"";position:absolute;left:21px;top:14px;bottom:30px;width:2px;
+    background:linear-gradient(var(--amber) 0%, var(--rule) 14%, var(--rule) 100%);
+  }
+  .step{
+    position:relative;padding-left:60px;margin-bottom:18px;
+    opacity:0;transform:translateY(14px);
+    animation:rise .55s cubic-bezier(.2,.7,.2,1) forwards;
+  }
+  @keyframes rise{to{opacity:1;transform:none}}
+  .num{
+    position:absolute;left:0;top:6px;width:44px;height:44px;border-radius:50%;
+    background:var(--card);border:2px solid var(--line);
+    display:grid;place-items:center;font-family:'Fraunces',serif;font-weight:700;
+    font-size:1.1rem;color:var(--muted);z-index:2;box-shadow:var(--shadow);
+  }
+  .step.start .num{border-color:var(--amber);color:var(--amber);background:var(--amber-soft)}
+
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:18px 20px;box-shadow:var(--shadow);transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .card:hover{transform:translateY(-2px);box-shadow:0 2px 4px rgba(28,26,23,.05), 0 16px 32px -14px rgba(28,26,23,.22)}
+
+  .badge{
+    display:inline-block;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;
+    font-weight:700;color:var(--amber);background:var(--amber-soft);
+    padding:3px 9px;border-radius:6px;margin-bottom:8px;
+  }
+  .agent{color:var(--muted);font-weight:600;font-size:.74rem;text-transform:uppercase;letter-spacing:.08em;float:right;margin-top:2px}
+  .card h3{font-family:'Fraunces',serif;font-weight:600;font-size:1.22rem;letter-spacing:-.01em;margin-bottom:8px;clear:both}
+  .concept{color:var(--ink-soft);font-size:.96rem;margin-bottom:14px}
+
+  .block{margin-top:12px}
+  .block .lbl{
+    font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
+    color:var(--muted);margin-bottom:5px;display:flex;align-items:center;gap:7px;
+  }
+  .block .lbl::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--amber)}
+  .block.build .lbl::before{background:var(--green)}
+  .block p{font-size:.92rem;color:var(--ink-soft)}
+  .block p b{color:var(--ink)}
+
+  .check{list-style:none;margin-top:6px}
+  .check li{
+    display:flex;align-items:flex-start;gap:10px;padding:6px 0;font-size:.92rem;
+    color:var(--ink-soft);cursor:pointer;user-select:none;
+  }
+  .box{
+    flex:none;width:18px;height:18px;border:2px solid var(--rule);border-radius:5px;
+    margin-top:1px;display:grid;place-items:center;transition:all .15s ease;background:var(--paper);
+  }
+  .box svg{width:11px;height:11px;opacity:0;transform:scale(.5);transition:all .15s ease;stroke:#fff;stroke-width:3.2;fill:none}
+  .check li.done .box{background:var(--green);border-color:var(--green)}
+  .check li.done .box svg{opacity:1;transform:none}
+  .check li.done span{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--rule)}
+
+  .aloud{
+    margin-top:14px;background:var(--paper);border:1px dashed var(--rule);border-radius:10px;
+    padding:11px 14px;font-size:.88rem;color:var(--ink-soft);
+  }
+  .aloud b{color:var(--amber);font-weight:700}
+
+  .outcome{
+    margin-top:14px;padding-top:12px;border-top:1px solid var(--line);
+    font-size:.9rem;color:var(--ink);
+  }
+  .outcome b{font-family:'Fraunces',serif;font-weight:600;font-style:italic;font-weight:500}
+
+  /* ---- Footer ---- */
+  .foot{
+    margin-top:30px;padding:20px 22px;border-radius:16px;
+    background:linear-gradient(135deg,#26231e,#332e25);color:#f5f1e8;
+    box-shadow:var(--shadow);
+  }
+  .foot h3{font-family:'Fraunces',serif;font-weight:600;font-size:1.1rem;margin-bottom:6px;color:#fff}
+  .foot p{color:#cbc3b2;font-size:.92rem}
+  .foot .acc{color:#e7b75e;font-weight:600}
+
+  @media (max-width:520px){
+    .agent{float:none;display:block;margin:0 0 6px}
+    .step{padding-left:52px}
+    .track::before{left:19px}
+    .num{width:40px;height:40px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">Leer-OS · Sprint 01</div>
+  <h1>Rocadelo Sprint<br><em>agents, MCP &amp; orkestratie</em></h1>
+  <p class="lede">Je leert dit niet uit een cursus — je bouwt je eigen 7-agent systeem en leert het onderweg. Eén brok per leerslot. Diepte boven breedte.</p>
+
+  <div class="goal">
+    <h2>Waar je staat na deze sprint</h2>
+    <p><span class="you">Je kunt je volledige Rocadelo-systeem uittekenen, uitleggen waar elk stuk draait (n8n / Claude API / MCP), en je eerste twee agents écht laten werken</span> — getest op echte LinkedIn-data, met een rem op de risicovolle acties. En je kunt elke nieuwe tool beoordelen zonder af te dwalen.</p>
+  </div>
+
+  <div class="loop">
+    <span class="chip"><span class="dot"></span><b>1 brok</b>&nbsp;per leerslot</span>
+    <span class="chip"><span class="dot"></span>verleidingen&nbsp;<b>→ Tech Radar</b></span>
+    <span class="chip"><span class="dot"></span>zondag:&nbsp;<b>kies de volgende</b></span>
+  </div>
+
+  <div class="track" id="track">
+
+    <!-- 0 -->
+    <div class="step start" style="animation-delay:.05s">
+      <div class="num">0</div>
+      <div class="card">
+        <span class="badge">Start hier · fundament</span>
+        <span class="agent">Het hele systeem</span>
+        <h3>Wat is een agent eigenlijk?</h3>
+        <p class="concept">Een agent = waarnemen → beslissen → handelen. Een <em>workflow</em> volgt vaste stappen; een <em>agent</em> redeneert. De Director is je orkestrator, de 6 anderen zijn specialisten. Jouw systeem is dus een orkestratie-graaf, geen 7 losse chatbots.</p>
+        <div class="block build"><div class="lbl">Bouw bij Rocadelo</div><p>Teken je 7 agents als één graaf: <b>wie roept wie aan</b>, waar loopt elke agent (n8n / Claude API / MCP), en welke data deelt iedereen.</p></div>
+        <div class="block"><div class="lbl">Checklist</div>
+          <ul class="check">
+            <li><span class="box"><svg viewBox="0 0 12 12"><path d="M1 6l3 3 7-7"/></svg></span><span>Graaf getekend (op papier mag)</span></li>
+            <li><span class="box"><svg viewBox="0 0 12 12"><path d="M1 6l3 3 7-7"/></svg></span><span>Elke agent heeft één zin: "wat doe ik"</span></li>
+            <li><span class="box"><svg viewBox="0 0 12 12"><path d="M1 6l3 3 7-7"/></svg></span><span>De pijlen tussen agents kloppen</span></li>
+          </ul>
+        </div>
+        <div class="aloud"><b>Leg hardop uit</b> — vertel in 60 sec aan Matias waarom dit een orkestratie is en geen chatbot.</div>
+        <div class="outcome">Daarna: <b>je legt in één plaat uit hoe een lead door je systeem stroomt.</b></div>
+      </div>
+    </div>
+
+    <!-- 1 -->
+    <div class="step" style="animation-delay:.12s">
+      <div class="num">1</div>
+      <div class="card">
+        <span class="badge">Concept</span>
+        <span class="agent">Alle agents</span>
+        <h3>MCP — hoe een agent dingen kan dóén</h3>
+        <p class="concept">MCP is de standaard waarmee Claude met tools en data praat (client ↔ server; tools / resources / prompts). Zonder MCP schrijf je voor elke koppeling lijmcode; mét MCP plug je in. Dít is letterlijk "Claude toegang geven tot meer".</p>
+        <div class="block build"><div class="lbl">Bouw bij Rocadelo</div><p>Gebruik je <b>bestaande n8n-MCP</b>. Laat Claude er één echte actie mee doen (bv. een rij in Supabase lezen of een workflow triggeren). Start met wat je al hebt — €0.</p></div>
+        <div class="block"><div class="lbl">Checklist</div>
+          <ul class="check">
+            <li><span class="box"><svg viewBox="0 0 12 12"><path d="M1 6l3 3 7-7"/></svg></span><span>n8n-MCP verbonden en getest</span></li>
+            <li><span class="box"><svg viewBox="0 0 12 12"><path d="M1 6l3 3 7-7"/></svg></span><span>1 echte actie via MCP uitgevoerd</span></li>
+            <li><span class="box"><svg viewBox="0 0 12 12"><path d="M1 6l3 3 7-7"/></svg></span><span>Tool-lijst per agent gemaakt (Unipile, Supabase, ...)</span></li>
+          </ul>
+        </div>
+        <div class="aloud"><b>Leg hardop uit</b> — waarom noemen ze MCP "de USB-C van AI"?</div>
+        <div class="outcome">Daarna: <b>je weet welke van je 7 agents welke tool nodig heeft.</b></div>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="step" style="animation-delay:.19s">
+      <div class="num">2</div>
+      <div class="card">
+        <span class="badge">Orkestratie</span>
+        <span class="agent">Director</span>
+        <h3>De Director — delegeren in de praktijk</h3>
+        <p class="concept">De grote keuze: <b>subagent</b> (dynamische redenering, schone context) vs <b>n8n-stap</b> (vaste, voorspelbare pipeline). Vuistregel: vaste volgorde → n8n; "het hangt ervan af"-beslissing → agent.</p>
+        <div class="block build"><div class="lbl">Bouw bij Rocadelo</div><p>Schrijf de beslislogica van de Director: wanneer gaat een lead van <b>Signal Detector → Lead Scorer → Message Writer</b>? Wat triggert de Reply Handler?</p></div>
+        <div class="block"><div class="lbl">Checklist</div>
+          <ul class="check">
+            <li><span class="box"><svg viewBox="0 0 12 12"><path d="M1 6l3 3 7-7"/></svg></span><span>Beslisboom Director uitgeschreven</span></li>
+            <li><span class="box"><svg viewBox="0 0 12 12"><path d="M1 6l3 3 7-7"/></svg></span><span>Per stap gemarkeerd: n8n of agent?</span></li>
+            <li><span class="box"><svg viewBox="0 0 12 12"><path d="M1 6l3 3 7-7"/></svg></span><span>1 edge-case bedacht (wat als de score laag is?)</span></li>
+          </ul>
+        </div>
+        <div class="aloud"><b>Leg hardop uit</b> — het verschil n8n vs subagent, met een Rocadelo-voorbeeld.</div>
+        <div class="outcome">Daarna: <b>voor elke overgang weet je waar die thuishoort.</b></div>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="step" style="animation-delay:.26s">
+      <div class="num">3</div>
+      <div class="card">
+        <span class="badge">Eén specialist écht goed</span>
+        <span class="agent">Lead Scorer</span>
+        <h3>De Lead Scorer — het patroon dat je 6× hergebruikt</h3>
+        <p class="concept">Bouw één agent end-to-end: heldere prompt + tool + <b>gestructureerde output (JSON)</b>. Dit is het sjabloon waarmee je daarna de andere specialisten klopt.</p>
+        <div class="block build"><div class="lbl">Bouw bij Rocadelo</div><p>Input: een LinkedIn-profiel (Unipile-data) → Output: een <b>score + reden</b> in vast JSON-formaat, via de Claude API.</p></div>
+        <div class="block"><div class="lbl">Checklist</div>
+          <ul class="check">
+            <li><span class="box"><svg viewBox="0 0 12 12"><path d="M1 6l3 3 7-7"/></svg></span><span>Prompt geschreven</span></li>
+            <li><span class="box"><svg viewBox="0 0 12 12"><path d="M1 6l3 3 7-7"/></svg></span><span>JSON-schema vastgelegd</span></li>
+            <li><span class="box"><svg viewBox="0 0 12 12"><path d="M1 6l3 3 7-7"/></svg></span><span>3 testprofielen gescoord — reden klopt</span></li>
+          </ul>
+        </div>
+        <div class="aloud"><b>Leg hardop uit</b> — waarom is JSON-output betrouwbaarder dan vrije tekst?</div>
+        <div class="outcome">Daarna: <b>je kopieert dit patroon naar Signal Detector en Message Writer.</b></div>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="step" style="animation-delay:.33s">
+      <div class="num">4</div>
+      <div class="card">
+        <span class="badge">Geheugen &amp; state</span>
+        <span class="agent">Performance Analyst</span>
+        <h3>Wat de agents delen</h3>
+        <p class="concept">Agents onthouden niets tussen runs — tenzij je het opslaat. Je database (Supabase / SQLite) is het <b>gedeelde geheugen</b>. De Performance Analyst leest die geschiedenis terug.</p>
+        <div class="block build"><div class="lbl">Bouw bij Rocadelo</div><p>Ontwerp het schema dat alle 7 agents lezen/schrijven: <b>leads, scores, berichten, replies, meetings, resultaten.</b></p></div>
+        <div class="block"><div class="lbl">Checklist</div>
+          <ul class="check">
+            <li><span class="box"><svg viewBox="0 0 12 12"><path d="M1 6l3 3 7-7"/></svg></span><span>Tabellen benoemd</span></li>
+            <li><span class="box"><svg viewBox="0 0 12 12"><path d="M1 6l3 3 7-7"/></svg></span><span>Per agent: "wat schrijf ik / wat lees ik"</span></li>
+            <li><span class="box"><svg viewBox="0 0 12 12"><path d="M1 6l3 3 7-7"/></svg></span><span>1 lead handmatig door het schema gevolgd</span></li>
+          </ul>
+        </div>
+        <div class="aloud"><b>Leg hardop uit</b> — waar zit het "geheugen" van je systeem, en waarom daar?</div>
+        <div class="outcome">Daarna: <b>je ziet hoe één lead z'n hele reis in de database achterlaat.</b></div>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="step" style="animation-delay:.40s">
+      <div class="num">5</div>
+      <div class="card">
+        <span class="badge">Betrouwbaarheid &amp; rem</span>
+        <span class="agent">Reply Handler</span>
+        <h3>Niet alles automatisch</h3>
+        <p class="concept">Rate limits, proxies (NodeMaven), foutafhandeling en <b>human-in-the-loop</b>. Sommige acties — zoals een echte reply versturen — wil je niet blind automatiseren. Eerst jij goedkeuren.</p>
+        <div class="block build"><div class="lbl">Bouw bij Rocadelo</div><p>Markeer per agent: <b>auto vs jij-keurt-goed</b>. Bouw één approval-stap in vóór elk uitgaand bericht.</p></div>
+        <div class="block"><div class="lbl">Checklist</div>
+          <ul class="check">
+            <li><span class="box"><svg viewBox="0 0 12 12"><path d="M1 6l3 3 7-7"/></svg></span><span>Auto/handmatig-lijst per agent</span></li>
+            <li><span class="box"><svg viewBox="0 0 12 12"><path d="M1 6l3 3 7-7"/></svg></span><span>Approval-stap vóór outreach</span></li>
+            <li><span class="box"><svg viewBox="0 0 12 12"><path d="M1 6l3 3 7-7"/></svg></span><span>Plan: wat als LinkedIn rate-limit geeft?</span></li>
+          </ul>
+        </div>
+        <div class="aloud"><b>Leg hardop uit</b> — waarom automatiseer je de Reply Handler níét volledig?</div>
+        <div class="outcome">Daarna: <b>het kan draaien terwijl je slaapt — de risicovolle acties passeren een mens.</b></div>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="step" style="animation-delay:.47s">
+      <div class="num">6</div>
+      <div class="card">
+        <span class="badge">Samen + de radar</span>
+        <span class="agent">Performance Analyst</span>
+        <h3>Live zetten en bijhouden</h3>
+        <p class="concept">Deploy-denken (Hetzner draait het 24/7), monitoring (de Performance Analyst is je dashboard), en de meta-gewoonte: als er een glanzende nieuwe agent-repo verschijnt — <b>dient die Rocadelo nu, of gaat hij naar de radar?</b></p>
+        <div class="block build"><div class="lbl">Bouw bij Rocadelo</div><p>Zet de Performance Analyst op <b>één simpele metric</b> (leads → replies → meetings). Open je Tech Radar en park je eerste 3 verleidingen.</p></div>
+        <div class="block"><div class="lbl">Checklist</div>
+          <ul class="check">
+            <li><span class="box"><svg viewBox="0 0 12 12"><path d="M1 6l3 3 7-7"/></svg></span><span>1 metric live zichtbaar</span></li>
+            <li><span class="box"><svg viewBox="0 0 12 12"><path d="M1 6l3 3 7-7"/></svg></span><span>Tech Radar geopend</span></li>
+            <li><span class="box"><svg viewBox="0 0 12 12"><path d="M1 6l3 3 7-7"/></svg></span><span>3 verleidingen geparkeerd</span></li>
+          </ul>
+        </div>
+        <div class="aloud"><b>Leg hardop uit</b> — welke ene metric beslist of Rocadelo werkt?</div>
+        <div class="outcome">Daarna: <b>je meet je systeem én beoordeelt nieuwe tools zonder af te dwalen.</b></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="foot">
+    <h3>De regel die je beschermt</h3>
+    <p>Elke verleiding die tijdens deze sprint langskomt — een nieuwe repo, een ander framework, een glanzende tool — gaat <span class="acc">niet</span> in je hoofd. Hij gaat naar de <span class="acc">Tech Radar</span>. Eén pad tegelijk. De rest wacht netjes op zijn beurt.</p>
+  </div>
+
+</div>
+
+<script>
+  // In-memory checklist toggle (geen opslag nodig — dit is je kaart, niet je takenlijst)
+  document.querySelectorAll('.check li').forEach(function(li){
+    li.addEventListener('click', function(){ li.classList.toggle('done'); });
+  });
+</script>
+</body>
+</html>

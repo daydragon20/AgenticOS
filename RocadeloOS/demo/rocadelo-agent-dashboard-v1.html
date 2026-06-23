@@ -1,0 +1,1776 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rocadelo HR — AI Agent Command Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0e1a; --surface:rgba(17,24,39,.55); --surface-solid:#111827; --surface2:#1a2235;
+  --border:rgba(148,163,184,.09); --border-strong:#1e2d45;
+  --cyan:#22d3ee; --cyan-dim:rgba(34,211,238,.12);
+  --gold:#f59e0b; --gold-dim:rgba(245,158,11,.12);
+  --green:#22c55e; --green-dim:rgba(34,197,94,.13);
+  --red:#ef4444; --red-dim:rgba(239,68,68,.12);
+  --text:#e2e8f0; --muted:#64748b; --muted2:#94a3b8; --bright:#ffffff;
+  --ring-inner:#10182b; --modal-surface:rgba(15,22,37,.94); --drawer-surface:rgba(13,19,33,.96);
+  --bar-bg:rgba(11,14,26,.78); --inset:rgba(6,11,20,.5); --inset2:rgba(6,11,20,.6);
+  --sheen:rgba(255,255,255,.05); --card-shadow:0 0 0 transparent;
+  --mono:'JetBrains Mono',monospace; --sans:'DM Sans',sans-serif; --display:'Bricolage Grotesque',sans-serif;
+  --glass:blur(18px); --radius:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background .4s;}
+button{font-family:inherit;}
+/* ---------- ambient ---------- */
+.orb{position:fixed;border-radius:50%;filter:blur(110px);opacity:.35;pointer-events:none;z-index:0;transition:opacity .5s;}
+.orb-1{width:560px;height:560px;background:radial-gradient(circle,#0e7490,transparent 70%);top:-180px;left:-140px;animation:drift1 26s ease-in-out infinite alternate;}
+.orb-2{width:480px;height:480px;background:radial-gradient(circle,#92400e,transparent 70%);bottom:-160px;right:-120px;animation:drift2 32s ease-in-out infinite alternate;opacity:.22;}
+@keyframes drift1{to{transform:translate(90px,60px) scale(1.12);}}
+@keyframes drift2{to{transform:translate(-70px,-50px) scale(1.08);}}
+.grid-lines{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+  background-image:linear-gradient(rgba(148,163,184,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(148,163,184,.03) 1px,transparent 1px);
+  background-size:48px 48px;
+  -webkit-mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,black 30%,transparent 100%);
+  mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,black 30%,transparent 100%);}
+.grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.035;mix-blend-mode:overlay;
+  background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2"/></filter><rect width="160" height="160" filter="url(%23n)" opacity="0.7"/></svg>');}
+/* ---------- header + nav ---------- */
+.topbar{position:sticky;top:0;z-index:60;background:var(--bar-bg);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);border-bottom:1px solid var(--border);box-shadow:inset 0 1px 0 var(--sheen);}
+.topbar-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:12px 26px 8px;}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand-mark{width:38px;height:38px;border-radius:10px;flex-shrink:0;background:linear-gradient(135deg,#0e7490,#22d3ee);
+  display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:800;font-size:18px;color:#06212b;
+  box-shadow:0 0 24px rgba(34,211,238,.35),inset 0 1px 0 rgba(255,255,255,.45);}
+.brand-text h1{font-family:var(--display);font-size:16px;font-weight:700;color:var(--bright);line-height:1.1;}
+.brand-text span{font-family:var(--mono);font-size:9px;color:var(--cyan);text-transform:uppercase;letter-spacing:.18em;}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:11px;flex-wrap:wrap;}
+.sys-status{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;color:var(--green);
+  background:var(--green-dim);border:1px solid rgba(34,197,94,.3);border-radius:999px;padding:5px 12px;letter-spacing:.08em;}
+.sys-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse-dot 2s ease-in-out infinite;}
+@keyframes pulse-dot{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.5);}50%{box-shadow:0 0 0 6px rgba(34,197,94,0);}}
+.clock{font-family:var(--mono);font-size:11px;color:var(--muted2);letter-spacing:.06em;}
+.icon-btn{width:36px;height:36px;border-radius:10px;border:1px solid var(--border-strong);background:var(--surface2);
+  color:var(--muted2);cursor:pointer;font-size:15px;transition:all .2s;box-shadow:inset 0 1px 0 var(--sheen);}
+.icon-btn:hover{color:var(--bright);border-color:var(--cyan);transform:translateY(-1px);}
+.btn-demo{font-weight:700;font-size:13px;color:#06212b;background:linear-gradient(135deg,#22d3ee,#67e8f9);
+  border:none;border-radius:10px;padding:9px 20px;cursor:pointer;display:flex;align-items:center;gap:8px;position:relative;overflow:hidden;
+  box-shadow:0 0 28px rgba(34,211,238,.35),inset 0 1px 0 rgba(255,255,255,.5);transition:transform .15s,box-shadow .15s,filter .15s;}
+.btn-demo::after{content:"";position:absolute;top:0;left:-80%;width:50%;height:100%;transform:skewX(-20deg);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent);transition:left .5s ease;}
+.btn-demo:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 0 38px rgba(34,211,238,.55),inset 0 1px 0 rgba(255,255,255,.5);}
+.btn-demo:hover:not(:disabled)::after{left:120%;}
+.btn-demo:disabled{filter:saturate(.4) brightness(.8);cursor:wait;}
+.nav{display:flex;gap:4px;padding:0 22px;overflow-x:auto;scrollbar-width:none;}
+.nav::-webkit-scrollbar{display:none;}
+.nav-tab{background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);cursor:pointer;
+  font-size:12.5px;font-weight:600;padding:9px 14px 11px;white-space:nowrap;display:flex;align-items:center;gap:7px;transition:color .15s,border-color .15s;}
+.nav-tab .nc{font-family:var(--mono);font-size:9px;padding:1px 7px;border-radius:999px;background:var(--surface2);border:1px solid var(--border-strong);color:var(--muted2);}
+.nav-tab:hover{color:var(--text);}
+.nav-tab.active{color:var(--cyan);border-bottom-color:var(--cyan);}
+.nav-tab.active .nc{background:var(--cyan-dim);border-color:rgba(34,211,238,.35);color:var(--cyan);}
+.nav-tab.biz{margin-left:auto;color:var(--gold);}
+/* ---------- econ bar ---------- */
+.econ{display:flex;align-items:stretch;gap:0;padding:0 22px;border-top:1px solid var(--border);overflow-x:auto;scrollbar-width:none;}
+.econ::-webkit-scrollbar{display:none;}
+.ei{display:flex;flex-direction:column;gap:1px;padding:8px 18px 9px 0;margin-right:18px;border-right:1px solid var(--border);white-space:nowrap;}
+.ei:last-child{border-right:none;}
+.ei-l{font-family:var(--mono);font-size:8.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;display:flex;align-items:center;gap:5px;}
+.ei-v{font-family:var(--display);font-weight:800;font-size:15px;color:var(--bright);transition:color .25s;}
+.ei.gold .ei-v{color:var(--gold);}
+.ei.roi .ei-v{color:var(--green);}
+.ei-v.tick{animation:ei-tick .45s ease;}
+@keyframes ei-tick{30%{transform:translateY(-2px);color:var(--cyan);}}
+.ei-s{font-family:var(--mono);font-size:8px;color:var(--muted);}
+/* ---------- info buttons + popover ---------- */
+.info-btn{width:15px;height:15px;border-radius:50%;border:1px solid var(--border-strong);background:var(--surface2);
+  color:var(--muted);font-size:9px;line-height:1;cursor:pointer;flex-shrink:0;font-family:var(--mono);
+  display:inline-flex;align-items:center;justify-content:center;vertical-align:1px;transition:all .15s;}
+.info-btn:hover{color:var(--cyan);border-color:var(--cyan);transform:scale(1.15);}
+.popover{position:fixed;z-index:400;width:min(350px,92vw);background:var(--modal-surface);
+  backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);
+  border:1px solid rgba(34,211,238,.3);border-radius:14px;padding:16px 18px;display:none;
+  box-shadow:0 18px 50px rgba(0,0,0,.5),inset 0 1px 0 var(--sheen);animation:pop-in .22s cubic-bezier(.16,1,.3,1);}
+.popover.open{display:block;}
+@keyframes pop-in{from{opacity:0;transform:translateY(6px) scale(.97);}}
+.popover h6{font-family:var(--display);font-size:13.5px;font-weight:700;color:var(--bright);margin-bottom:9px;display:flex;align-items:center;gap:8px;}
+.po-sec{margin-bottom:10px;}
+.po-sec:last-child{margin-bottom:0;}
+.po-lbl{font-family:var(--mono);font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px;}
+.po-lbl.how{color:var(--cyan);} .po-lbl.why{color:var(--gold);}
+.po-txt{font-size:11.5px;color:var(--muted2);line-height:1.65;}
+.po-txt b{color:var(--text);}
+/* ---------- layout ---------- */
+.wrap{position:relative;z-index:2;max-width:1480px;margin:0 auto;padding:22px 26px 60px;}
+.view{display:none;animation:view-in .35s cubic-bezier(.16,1,.3,1);}
+.view.active{display:block;}
+@keyframes view-in{from{opacity:0;transform:translateY(10px);}}
+.section-label{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.2em;margin:24px 0 12px;display:flex;align-items:center;gap:10px;}
+.section-label:first-child{margin-top:0;}
+.section-label::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--border-strong),transparent);}
+.section-label .sl-act{font-size:10px;color:var(--cyan);cursor:pointer;letter-spacing:.08em;text-transform:none;}
+.section-label .sl-act:hover{text-decoration:underline;}
+.panel{background:var(--surface);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);border:1px solid var(--border);border-radius:var(--radius);
+  box-shadow:inset 0 1px 0 var(--sheen),var(--card-shadow);}
+/* ---------- metrics ---------- */
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+.metric{background:var(--surface);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);border:1px solid var(--border);border-radius:var(--radius);
+  padding:18px 20px 14px;position:relative;overflow:hidden;cursor:pointer;transition:border-color .3s,transform .3s;
+  box-shadow:inset 0 1px 0 var(--sheen),var(--card-shadow);}
+.metric:hover{border-color:rgba(34,211,238,.3);transform:translateY(-2px);}
+.metric::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--mc,#22d3ee),transparent);opacity:.7;}
+.metric-label{font-family:var(--mono);font-size:9.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.14em;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.metric-value{font-family:var(--display);font-size:33px;font-weight:800;color:var(--bright);line-height:1;}
+.metric-value small{font-size:18px;color:var(--muted2);font-weight:700;}
+.metric-delta{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:10px;margin-top:8px;padding:2px 8px;border-radius:999px;}
+.delta-up{color:var(--green);background:var(--green-dim);}
+.delta-gold{color:var(--gold);background:var(--gold-dim);}
+.metric svg{position:absolute;right:12px;bottom:10px;opacity:.85;}
+.spark-line{fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.spark-fill{opacity:.12;}
+/* ---------- pipeline strip ---------- */
+.pipeline{padding:20px 18px 16px;overflow-x:auto;}
+.pipe-track{display:flex;min-width:760px;}
+.stage{flex:1;position:relative;padding:8px 18px 8px 10px;min-width:118px;border-radius:10px;cursor:pointer;transition:background .2s;}
+.stage:hover{background:rgba(34,211,238,.05);}
+.stage .info-btn{position:absolute;top:8px;right:20px;}
+.stage:not(:last-child)::after{content:"";position:absolute;right:2px;top:26px;width:14px;height:14px;
+  border-top:2px solid var(--border-strong);border-right:2px solid var(--border-strong);transform:rotate(45deg);transition:border-color .4s;}
+.stage.flow:not(:last-child)::after{border-color:var(--cyan);}
+.stage-head{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.stage-ico{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;
+  background:var(--surface2);border:1px solid var(--border-strong);transition:all .35s;flex-shrink:0;}
+.stage-name{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;line-height:1.35;}
+.stage-count{font-family:var(--display);font-size:25px;font-weight:800;color:var(--bright);transition:color .3s;}
+.stage-sub{font-family:var(--mono);font-size:9.5px;color:var(--muted);margin-top:2px;}
+.stage-bar{height:3px;border-radius:2px;background:var(--border-strong);margin-top:10px;overflow:hidden;position:relative;}
+.stage-bar i{position:absolute;inset:0;border-radius:2px;background:var(--sc,#22d3ee);transform-origin:left;transition:transform .8s cubic-bezier(.16,1,.3,1);}
+.stage.bump .stage-ico{border-color:var(--sc,#22d3ee);box-shadow:0 0 18px rgba(34,211,238,.45);background:var(--cyan-dim);}
+.stage.bump .stage-count{color:var(--sc,#22d3ee);}
+.stage.bump{animation:stage-pop .5s ease;}
+@keyframes stage-pop{30%{transform:translateY(-3px);}}
+.pipe-foot{display:flex;justify-content:space-between;align-items:center;margin-top:12px;flex-wrap:wrap;gap:8px;padding:0 10px;}
+.pipe-conv{font-family:var(--mono);font-size:10px;color:var(--muted2);}
+.pipe-conv b{color:var(--cyan);font-weight:600;}
+/* ---------- demo strip ---------- */
+.demo-strip{display:none;margin-top:14px;background:linear-gradient(135deg,rgba(34,211,238,.08),rgba(245,158,11,.05));
+  border:1px solid rgba(34,211,238,.3);border-radius:var(--radius);padding:16px 20px;align-items:center;gap:18px;flex-wrap:wrap;
+  backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);animation:strip-in .5s cubic-bezier(.16,1,.3,1);box-shadow:inset 0 1px 0 var(--sheen);}
+.demo-strip.show{display:flex;}
+@keyframes strip-in{from{opacity:0;transform:translateY(-8px);}}
+.demo-avatar{width:46px;height:46px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,#155e75,#22d3ee);
+  display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:800;font-size:16px;color:#06212b;box-shadow:0 0 20px rgba(34,211,238,.3);}
+.demo-info{min-width:170px;}
+.demo-info .dn{font-family:var(--display);font-weight:700;font-size:15px;color:var(--bright);}
+.demo-info .dt{font-size:11.5px;color:var(--muted2);}
+.demo-info .dl{font-family:var(--mono);font-size:9px;color:var(--cyan);text-transform:uppercase;letter-spacing:.12em;margin-top:2px;}
+.demo-steps{flex:1;display:flex;gap:6px;min-width:240px;}
+.dstep{flex:1;height:5px;border-radius:3px;background:rgba(148,163,184,.15);overflow:hidden;position:relative;}
+.dstep i{position:absolute;inset:0;background:linear-gradient(90deg,#22d3ee,#67e8f9);transform:scaleX(0);transform-origin:left;border-radius:3px;}
+.dstep.active i{animation:dstep-fill var(--dur,1.8s) linear forwards;}
+.dstep.done i{transform:scaleX(1);}
+@keyframes dstep-fill{to{transform:scaleX(1);}}
+.demo-phase{font-family:var(--mono);font-size:10.5px;color:var(--cyan);min-width:200px;letter-spacing:.04em;}
+.demo-score{display:none;font-family:var(--display);font-weight:800;font-size:22px;color:var(--gold);align-items:center;gap:6px;}
+.demo-score.show{display:flex;animation:score-pop .4s cubic-bezier(.34,1.56,.64,1);}
+@keyframes score-pop{from{transform:scale(.5);opacity:0;}}
+/* ---------- main grid / agents ---------- */
+.main-grid{display:grid;grid-template-columns:1fr 360px;gap:18px;align-items:start;}
+.agents{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;}
+.agent{background:var(--surface);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);border:1px solid var(--border);border-radius:var(--radius);
+  padding:16px 16px 14px;position:relative;overflow:hidden;cursor:pointer;transition:border-color .35s,box-shadow .35s,transform .35s;
+  box-shadow:inset 0 1px 0 var(--sheen),var(--card-shadow);}
+.agent:hover{transform:translateY(-2px);border-color:rgba(34,211,238,.28);}
+.agent:active{transform:scale(.99);}
+.agent.director{grid-column:1/-1;background:linear-gradient(135deg,rgba(34,211,238,.06),var(--surface));}
+.agent-top{display:flex;align-items:center;gap:11px;margin-bottom:10px;}
+.agent-ico{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;
+  background:var(--surface2);border:1px solid var(--border-strong);flex-shrink:0;transition:all .35s;}
+.agent-name{font-family:var(--display);font-weight:700;font-size:14px;color:var(--bright);line-height:1.2;}
+.agent-role{font-size:10.5px;color:var(--muted);line-height:1.3;margin-top:1px;}
+.badge{margin-left:auto;flex-shrink:0;display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:8.5px;
+  text-transform:uppercase;letter-spacing:.1em;padding:4px 9px;border-radius:999px;border:1px solid;transition:all .3s;}
+.badge i{width:6px;height:6px;border-radius:50%;background:currentColor;}
+.badge.active{color:var(--green);border-color:rgba(34,197,94,.35);background:var(--green-dim);}
+.badge.active i{animation:pulse-dot 2s infinite;}
+.badge.processing{color:var(--cyan);border-color:rgba(34,211,238,.4);background:var(--cyan-dim);}
+.badge.processing i{animation:blink .55s infinite alternate;}
+@keyframes blink{to{opacity:.25;}}
+.badge.idle{color:var(--muted);border-color:var(--border-strong);background:transparent;}
+.agent-task{font-family:var(--mono);font-size:10.5px;color:var(--muted2);min-height:30px;line-height:1.45;
+  border-left:2px solid var(--border-strong);padding-left:10px;margin:10px 0;transition:border-color .3s;}
+.agent-task::before{content:"› ";color:var(--cyan);}
+.agent-stats{display:flex;gap:14px;}
+.astat .av{font-family:var(--display);font-weight:700;font-size:15px;color:var(--text);}
+.astat .al{font-family:var(--mono);font-size:8.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;}
+.agent-prog{height:3px;border-radius:2px;background:var(--border-strong);margin-top:12px;overflow:hidden;}
+.agent-prog i{display:block;height:100%;width:0;border-radius:2px;background:linear-gradient(90deg,#22d3ee,#67e8f9);transition:width .4s ease;}
+.agent.is-processing{border-color:rgba(34,211,238,.45);box-shadow:0 0 26px rgba(34,211,238,.12),inset 0 1px 0 var(--sheen);}
+.agent.is-processing .agent-ico{border-color:var(--cyan);background:var(--cyan-dim);box-shadow:0 0 14px rgba(34,211,238,.3);}
+.agent.is-processing .agent-task{border-color:var(--cyan);color:#c8f5fd;}
+.agent.is-processing::after{content:"";position:absolute;top:0;left:-60%;width:60%;height:100%;
+  background:linear-gradient(105deg,transparent,rgba(34,211,238,.07),transparent);animation:scan 1.6s linear infinite;}
+@keyframes scan{to{left:120%;}}
+.agent.is-idle{opacity:.62;}
+/* ---------- feed + hot leads ---------- */
+.side-col{display:flex;flex-direction:column;gap:18px;position:sticky;top:152px;}
+.feed-panel{display:flex;flex-direction:column;overflow:hidden;}
+.feed-head{display:flex;align-items:center;gap:9px;padding:13px 16px;border-bottom:1px solid var(--border);}
+.fh-dot{width:8px;height:8px;border-radius:50%;background:var(--red);animation:pulse-rec 1.4s infinite;}
+@keyframes pulse-rec{50%{opacity:.35;}}
+.feed-head b{font-family:var(--display);font-size:13px;font-weight:700;color:var(--bright);}
+.feed-head span{margin-left:auto;font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.1em;}
+.feed{height:380px;overflow-y:auto;padding:8px 14px;scrollbar-width:thin;scrollbar-color:var(--border-strong) transparent;}
+.feed::-webkit-scrollbar{width:5px;}
+.feed::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:3px;}
+.fi{display:flex;gap:10px;padding:9px 4px;border-bottom:1px solid rgba(148,163,184,.05);animation:fi-in .45s cubic-bezier(.16,1,.3,1);}
+@keyframes fi-in{from{opacity:0;transform:translateX(14px);}}
+.fi-ico{width:26px;height:26px;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;
+  background:var(--surface2);border:1px solid var(--border-strong);}
+.fi-body{flex:1;min-width:0;}
+.fi-meta{display:flex;align-items:center;gap:7px;margin-bottom:2px;}
+.fi-agent{font-family:var(--mono);font-size:8.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--cyan);}
+.fi-time{font-family:var(--mono);font-size:8.5px;color:var(--muted);margin-left:auto;flex-shrink:0;}
+.fi-msg{font-size:12px;color:var(--muted2);line-height:1.5;word-break:break-word;}
+.fi-msg b{color:var(--text);font-weight:600;}
+.fi.hot .fi-ico{border-color:rgba(245,158,11,.5);background:var(--gold-dim);}
+.fi.hot .fi-msg{color:#fde68a;}
+.fi.good .fi-ico{border-color:rgba(34,197,94,.4);background:var(--green-dim);}
+.fi.demo .fi-ico{border-color:rgba(34,211,238,.5);background:var(--cyan-dim);}
+.tag{display:inline-block;font-family:var(--mono);font-size:8.5px;padding:1px 6px;border-radius:4px;margin-left:2px;vertical-align:1px;}
+.tag-pos{color:var(--green);background:var(--green-dim);border:1px solid rgba(34,197,94,.3);}
+.tag-hot{color:var(--gold);background:var(--gold-dim);border:1px solid rgba(245,158,11,.3);}
+.tag-lang{color:var(--cyan);background:var(--cyan-dim);border:1px solid rgba(34,211,238,.3);}
+.tag-neg{color:var(--red);background:var(--red-dim);border:1px solid rgba(239,68,68,.3);}
+.tag-mut{color:var(--muted2);background:var(--surface2);border:1px solid var(--border-strong);}
+.hot-list{padding:6px 10px 10px;}
+.hot-item{display:flex;align-items:center;gap:11px;padding:10px 8px;border-radius:10px;cursor:pointer;transition:background .15s;border-bottom:1px solid rgba(148,163,184,.05);}
+.hot-item:hover{background:rgba(245,158,11,.06);}
+.hot-item:last-child{border-bottom:none;}
+.hi-av{width:32px;height:32px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,#451a03,#f59e0b);
+  display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:800;font-size:11px;color:#fff7e6;}
+.hi-name{font-weight:600;font-size:12.5px;color:var(--bright);}
+.hi-sub{font-size:10.5px;color:var(--muted);}
+.hi-champ{margin-left:auto;font-family:var(--display);font-weight:800;font-size:15px;color:var(--gold);flex-shrink:0;}
+.hi-champ small{font-size:9px;color:var(--muted);font-family:var(--mono);font-weight:400;display:block;text-align:right;}
+/* ---------- funnel + kanban ---------- */
+.funnel{padding:24px 26px;}
+.frow{display:flex;align-items:center;gap:14px;margin-bottom:6px;}
+.frow-label{width:130px;flex-shrink:0;text-align:right;}
+.frow-label b{font-family:var(--display);font-size:13px;color:var(--bright);display:block;}
+.frow-label span{font-family:var(--mono);font-size:9px;color:var(--muted);}
+.frow-bar{flex:1;height:34px;border-radius:8px;background:var(--surface2);overflow:hidden;position:relative;cursor:pointer;}
+.frow-bar i{display:block;height:100%;border-radius:8px;background:linear-gradient(90deg,var(--fc1,#0e7490),var(--fc2,#22d3ee));
+  width:0;transition:width 1s cubic-bezier(.16,1,.3,1);box-shadow:0 0 18px rgba(34,211,238,.15);}
+.frow-bar:hover i{filter:brightness(1.2);}
+.frow-val{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-family:var(--display);font-weight:800;font-size:14px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.5);}
+.frow-conv{width:104px;flex-shrink:0;font-family:var(--mono);font-size:10px;color:var(--muted2);}
+.frow-conv b{color:var(--cyan);}
+.fdrop{display:flex;align-items:center;gap:14px;margin:0 0 6px;}
+.fdrop-spacer{width:130px;flex-shrink:0;}
+.fdrop-txt{font-family:var(--mono);font-size:9px;color:var(--muted);padding-left:12px;}
+.kanban{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;}
+.kcol{background:var(--surface);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);border:1px solid var(--border);border-radius:var(--radius);
+  padding:12px;min-height:200px;display:flex;flex-direction:column;gap:8px;box-shadow:inset 0 1px 0 var(--sheen),var(--card-shadow);}
+.kcol-head{display:flex;align-items:center;gap:7px;padding-bottom:9px;border-bottom:1px solid var(--border);margin-bottom:2px;}
+.kcol-head .kn{font-family:var(--mono);font-size:9px;color:var(--muted2);text-transform:uppercase;letter-spacing:.1em;}
+.kcol-head .kc{margin-left:auto;font-family:var(--mono);font-size:9px;color:var(--kc,#22d3ee);background:var(--surface2);border-radius:999px;padding:1px 8px;}
+.kchip{background:var(--surface2);border:1px solid var(--border-strong);border-radius:9px;padding:8px 10px;cursor:pointer;transition:border-color .15s,transform .15s;}
+.kchip:hover{border-color:rgba(34,211,238,.4);transform:translateY(-1px);}
+.kchip .cn{font-size:11.5px;font-weight:600;color:var(--bright);line-height:1.25;}
+.kchip .ct{font-size:9.5px;color:var(--muted);line-height:1.3;margin-top:1px;}
+.kchip .cm{display:flex;align-items:center;gap:5px;margin-top:5px;}
+.kchip .sc{font-family:var(--mono);font-size:9px;color:var(--gold);}
+.kmore{font-family:var(--mono);font-size:9.5px;color:var(--cyan);cursor:pointer;text-align:center;padding:5px;border-radius:7px;}
+.kmore:hover{background:var(--cyan-dim);}
+/* ---------- prospects table ---------- */
+.toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+.search{flex:1;min-width:200px;display:flex;align-items:center;gap:9px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:9px 14px;
+  backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);box-shadow:inset 0 1px 0 var(--sheen);}
+.search input{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:var(--sans);font-size:13px;}
+.search input::placeholder{color:var(--muted);}
+.chips{display:flex;gap:6px;flex-wrap:wrap;}
+.chip{font-family:var(--mono);font-size:10px;color:var(--muted2);background:var(--surface);border:1px solid var(--border-strong);border-radius:999px;padding:6px 13px;cursor:pointer;transition:all .15s;}
+.chip:hover{color:var(--text);border-color:var(--muted);}
+.chip.on{color:var(--cyan);background:var(--cyan-dim);border-color:rgba(34,211,238,.4);}
+.tbl-wrap{overflow-x:auto;border-radius:var(--radius);}
+table.tbl{width:100%;border-collapse:collapse;min-width:880px;}
+.tbl th{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;text-align:left;
+  padding:12px 14px;border-bottom:1px solid var(--border-strong);cursor:pointer;user-select:none;white-space:nowrap;}
+.tbl th:hover{color:var(--muted2);}
+.tbl th.sorted{color:var(--cyan);}
+.tbl td{padding:11px 14px;border-bottom:1px solid rgba(148,163,184,.05);font-size:12.5px;color:var(--muted2);white-space:nowrap;}
+.tbl tbody tr{cursor:pointer;transition:background .12s;}
+.tbl tbody tr:hover{background:rgba(34,211,238,.05);}
+.tcell-name{display:flex;align-items:center;gap:10px;}
+.t-av{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-weight:800;font-size:9.5px;color:#06212b;background:linear-gradient(135deg,#67e8f9,#22d3ee);}
+.t-name b{color:var(--bright);font-weight:600;display:block;font-size:12.5px;}
+.t-name span{font-size:10px;color:var(--muted);}
+.score-pill{font-family:var(--display);font-weight:800;font-size:13px;}
+.score-hi{color:var(--green);} .score-mid{color:var(--gold);} .score-low{color:var(--muted);}
+.stagebadge{font-family:var(--mono);font-size:8.5px;text-transform:uppercase;letter-spacing:.08em;padding:3px 9px;border-radius:999px;border:1px solid;}
+.tbl-foot{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;font-family:var(--mono);font-size:10px;color:var(--muted);}
+/* ---------- agents view ---------- */
+.agents-big{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:16px;}
+.agent-big{padding:20px;cursor:pointer;transition:border-color .3s,transform .3s;position:relative;overflow:hidden;}
+.agent-big:hover{border-color:rgba(34,211,238,.3);transform:translateY(-2px);}
+.ab-row{display:flex;align-items:center;gap:12px;margin-bottom:13px;}
+.ab-config{display:grid;grid-template-columns:1fr 1fr;gap:7px 16px;margin:13px 0;padding:12px 14px;background:var(--inset);border:1px solid var(--border);border-radius:10px;}
+.ab-config .ck{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;}
+.ab-config .cv{font-family:var(--mono);font-size:10.5px;color:var(--cyan);text-align:right;}
+.ab-spark{margin-top:6px;}
+.ab-foot{display:flex;align-items:center;justify-content:space-between;margin-top:11px;}
+.ab-foot .au{font-family:var(--mono);font-size:9.5px;color:var(--muted);}
+.ab-foot .al2{font-family:var(--mono);font-size:9.5px;color:var(--cyan);}
+/* ---------- rapporten ---------- */
+.rap-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:start;}
+.report{padding:22px 24px;}
+.report h3{font-family:var(--display);font-size:16px;font-weight:700;color:var(--bright);margin-bottom:4px;}
+.report .rp-meta{font-family:var(--mono);font-size:9.5px;color:var(--muted);margin-bottom:16px;}
+.report h4{font-family:var(--mono);font-size:10px;color:var(--cyan);text-transform:uppercase;letter-spacing:.14em;margin:18px 0 8px;}
+.report p,.report li{font-size:12.5px;color:var(--muted2);line-height:1.7;}
+.report ol,.report ul{padding-left:20px;}
+.report b{color:var(--text);}
+.report .hl{color:var(--gold);}
+.chart-card{padding:18px 20px;}
+.chart-card h4{font-family:var(--display);font-size:13px;font-weight:700;color:var(--bright);margin-bottom:2px;display:flex;align-items:center;gap:7px;}
+.chart-card .ch-sub{font-family:var(--mono);font-size:9px;color:var(--muted);margin-bottom:14px;}
+.charts-col{display:flex;flex-direction:column;gap:18px;}
+.hbar-row{display:flex;align-items:center;gap:10px;margin-bottom:9px;}
+.hbar-label{width:175px;flex-shrink:0;font-family:var(--mono);font-size:10px;color:var(--muted2);text-align:right;overflow:hidden;text-overflow:ellipsis;}
+.hbar-track{flex:1;height:14px;border-radius:7px;background:var(--surface2);overflow:hidden;}
+.hbar-track i{display:block;height:100%;border-radius:7px;background:linear-gradient(90deg,#0e7490,#22d3ee);width:0;transition:width .9s cubic-bezier(.16,1,.3,1);}
+.hbar-val{width:42px;flex-shrink:0;font-family:var(--mono);font-size:10px;color:var(--cyan);}
+.heat{display:grid;grid-template-columns:34px repeat(10,1fr);gap:3px;}
+.heat .hh{font-family:var(--mono);font-size:8px;color:var(--muted);display:flex;align-items:center;justify-content:center;}
+.heat .hc{aspect-ratio:1.4;border-radius:4px;background:rgba(34,211,238,calc(var(--v) * .85 + .04));transition:transform .1s;cursor:default;}
+.heat .hc:hover{transform:scale(1.18);outline:1px solid var(--cyan);}
+.acc-tbl{width:100%;border-collapse:collapse;}
+.acc-tbl th{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;text-align:left;padding:10px 12px;border-bottom:1px solid var(--border-strong);}
+.acc-tbl td{padding:11px 12px;font-size:12px;color:var(--muted2);border-bottom:1px solid rgba(148,163,184,.05);}
+.acc-tbl td b{color:var(--bright);font-weight:600;}
+/* ---------- modal ---------- */
+.modal-bg{position:fixed;inset:0;z-index:100;background:rgba(4,7,15,.7);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  display:none;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto;}
+.modal-bg.open{display:flex;animation:fade-in .2s ease;}
+@keyframes fade-in{from{opacity:0;}}
+.modal{width:100%;max-width:680px;background:var(--modal-surface);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);
+  border:1px solid var(--border-strong);border-radius:18px;overflow:hidden;animation:modal-in .3s cubic-bezier(.16,1,.3,1);
+  box-shadow:0 30px 80px rgba(0,0,0,.6),inset 0 1px 0 var(--sheen);}
+@keyframes modal-in{from{opacity:0;transform:translateY(18px) scale(.97);}}
+.modal-head{display:flex;align-items:center;gap:15px;padding:22px 24px 18px;border-bottom:1px solid var(--border);
+  background:linear-gradient(135deg,rgba(34,211,238,.06),transparent);}
+.m-av{width:52px;height:52px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,#155e75,#22d3ee);
+  display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:800;font-size:17px;color:#06212b;}
+.m-id .mn{font-family:var(--display);font-size:19px;font-weight:800;color:var(--bright);}
+.m-id .mt{font-size:12px;color:var(--muted2);}
+.m-id .mm{font-family:var(--mono);font-size:9.5px;color:var(--muted);margin-top:3px;}
+.m-score{margin-left:auto;text-align:center;flex-shrink:0;}
+.ring{width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;
+  background:conic-gradient(var(--rc,#22c55e) calc(var(--p)*1%),var(--surface2) 0);}
+.ring::before{content:"";position:absolute;inset:5px;border-radius:50%;background:var(--ring-inner);}
+.ring b{position:relative;font-family:var(--display);font-weight:800;font-size:17px;color:var(--bright);}
+.ring-cap{font-family:var(--mono);font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:4px;}
+.m-close{position:absolute;top:14px;right:16px;width:30px;height:30px;border-radius:8px;border:1px solid var(--border-strong);
+  background:var(--surface2);color:var(--muted2);cursor:pointer;font-size:13px;z-index:2;transition:all .15s;}
+.m-close:hover{color:var(--bright);border-color:var(--muted);}
+.modal-body{padding:20px 24px 24px;}
+.m-sec{margin-bottom:20px;}
+.m-sec h5{font-family:var(--mono);font-size:9.5px;color:var(--cyan);text-transform:uppercase;letter-spacing:.16em;margin-bottom:10px;}
+.sig-bars .hbar-label{width:200px;}
+.msg-box{background:var(--inset2);border:1px solid var(--border);border-radius:11px;padding:14px 16px;font-size:12.5px;color:var(--muted2);line-height:1.7;}
+.convo .cv-msg{max-width:85%;padding:10px 14px;border-radius:12px;font-size:12px;line-height:1.55;margin-bottom:9px;}
+.convo .out{background:rgba(34,211,238,.1);border:1px solid rgba(34,211,238,.2);color:#c8e8f0;border-bottom-left-radius:4px;}
+.convo .in{background:var(--surface2);border:1px solid var(--border-strong);color:var(--muted2);margin-left:auto;border-bottom-right-radius:4px;}
+.convo .cv-who{font-family:var(--mono);font-size:8.5px;color:var(--muted);margin-bottom:3px;text-transform:uppercase;letter-spacing:.08em;}
+.champ-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.champ-cell{background:var(--inset);border:1px solid var(--border);border-radius:10px;padding:11px 13px;}
+.champ-cell .cl{font-family:var(--mono);font-size:9px;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;}
+.champ-cell .cb{font-size:11.5px;color:var(--muted2);line-height:1.45;}
+.m-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:4px;}
+.m-btn{flex:1;min-width:140px;font-size:12px;font-weight:600;padding:10px 14px;border-radius:9px;cursor:pointer;border:1px solid;transition:all .15s;text-align:center;}
+.m-btn.primary{color:#06212b;background:linear-gradient(135deg,#22d3ee,#67e8f9);border-color:transparent;}
+.m-btn.primary:hover{box-shadow:0 0 22px rgba(34,211,238,.4);}
+.m-btn.ghost{color:var(--muted2);background:transparent;border-color:var(--border-strong);}
+.m-btn.ghost:hover{color:var(--bright);border-color:var(--muted);}
+.timeline{position:relative;padding-left:20px;}
+.timeline::before{content:"";position:absolute;left:5px;top:6px;bottom:6px;width:1px;background:var(--border-strong);}
+.tl-item{position:relative;padding-bottom:13px;}
+.tl-item::before{content:"";position:absolute;left:-19px;top:4px;width:9px;height:9px;border-radius:50%;background:var(--surface2);border:2px solid var(--cyan);}
+.tl-item.gold::before{border-color:var(--gold);}
+.tl-item .tt{font-size:12px;color:var(--text);font-weight:600;}
+.tl-item .td{font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:1px;}
+/* ---------- drawer ---------- */
+.drawer-bg{position:fixed;inset:0;z-index:100;background:rgba(4,7,15,.55);display:none;}
+.drawer-bg.open{display:block;animation:fade-in .2s;}
+.drawer{position:fixed;top:0;right:0;bottom:0;z-index:101;width:min(460px,94vw);
+  background:var(--drawer-surface);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);
+  border-left:1px solid var(--border-strong);transform:translateX(100%);transition:transform .35s cubic-bezier(.16,1,.3,1);
+  display:flex;flex-direction:column;box-shadow:-20px 0 60px rgba(0,0,0,.5);}
+.drawer.open{transform:translateX(0);}
+.drawer-head{display:flex;align-items:center;gap:13px;padding:20px 22px;border-bottom:1px solid var(--border);}
+.drawer-body{flex:1;overflow-y:auto;padding:18px 22px;scrollbar-width:thin;scrollbar-color:var(--border-strong) transparent;}
+.drawer-body::-webkit-scrollbar{width:5px;}
+.drawer-body::-webkit-scrollbar-thumb{background:var(--border-strong);}
+.d-log .fi{padding:8px 0;}
+.d-h5{font-family:var(--mono);font-size:9.5px;color:var(--cyan);text-transform:uppercase;letter-spacing:.16em;margin:0 0 8px;}
+.d-h5.why{color:var(--gold);}
+.d-txt{font-size:12.5px;color:var(--muted2);line-height:1.65;margin-bottom:16px;}
+/* live task box */
+.live-box{background:linear-gradient(135deg,rgba(34,211,238,.07),var(--inset));border:1px solid rgba(34,211,238,.3);border-radius:12px;padding:14px 16px;margin-bottom:16px;}
+.live-box.idle{border-color:var(--border-strong);background:var(--inset);}
+.lb-head{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;color:var(--cyan);letter-spacing:.08em;text-transform:uppercase;margin-bottom:9px;}
+.lb-head .lb-spin{display:inline-block;animation:spin 1.2s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.lb-task{font-size:12px;color:var(--text);font-weight:600;margin-bottom:9px;}
+.lb-bar{height:5px;border-radius:3px;background:var(--border-strong);overflow:hidden;margin-bottom:11px;}
+.lb-bar i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,#22d3ee,#67e8f9);transition:width .25s linear;}
+.lb-step{display:flex;align-items:flex-start;gap:8px;font-family:var(--mono);font-size:10px;line-height:1.5;padding:3px 0;color:var(--muted);}
+.lb-step.done{color:var(--green);}
+.lb-step.cur{color:var(--cyan);}
+.lb-step .si{flex-shrink:0;width:14px;}
+.lb-meta{font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:9px;padding-top:8px;border-top:1px solid var(--border);}
+/* ---------- toast & confetti ---------- */
+.confetti{position:fixed;top:-12px;border-radius:2px;z-index:200;pointer-events:none;animation:fall linear forwards;}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:.2;}}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(80px);z-index:300;
+  background:var(--modal-surface);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);
+  border:1px solid rgba(245,158,11,.45);border-radius:12px;padding:14px 22px;display:flex;align-items:center;gap:12px;
+  opacity:0;transition:all .5s cubic-bezier(.16,1,.3,1);box-shadow:0 12px 44px rgba(0,0,0,.5);max-width:92vw;}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+.toast .t-ico{font-size:22px;}
+.toast .t-title{font-family:var(--display);font-weight:700;font-size:14px;color:var(--bright);}
+.toast .t-sub{font-size:11.5px;color:var(--muted2);}
+/* ---------- footer ---------- */
+.foot{margin-top:34px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;
+  font-family:var(--mono);font-size:9.5px;color:var(--muted);letter-spacing:.08em;}
+.foot b{color:var(--muted2);}
+/* ---------- biz modal content ---------- */
+.biz h5{font-family:var(--mono);font-size:9.5px;color:var(--cyan);text-transform:uppercase;letter-spacing:.16em;margin:18px 0 8px;}
+.biz h5:first-child{margin-top:0;}
+.biz p,.biz li{font-size:12.5px;color:var(--muted2);line-height:1.7;}
+.biz ul,.biz ol{padding-left:20px;}
+.biz b{color:var(--text);}
+.biz .hl{color:var(--gold);}
+/* ---------- LIGHT THEME (liquid glass) ---------- */
+body.light{
+  --bg:#e7edf7; --surface:rgba(255,255,255,.62); --surface-solid:#ffffff; --surface2:#edf2fa;
+  --border:rgba(20,45,80,.09); --border-strong:#d3dded;
+  --cyan:#0e7490; --cyan-dim:rgba(14,116,144,.1);
+  --gold:#b45309; --gold-dim:rgba(180,83,9,.1);
+  --green:#15803d; --green-dim:rgba(21,128,61,.1);
+  --red:#dc2626; --red-dim:rgba(220,38,38,.08);
+  --text:#243044; --muted:#5e6e87; --muted2:#3c4d68; --bright:#0c1a30;
+  --ring-inner:#f4f8fe; --modal-surface:rgba(252,254,255,.96); --drawer-surface:rgba(250,252,255,.97);
+  --bar-bg:rgba(244,248,253,.82); --inset:rgba(232,239,249,.75); --inset2:rgba(232,239,249,.85);
+  --sheen:rgba(255,255,255,.85); --card-shadow:0 10px 32px rgba(35,60,105,.09);
+}
+body.light .grid-lines{background-image:linear-gradient(rgba(20,45,80,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(20,45,80,.045) 1px,transparent 1px);}
+body.light .grain{opacity:.05;}
+body.light .orb-1{background:radial-gradient(circle,#67e8f9,transparent 70%);opacity:.5;}
+body.light .orb-2{background:radial-gradient(circle,#fde68a,transparent 70%);opacity:.45;}
+body.light .fi.hot .fi-msg{color:#92400e;}
+body.light .agent.is-processing .agent-task{color:#0e7490;}
+body.light .agent.is-processing{box-shadow:0 0 26px rgba(14,116,144,.14),inset 0 1px 0 var(--sheen);}
+body.light .convo .out{background:rgba(14,116,144,.08);border-color:rgba(14,116,144,.2);color:#134e5e;}
+body.light .heat .hc{background:rgba(8,105,134,calc(var(--v) * .85 + .05));}
+body.light .demo-strip{background:linear-gradient(135deg,rgba(14,116,144,.07),rgba(180,83,9,.05));border-color:rgba(14,116,144,.25);}
+body.light .modal{box-shadow:0 30px 80px rgba(30,50,90,.25),inset 0 1px 0 var(--sheen);}
+body.light .drawer{box-shadow:-20px 0 60px rgba(30,50,90,.18);}
+body.light .toast{box-shadow:0 12px 44px rgba(30,50,90,.22);}
+body.light .stage:hover{background:rgba(14,116,144,.05);}
+body.light .tbl tbody tr:hover{background:rgba(14,116,144,.05);}
+body.light .kchip{background:#fff;}
+body.light .popover{border-color:rgba(14,116,144,.3);box-shadow:0 18px 50px rgba(30,50,90,.2),inset 0 1px 0 var(--sheen);}
+body.light .live-box{background:linear-gradient(135deg,rgba(14,116,144,.06),var(--inset));border-color:rgba(14,116,144,.25);}
+body.light [stroke="#22d3ee"]{stroke:#0e7490;}
+body.light [fill="#22d3ee"]{fill:#0e7490;}
+body.light [stroke="#f59e0b"]{stroke:#b45309;}
+body.light [fill="#f59e0b"]{fill:#b45309;}
+body.light [stroke="#22c55e"]{stroke:#15803d;}
+body.light [fill="#22c55e"]{fill:#15803d;}
+body.light [stop-color="#67e8f9"]{stop-color:#0891b2;}
+body.light [stop-color="#0e7490"]{stop-color:#155e75;}
+/* ---------- responsive ---------- */
+@media(max-width:1100px){
+  .main-grid{grid-template-columns:1fr;}
+  .side-col{position:static;}
+  .metrics{grid-template-columns:repeat(2,1fr);}
+  .rap-grid{grid-template-columns:1fr;}
+  .kanban{grid-template-columns:repeat(3,1fr);}
+}
+@media(max-width:640px){
+  .wrap{padding:14px 13px 50px;}
+  .topbar-row{padding:10px 14px 6px;gap:10px;}
+  .clock{display:none;}
+  .econ{padding:0 14px;}
+  .ei{padding-right:12px;margin-right:12px;}
+  .metrics{gap:10px;}
+  .metric-value{font-size:24px;}
+  .agents{grid-template-columns:1fr;}
+  .btn-demo{padding:8px 14px;font-size:12px;}
+  .kanban{grid-template-columns:repeat(2,1fr);}
+  .frow-label{width:84px;}
+  .frow-conv{display:none;}
+  .hbar-label{width:108px;}
+  .sig-bars .hbar-label{width:128px;}
+  .champ-grid{grid-template-columns:1fr;}
+  .demo-phase{min-width:0;width:100%;}
+}
+@media(prefers-reduced-motion:reduce){
+  .orb,.confetti,.agent.is-processing::after{animation:none!important;}
+  .orb{opacity:.15;}
+  .sys-dot,.badge.active i,.fh-dot,.lb-head .lb-spin{animation:none!important;}
+  .dstep.active i{animation-duration:.4s!important;}
+}
+</style>
+</head>
+<body>
+<div class="orb orb-1"></div><div class="orb orb-2"></div>
+<div class="grid-lines"></div>
+<div class="grain"></div>
+
+<header class="topbar">
+  <div class="topbar-row">
+    <div class="brand">
+      <div class="brand-mark">R</div>
+      <div class="brand-text"><h1>Rocadelo HR</h1><span>AI Agent Command Center</span></div>
+    </div>
+    <div class="topbar-right">
+      <div class="sys-status"><span class="sys-dot"></span>7/7 AGENTS ONLINE</div>
+      <div class="clock" id="clock">--:--:--</div>
+      <button class="icon-btn" id="themeBtn" title="Wissel licht/donker thema">🌙</button>
+      <button class="btn-demo" id="btnDemo"><span>▶</span> Run Demo</button>
+    </div>
+  </div>
+  <nav class="nav" id="nav">
+    <button class="nav-tab active" data-view="overview">⌂ Overview</button>
+    <button class="nav-tab" data-view="pipeline">Pipeline</button>
+    <button class="nav-tab" data-view="prospects">Prospects <span class="nc" id="ncProspects">64</span></button>
+    <button class="nav-tab" data-view="agents">Agents <span class="nc">7</span></button>
+    <button class="nav-tab" data-view="rapporten">Rapporten</button>
+    <button class="nav-tab biz" data-biz="1">ℹ Hoe werkt dit?</button>
+  </nav>
+  <div class="econ" id="econBar">
+    <div class="ei"><span class="ei-l">⚡ Tokens vandaag <button class="info-btn" data-info="tokens">?</button></span><b class="ei-v" id="ecTok">—</b><span class="ei-s" id="ecTokSub">in / out</span></div>
+    <div class="ei"><span class="ei-l">💸 AI-kost vandaag <button class="info-btn" data-info="aikost">?</button></span><b class="ei-v" id="ecCost">—</b><span class="ei-s">claude-sonnet-4-6</span></div>
+    <div class="ei"><span class="ei-l">🧰 Toolstack <button class="info-btn" data-info="toolstack">?</button></span><b class="ei-v">€112</b><span class="ei-s">per maand</span></div>
+    <div class="ei"><span class="ei-l">📅 Kost per meeting <button class="info-btn" data-info="kpm">?</button></span><b class="ei-v" id="ecMeet">—</b><span class="ei-s">all-in</span></div>
+    <div class="ei gold"><span class="ei-l">💰 Pipeline-waarde <button class="info-btn" data-info="pipewaarde">?</button></span><b class="ei-v" id="ecPipe">—</b><span class="ei-s">19 meetings</span></div>
+    <div class="ei roi"><span class="ei-l">📈 Waarde vs kost <button class="info-btn" data-info="roi">?</button></span><b class="ei-v" id="ecRoi">—</b><span class="ei-s">pipeline ÷ maandkost</span></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- ============ VIEW: OVERVIEW ============ -->
+  <section class="view active" id="view-overview">
+    <div class="section-label">Performance — laatste 30 dagen</div>
+    <div class="metrics">
+      <div class="metric" style="--mc:#22d3ee" data-goto="rapporten">
+        <div class="metric-label">Response rate <button class="info-btn" data-info="m-response">?</button></div>
+        <div class="metric-value"><span id="mResponse">0</span><small>%</small></div>
+        <span class="metric-delta delta-up">▲ +4,2% vs vorige maand</span>
+        <svg width="90" height="34" viewBox="0 0 90 34"><path class="spark-fill" d="M0,28 L11,24 L22,26 L33,19 L44,21 L55,14 L66,16 L77,9 L90,6 L90,34 L0,34 Z" fill="#22d3ee"/><path class="spark-line" d="M0,28 L11,24 L22,26 L33,19 L44,21 L55,14 L66,16 L77,9 L90,6" stroke="#22d3ee"/></svg>
+      </div>
+      <div class="metric" style="--mc:#f59e0b" data-goto="rapporten">
+        <div class="metric-label">Meeting rate <button class="info-btn" data-info="m-meeting">?</button></div>
+        <div class="metric-value"><span id="mMeeting">0</span><small>%</small></div>
+        <span class="metric-delta delta-gold">▲ +1,8% vs vorige maand</span>
+        <svg width="90" height="34" viewBox="0 0 90 34"><path class="spark-fill" d="M0,30 L11,28 L22,29 L33,24 L44,25 L55,20 L66,17 L77,13 L90,10 L90,34 L0,34 Z" fill="#f59e0b"/><path class="spark-line" d="M0,30 L11,28 L22,29 L33,24 L44,25 L55,20 L66,17 L77,13 L90,10" stroke="#f59e0b"/></svg>
+      </div>
+      <div class="metric" style="--mc:#22c55e" data-goto="prospects">
+        <div class="metric-label">Prospects verwerkt <button class="info-btn" data-info="m-prospects">?</button></div>
+        <div class="metric-value"><span id="mProspects">0</span></div>
+        <span class="metric-delta delta-up">▲ 312 deze week</span>
+        <svg width="90" height="34" viewBox="0 0 90 34"><path class="spark-fill" d="M0,26 L11,22 L22,23 L33,18 L44,16 L55,17 L66,12 L77,10 L90,5 L90,34 L0,34 Z" fill="#22c55e"/><path class="spark-line" d="M0,26 L11,22 L22,23 L33,18 L44,16 L55,17 L66,12 L77,10 L90,5" stroke="#22c55e"/></svg>
+      </div>
+      <div class="metric" style="--mc:#f59e0b" data-goto="rapporten">
+        <div class="metric-label">Geschatte omzet-impact <button class="info-btn" data-info="m-revenue">?</button></div>
+        <div class="metric-value"><small>€</small><span id="mRevenue">0</span><small>K</small></div>
+        <span class="metric-delta delta-gold">19 meetings × gem. fee €10K</span>
+        <svg width="90" height="34" viewBox="0 0 90 34"><path class="spark-fill" d="M0,31 L11,29 L22,27 L33,26 L44,21 L55,19 L66,14 L77,9 L90,4 L90,34 L0,34 Z" fill="#f59e0b"/><path class="spark-line" d="M0,31 L11,29 L22,27 L33,26 L44,21 L55,19 L66,14 L77,9 L90,4" stroke="#f59e0b"/></svg>
+      </div>
+    </div>
+
+    <div class="section-label">Live prospect pipeline <button class="info-btn" data-info="pipeline">?</button> <span class="sl-act" data-goto="pipeline">volledig funnel-overzicht →</span></div>
+    <div class="panel pipeline">
+      <div class="pipe-track" id="pipeTrack"></div>
+      <div class="pipe-foot">
+        <div class="pipe-conv">Detected → Meeting conversie: <b id="convRate">1,5%</b> · Gem. doorlooptijd: <b>6,2 dagen</b></div>
+        <div class="pipe-conv">Accounts: <b>3 actief</b> · 0 warnings · BE residential IPs ✓</div>
+      </div>
+    </div>
+
+    <div class="demo-strip" id="demoStrip">
+      <div class="demo-avatar" id="demoAvatar">LV</div>
+      <div class="demo-info">
+        <div class="dn" id="demoName">—</div>
+        <div class="dt" id="demoTitle">—</div>
+        <div class="dl" id="demoSignal">—</div>
+      </div>
+      <div class="demo-steps" id="demoSteps">
+        <div class="dstep"><i></i></div><div class="dstep"><i></i></div><div class="dstep"><i></i></div>
+        <div class="dstep"><i></i></div><div class="dstep"><i></i></div><div class="dstep"><i></i></div>
+      </div>
+      <div class="demo-score" id="demoScore">⭐ <span id="demoScoreVal">87</span>/100</div>
+      <div class="demo-phase" id="demoPhase">Initialiseren…</div>
+    </div>
+
+    <div class="main-grid" style="margin-top:6px;">
+      <div>
+        <div class="section-label">Agent squad <button class="info-btn" data-info="agents">?</button> <span class="sl-act" data-goto="agents">alle details →</span></div>
+        <div class="agents" id="agentsGrid"></div>
+      </div>
+      <div class="side-col">
+        <div>
+          <div class="section-label">Hot leads — actie vereist <button class="info-btn" data-info="hotleads">?</button></div>
+          <div class="panel hot-list" id="hotList"></div>
+        </div>
+        <div>
+          <div class="section-label">Live activity <button class="info-btn" data-info="feed">?</button></div>
+          <div class="panel feed-panel">
+            <div class="feed-head"><span class="fh-dot"></span><b>Agent Activity</b><span id="feedCount">0 EVENTS</span></div>
+            <div class="feed" id="feed"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VIEW: PIPELINE ============ -->
+  <section class="view" id="view-pipeline">
+    <div class="section-label">Conversie-funnel — alle campagnes, 30 dagen <button class="info-btn" data-info="funnel">?</button></div>
+    <div class="panel funnel" id="funnel"></div>
+    <div class="section-label">Pipeline board — recente prospects per fase <button class="info-btn" data-info="kanban">?</button> <span class="sl-act" data-goto="prospects">alle prospects →</span></div>
+    <div class="kanban" id="kanban"></div>
+  </section>
+
+  <!-- ============ VIEW: PROSPECTS ============ -->
+  <section class="view" id="view-prospects">
+    <div class="section-label">Prospect database — klik op een rij voor het volledige dossier <button class="info-btn" data-info="prospects">?</button></div>
+    <div class="toolbar">
+      <div class="search">🔎 <input type="text" id="searchInput" placeholder="Zoek op naam, functie, bedrijf of stad…"></div>
+      <div class="chips" id="stageChips"></div>
+      <div class="chips" id="langChips"></div>
+    </div>
+    <div class="panel tbl-wrap">
+      <table class="tbl">
+        <thead><tr id="tblHead"></tr></thead>
+        <tbody id="tblBody"></tbody>
+      </table>
+      <div class="tbl-foot"><span id="tblInfo"></span><span>Profieldata max. 24 mnd bewaard · GDPR Art. 14 ✓</span></div>
+    </div>
+  </section>
+
+  <!-- ============ VIEW: AGENTS ============ -->
+  <section class="view" id="view-agents">
+    <div class="section-label">Agent squad — configuratie & throughput (klik voor live taken & logs) <button class="info-btn" data-info="agents">?</button></div>
+    <div class="agents-big" id="agentsBig"></div>
+  </section>
+
+  <!-- ============ VIEW: RAPPORTEN ============ -->
+  <section class="view" id="view-rapporten">
+    <div class="section-label">Wekelijks rapport — Performance Analyst</div>
+    <div class="rap-grid">
+      <div class="panel report" id="weekReport"></div>
+      <div class="charts-col">
+        <div class="panel chart-card">
+          <h4>Reply rate trend <button class="info-btn" data-info="trend">?</button></h4><div class="ch-sub">LAATSTE 8 WEKEN · DOEL ≥ 10% (BEHAALD: 42%)</div>
+          <div id="chartTrend"></div>
+        </div>
+        <div class="panel chart-card">
+          <h4>Berichten per dag <button class="info-btn" data-info="sends">?</button></h4><div class="ch-sub">LAATSTE 14 DAGEN · MAX 20 PER ACCOUNT PER DAG</div>
+          <div id="chartSends"></div>
+        </div>
+      </div>
+    </div>
+    <div class="rap-grid" style="margin-top:18px;">
+      <div class="panel chart-card">
+        <h4>Intent signal → conversie-correlatie <button class="info-btn" data-info="signals">?</button></h4><div class="ch-sub">MULTIPLIER VS GEMIDDELDE REPLY RATE</div>
+        <div id="chartSignals" style="margin-top:6px;"></div>
+      </div>
+      <div class="panel chart-card">
+        <h4>Beste verzendtijden <button class="info-btn" data-info="heat">?</button></h4><div class="ch-sub">REPLY-KANS PER DAG × UUR (CET) · PIEK: DI 09–11U</div>
+        <div class="heat" id="heatmap"></div>
+      </div>
+    </div>
+    <div class="section-label">Account health — LinkedIn agency-accounts <button class="info-btn" data-info="accounts">?</button></div>
+    <div class="panel" style="overflow-x:auto;">
+      <table class="acc-tbl" id="accTbl"></table>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div><b>ROCADELO HR</b> · Managed Outbound Pod · België 🇧🇪</div>
+    <div>GDPR Art. 14 compliant · Data &lt; 24 mnd · v3.0.0</div>
+  </footer>
+</div>
+
+<!-- popover -->
+<div class="popover" id="popover" role="tooltip"></div>
+
+<!-- modal -->
+<div class="modal-bg" id="modalBg" role="presentation">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Details" id="modalCard" style="position:relative;">
+    <button class="m-close" id="modalClose" aria-label="Sluiten">✕</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<!-- agent drawer -->
+<div class="drawer-bg" id="drawerBg"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Agent details">
+  <div class="drawer-head" id="drawerHead"></div>
+  <div class="drawer-body" id="drawerBody"></div>
+</aside>
+
+<div class="toast" id="toast">
+  <div class="t-ico">🔥</div>
+  <div><div class="t-title" id="toastTitle">Hot lead!</div><div class="t-sub" id="toastSub"></div></div>
+</div>
+
+<script>
+'use strict';
+/* ================= DATA ================= */
+const STAGES = [
+  {key:'detected', label:'Detected',  icon:'🔍', sub:'hiring signals', color:'#22d3ee'},
+  {key:'scored',   label:'Scored',    icon:'🎯', sub:'score ≥ 80',     color:'#22d3ee'},
+  {key:'messaged', label:'Messaged',  icon:'✉️', sub:'NL / FR / EN',   color:'#67e8f9'},
+  {key:'replied',  label:'Replied',   icon:'💬', sub:'42% response',   color:'#22c55e'},
+  {key:'qualified',label:'Qualified', icon:'⭐', sub:'CHAMP ≥ 7',      color:'#f59e0b'},
+  {key:'meeting',  label:'Meeting',   icon:'📅', sub:'discovery calls',color:'#f59e0b'},
+];
+const SIGNAL_WEIGHTS = {
+  open_to_work:30, recent_job_change:25, new_skills_added:15, profile_updated_recently:10,
+  active_poster:8, seniority_promotion_overdue:7, company_recently_downsized:7,
+  recruiter_connection_pattern:6, engagement_spike:5, profile_views_spiked:5,
+  education_recently_completed:5, industry_layoffs_detected:5, location_recently_changed:4,
+  competitor_company_growth:3,
+};
+const SIGNAL_KEYS = Object.keys(SIGNAL_WEIGHTS);
+
+const AGENTS = [
+  {id:'director', icon:'🧠', name:'Director', role:'Orkestreert alle agents & beheert prioriteiten', big:true,
+   task:'Dagplanning actief — 3 accounts, focus: tech-pool Antwerpen',
+   speed:[1500,2600], tok:{i:3000,o:350},
+   stats:[{v:'86',l:'taken vandaag'},{v:'4',l:'in queue'},{v:'99,9%',l:'uptime'}],
+   desc:'De Director draait de dagelijkse flow: 08:00 signal detection, 08:30 review, 09:00–17:00 verzending met menselijke timing, elk uur reply-checks, 18:00 dagrapport. Quality gate: na 3 menselijke afwijzingen gaat een lead naar handmatige review.',
+   why:'Eén centrale orkestrator betekent voorspelbare daglimieten per account (max 20 invites), menselijke timing en een mens-in-de-loop op precies de juiste momenten. Zo blijven accounts veilig én blijft de kwaliteit hoog zonder dat er iemand fulltime naast moet zitten.',
+   workSteps:['Wachtrijen en prioriteiten laden','Account-limieten checken (max 20/dag)','Taken toewijzen aan de juiste agents','Menselijke timing inplannen (random delays)','Status loggen naar database'],
+   config:[['Model','claude-sonnet-4-6'],['Modus','autonoom + review'],['Dagvenster','08:00–18:00 CET'],['Quality gate','3 skips → mens'],['Taakduur','1,5–2,6s / taak'],['Accounts','3 actief + 2 warmup']],
+   spark:[62,71,68,80,77,86,84]},
+  {id:'signal', icon:'🔍', name:'Signal Detector', role:'Detecteert LinkedIn hiring signals',
+   task:'Scant profielen: regio Gent · keyword "java developer"',
+   speed:[4000,7000], tok:{i:0,o:0},
+   stats:[{v:'1.284',l:'gescand'},{v:'312',l:'signals'}],
+   desc:'Zoekt 50–100 profielen per dag via Unipile en detecteert 15 typen intent signals, van open_to_work tot profile_views_spiked. Rate limiting: max 100 profielen per uur met random delays van 3–8 seconden — bewust traag, zoals een mens.',
+   why:'Timing verslaat volume. Iemand die net "open to work" aanzet of van job veranderde, is ontvankelijk — daarom contacteren we op het moment van het signaal in plaats van koude lijsten te spammen. Dát is het verschil met de spam-bende.',
+   workSteps:['Unipile search query opbouwen','Profielen ophalen (rate limit 100/u)','15 signaaltypen extraheren per profiel','Random delay 3–8s (menselijk gedrag)','Kandidaten doorzetten naar Lead Scorer'],
+   config:[['Bron','Unipile API'],['Signalen','15 typen'],['Rate limit','100 profielen/u'],['Delay','3–8s random'],['Taakduur','4–7s / scan-batch'],['Talen','NL · FR · EN']],
+   spark:[140,165,150,180,172,195,188]},
+  {id:'scorer', icon:'🎯', name:'Lead Scorer', role:'Scoort prospects 0–100 op 15 intent signals',
+   task:'Batch van 14 profielen in scoring queue',
+   speed:[2500,4500], tok:{i:1800,o:160},
+   stats:[{v:'612',l:'gescoord'},{v:'38%',l:'score ≥ 80'}],
+   desc:'Weegt elk profiel op 15 gewogen signalen (open_to_work telt 30 punten, recent_job_change 25, …). Alleen leads met score 80+ gaan door naar de Message Writer. Output is altijd JSON: score, top_signals en pitch_angle.',
+   why:'Niet iedereen aanschrijven is een feature. Door alleen 80+ door te laten blijft de reply rate hoog (42% vs ±5% sectorgemiddelde) en blijven de LinkedIn-accounts onder de radar. Minder volume, meer resultaat — en lagere AI-kost.',
+   workSteps:['Profiel + signalen laden uit SQLite','System prompt hergebruiken (prompt caching)','Claude API call — claude-sonnet-4-6','JSON valideren: score + pitch_angle','Score ≥ 80 → wachtrij Message Writer'],
+   config:[['Model','claude-sonnet-4-6'],['Prompt caching','aan'],['Drempel','score ≥ 80'],['Taakduur','2,5–4,5s / profiel'],['Tokens','±2K / score'],['Kost','~$0,008 / score']],
+   spark:[78,85,80,92,88,95,90]},
+  {id:'writer', icon:'✉️', name:'Message Writer', role:'Personaliseert outreach in NL · FR · EN',
+   task:'3 varianten gegenereerd — wacht op review',
+   speed:[5000,8000], tok:{i:2200,o:520},
+   stats:[{v:'347',l:'berichten'},{v:'≤75',l:'woorden'}],
+   desc:'Schrijft per lead 3 varianten van max 75 woorden, in de taal van het profiel (NL/FR/EN-detectie). Opent met het sterkste intent signal, sluit met een open vraag. GDPR Article 14-zin verplicht in elk eerste bericht. Een mens kiest variant 1, 2, 3 of skip.',
+   why:'Personalisatie op basis van het échte signaal — niet "ik zag je profiel". Max 75 woorden omdat kort beter converteert, een open vraag in plaats van harde CTA, en de Article 14-zin maakt het juridisch waterdicht in België.',
+   workSteps:['Taal detecteren (NL / FR / EN)','Sterkste signaal als opener kiezen','3 varianten genereren (≤75 woorden)','GDPR Art. 14-zin toevoegen','Klaarzetten voor menselijke review (1/2/3/s)'],
+   config:[['Model','claude-sonnet-4-6'],['Varianten','3 per lead'],['Max lengte','75 woorden'],['GDPR Art. 14','verplicht ✓'],['Taakduur','5–8s / lead'],['Review','mens kiest']],
+   spark:[42,55,48,61,58,66,62]},
+  {id:'replies', icon:'💬', name:'Reply Handler', role:'Classificeert inkomende replies',
+   task:'Inbox check elke 60 min — 2 nieuwe replies',
+   speed:[2200,3600], tok:{i:950,o:130},
+   stats:[{v:'146',l:'replies'},{v:'41%',l:'positief'}],
+   desc:'Classificeert elk antwoord als POSITIEF, NEUTRAAL, NEGATIEF of BEZWAAR. Positief → Meeting Qualifier. Bezwaar → empathisch vervolgbericht in dezelfde taal. Neutraal → follow-up na 7 dagen. Negatief → permanent do-not-contact.',
+   why:'Elke reply binnen het uur verwerkt betekent: geen lead koelt af. En NEGATIEF wordt permanent do-not-contact — respect voor een "nee" beschermt de reputatie van het account én van de klant.',
+   workSteps:['Nieuwe berichten ophalen via Unipile','Classificeren: POS / NEU / NEG / BEZWAAR','Vervolgbericht schrijven (zelfde taal)','Follow-up datum zetten (neutraal: +7d)','POSITIEF → doorsturen naar Qualifier'],
+   config:[['Model','claude-sonnet-4-6'],['Interval','elke 60 min'],['Klassen','4 categorieën'],['DNC-lijst','permanent'],['Taakduur','2,2–3,6s / reply'],['Taalbehoud','automatisch']],
+   spark:[12,18,15,22,19,26,24]},
+  {id:'qualifier', icon:'📅', name:'Meeting Qualifier', role:'CHAMP-kwalificatie voor discovery calls',
+   task:'Standby — wacht op positieve replies',
+   speed:[3000,5200], tok:{i:1600,o:240},
+   stats:[{v:'38',l:'gekwalificeerd'},{v:'19',l:'hot leads'}],
+   desc:'Beoordeelt positieve replies via het CHAMP-framework: Challenge, Authority, Money, Priority. Score 7+ = hot lead, direct meeting boeken met notificatie. 4–6 = nurture. Onder 4 = lage prioriteit.',
+   why:'Een meeting met een niet-beslisser zonder budget is verloren tijd voor de klant. CHAMP filtert daarop vóór er een agenda-uitnodiging vertrekt — zo zijn de 2–4 meetings per maand ook écht waardevol (gem. fee €10K per plaatsing).',
+   workSteps:['Conversatie + profiel samenvoegen','Challenge & Authority beoordelen','Money & Priority beoordelen','CHAMP-score berekenen (7+ = hot)','Hot lead → notificatie + hot_leads tabel'],
+   config:[['Framework','CHAMP'],['Hot lead','score ≥ 7'],['Nurture','score 4–6'],['Budget-check','3+ recruiters = ja'],['Taakduur','3–5,2s / lead'],['Notificatie','direct']],
+   spark:[3,5,4,7,6,8,7]},
+  {id:'analyst', icon:'📈', name:'Performance Analyst', role:'Meet metrics & optimaliseert campagnes',
+   task:'Volgende rapport: maandag 09:00',
+   speed:[6000,9500], tok:{i:12000,o:1600},
+   stats:[{v:'+2,3%',l:'reply rate wk'},{v:'di 09:40',l:'beste slot'}],
+   desc:'Draait elke maandag 09:00 via cron. Analyseert de afgelopen week: welke signals correleerden met positieve replies, beste verzendtijden, account-warnings, en herschrijft de slechtst presterende berichttemplate.',
+   why:'Het systeem wordt elke week beter. Door signal-correlaties en verzendtijden terug te koppelen naar de andere agents stijgt de reply rate structureel — en het weekrapport is meteen het bewijs naar de klant dat de service werkt.',
+   workSteps:['7 dagen send_log aggregeren','Signal-correlaties berekenen','Beste verzendtijden bepalen','Weekrapport schrijven (markdown + PDF)','Slechtst presterende template herschrijven'],
+   config:[['Schedule','ma 09:00 (cron)'],['Output','markdown + PDF + email'],['Detectie','account warnings'],['A/B','template-rotatie'],['Taakduur','6–9,5s / analyse'],['Archief','weekly_reports']],
+   spark:[1,1,1,1,1,1,1]},
+];
+
+const INFO = {
+  tokens:{icon:'⚡',t:'Tokens — live verbruik',how:'Elke Claude API-call verbruikt tokens: input (profiel + prompt) en output (score, bericht…). Deze teller telt live mee terwijl de agents werken — vooral de Lead Scorer (±2K/score) en Message Writer (±2,7K/lead).',why:'Volledige kostentransparantie. claude-sonnet-4-6 kost <b>$3 per miljoen input-tokens</b> en <b>$15 per miljoen output-tokens</b>. Eén volledige lead-score kost daardoor maar ~$0,008.'},
+  aikost:{icon:'💸',t:'AI-kost vandaag',how:'(tokens in ÷ 1M × $3) + (tokens uit ÷ 1M × $15), live berekend terwijl agents werken.',why:'De volledige AI-kost is €13–18 per klant per maand — minder dan 0,2% van één plaatsingsfee. AI is hier met voorsprong de goedkoopste medewerker van het team.'},
+  toolstack:{icon:'🧰',t:'Toolstack — vaste kosten',how:'Unipile LinkedIn API (€49) + NodeMaven Belgische residential IPs (±€30) + Hetzner server (€4) + Claude API (±€15) + buffer ≈ <b>€112 per klant per maand</b>.',why:'Bij een klantprijs van €1.500/maand is de toolkost maximaal 8% van de omzet. De marge zit in het systeem, niet in uren.'},
+  kpm:{icon:'📅',t:'Kost per meeting',how:'Totale maandkost (AI + toolstack ≈ €125) gedeeld door het aantal geboekte meetings deze maand.',why:'Eén meeting kost het systeem ±€6,60 — en vertegenwoordigt voor de klant een potentiële plaatsing van €10.000. Die verhouding ís de sales pitch.'},
+  pipewaarde:{icon:'💰',t:'Pipeline-waarde',how:'Geboekte meetings × gemiddelde plaatsingsfee van €10.000 in onze niche (tech & finance recruitment, België, plaatsingen €60–120K).',why:'De bewuste tegenhanger van de kostenteller links: dit dashboard toont kost én opbrengst naast elkaar. €125 maandkost tegenover €380K pipeline-waarde.'},
+  roi:{icon:'📈',t:'Waarde vs kost',how:'Pipeline-waarde gedeeld door de totale maandkost van het systeem (AI + tools).',why:'Unit economics in één getal: elke euro systeemkost staat tegenover ±€3.000 aan pipeline-waarde voor klanten. Dit is het getal voor investeerders.'},
+  'm-response':{icon:'💬',t:'Response rate',how:'Percentage aangeschreven prospects dat antwoordt, over alle eerste berichten van de laatste 30 dagen.',why:'Het sectorgemiddelde voor koude LinkedIn-outreach is ±5%. Wij halen 42% door alléén te schrijven bij actuele intent-signalen, in de juiste taal (NL/FR/EN), met max 75 woorden.'},
+  'm-meeting':{icon:'📅',t:'Meeting rate',how:'Percentage aangeschreven prospects dat uiteindelijk een discovery call boekt.',why:'Replies zijn leuk, meetings betalen de facturen. Dit is waar klanten ons op afrekenen: 2–4 hot leads per maand is het contractuele doel.'},
+  'm-prospects':{icon:'🔍',t:'Prospects verwerkt',how:'Totaal aantal LinkedIn-profielen dat de Signal Detector heeft gescand en door de pipeline verwerkt is.',why:'Schaal zonder spam: we scannen veel, maar schrijven weinig aan (alleen score 80+). Zo blijft de kwaliteit hoog en blijven de accounts veilig.'},
+  'm-revenue':{icon:'💰',t:'Omzet-impact',how:'Geboekte meetings × gemiddelde plaatsingsfee (€10K) in onze niche.',why:'Dit vertaalt agent-activiteit naar de taal van de klant: omzet. Een service van €1.500/maand die €380K pipeline genereert, verkoopt zichzelf.'},
+  pipeline:{icon:'🛤️',t:'De prospect pipeline',how:'Elke prospect doorloopt 6 fases: signaal gedetecteerd → gescoord → aangeschreven → reply → gekwalificeerd → meeting geboekt. Klik op een fase om precies die prospects te zien.',why:'De funnel maakt bottlenecks zichtbaar: zakt de conversie ergens, dan weet de Performance Analyst exact welke agent moet bijsturen.'},
+  'st-detected':{icon:'🔍',t:'Fase 1 — Detected',how:'De Signal Detector scant profielen via Unipile en herkent 15 typen hiring-signalen, van open_to_work tot profile_views_spiked.',why:'We benaderen mensen op het moment dat ze ontvankelijk zijn — het fundamentele verschil met lijsten kopen en spammen.'},
+  'st-scored':{icon:'🎯',t:'Fase 2 — Scored',how:'Claude weegt elk signaal (open_to_work = 30 punten, recent_job_change = 25, …) tot een score 0–100. Alleen 80+ gaat door.',why:'Streng filteren beschermt de reply rate én de accounts. Kwaliteit boven volume is hier óók een veiligheidsmaatregel.'},
+  'st-messaged':{icon:'✉️',t:'Fase 3 — Messaged',how:'3 varianten van max 75 woorden in de taal van het profiel, geopend met het sterkste signaal. Een mens keurt goed vóór verzending via Belgische residential IPs, binnen kantooruren.',why:'Mens-in-de-loop houdt kwaliteit hoog; de GDPR Art. 14-zin maakt elk eerste bericht juridisch correct in België.'},
+  'st-replied':{icon:'💬',t:'Fase 4 — Replied',how:'De Reply Handler classificeert elk antwoord (POSITIEF / NEUTRAAL / NEGATIEF / BEZWAAR) en zet automatisch de juiste vervolgactie klaar.',why:'Snelheid wint deals: positieve replies gaan binnen het uur door naar kwalificatie, vóór de interesse afkoelt.'},
+  'st-qualified':{icon:'⭐',t:'Fase 5 — Qualified',how:'CHAMP-analyse: Challenge, Authority, Money, Priority. Score ≥ 7 = hot lead met directe notificatie.',why:'Alleen beslissers met budget en urgentie komen in de agenda van de klant. Zo blijft elke meeting waardevol.'},
+  'st-meeting':{icon:'📅',t:'Fase 6 — Meeting Booked',how:'De Director stuurt de agenda-link ("Discovery Call", nooit "Demo") en bevestigt een slot van 15 minuten.',why:'Elke meeting vertegenwoordigt ±€10K potentiële plaatsingsfee voor de klant — hier verdient het systeem zijn geld.'},
+  hotleads:{icon:'🔥',t:'Hot leads',how:'Prospects met CHAMP-score ≥ 7: beslisser, budget en urgentie bevestigd. Klik op een naam voor het volledige dossier.',why:'Dit is de enige lijst die de klant dagelijks hoeft te bekijken — de rest doet het systeem autonoom.'},
+  feed:{icon:'📡',t:'Live activity feed',how:'Realtime log van alles wat de 7 agents doen — met realistische werkduur per taak (een score duurt ~3s, een bericht schrijven ~6s, een scan-batch ~5s).',why:'Volledige transparantie: klant en operator zien exact wat er namens het bureau gebeurt. Geen black box.'},
+  agents:{icon:'🤖',t:'De agent squad',how:'7 gespecialiseerde AI-agents, georkestreerd door de Director. Klik op een agent om live de substappen te zien die hij op dit moment uitvoert, plus configuratie en log.',why:'Specialisatie maakt elk onderdeel testbaar, verbeterbaar en uitlegbaar — en samen vervangen ze ±5 uur handmatige prospectie per recruiter per week.'},
+  funnel:{icon:'⏬',t:'Conversie-funnel',how:'Dezelfde pipeline als op Overview, maar met conversiepercentages tussen elke fase. Klik op een balk om die prospects te bekijken.',why:'Hier zie je in één oogopslag wáár leads afhaken — dat stuurt de wekelijkse optimalisatie van de Performance Analyst.'},
+  kanban:{icon:'🗂️',t:'Pipeline board',how:'De recentste prospects per fase. Klik op een kaartje voor het dossier, of op "+x meer" voor de volledige gefilterde lijst.',why:'Een recruiter denkt in dealflow, niet in databases — dit board spreekt die taal.'},
+  prospects:{icon:'🗃️',t:'Prospect database',how:'Doorzoekbare database van alle verwerkte prospects. Filter op fase of taal, sorteer op elke kolom, klik op een rij voor het dossier met signalen, score-opbouw, bericht, conversatie en CHAMP.',why:'Elke claim op dit dashboard is herleidbaar tot een individueel, controleerbaar dossier — dát bouwt vertrouwen bij klant en investeerder.'},
+  trend:{icon:'📈',t:'Reply rate trend',how:'Reply rate per week over de laatste 8 weken.',why:'De stijgende lijn is het bewijs dat het systeem leert: elke maandag stelt de Performance Analyst gewichten en templates bij.'},
+  sends:{icon:'📤',t:'Berichten per dag',how:'Verstuurde berichten per dag over 14 dagen. Weekends en avonden: bewust nul.',why:'Max 20 invites per account per dag met random delays imiteert menselijk gedrag. Dat houdt de accounts al 12 weken op 0 warnings.'},
+  signals:{icon:'🧲',t:'Signal-correlatie',how:'Hoeveel vaker een prospect met dit signaal antwoordt vergeleken met het gemiddelde.',why:'Deze correlaties voeden de Lead Scorer: gewichten worden wekelijks bijgesteld op basis van echte resultaten, niet aannames.'},
+  heat:{icon:'🗓️',t:'Beste verzendtijden',how:'Reply-kans per dag en uur (CET). Donkerder = hogere kans. Piek: dinsdag 09–11u.',why:'De verzendmodule plant berichten automatisch in de beste cellen — timing is gratis conversie.'},
+  accounts:{icon:'🛡️',t:'Account health',how:'Eigen agency-accounts ("Talent Sourcer bij …"), elk met een vast Belgisch residential IP vanaf dag 1 en 4–6 weken warmup vóór gebruik. Altijd 2–3 backups in warmup.',why:'De klant koppelt nóóit zijn eigen LinkedIn — al het risico ligt bij onze infrastructuur. Dat is de kernbelofte van de service en hét verschil met tools zoals Lemlist of Expandi.'},
+};
+
+const FIRST=['Lien','Thomas','Amélie','Jan','Sofie','Lucas','Marie','Pieter','Nicolas','Eva','Wout','Camille','Bram','Julie','Maxime','Lotte','Arno','Charlotte','Senne','Laura','Dries','Manon','Jonas','Elise'];
+const LAST=['Vermeulen','Peeters','Dubois','Willems','De Smet','Janssens','Lambert','Claes','Renard','Maes','Mertens','Lemaire','Wouters','Declercq','Goossens','Martin','Vandenberghe','Segers','Hermans','Pauwels'];
+const TITLES=['Senior Java Developer','DevOps Engineer','.NET Developer','Data Engineer','Finance Controller','Fullstack Developer','Cloud Architect','Frontend Developer','Risk Analyst','QA Engineer','Scrum Master','Business Analyst','Python Developer','Security Engineer'];
+const CITIES=[['Antwerpen','NL'],['Gent','NL'],['Brussel','FR'],['Leuven','NL'],['Hasselt','NL'],['Liège','FR'],['Mechelen','NL'],['Namur','FR'],['Kortrijk','NL'],['Brussel','EN'],['Brugge','NL'],['Charleroi','FR']];
+const COMPANIES=['TechFlow','Cegeka','NovaBank','Delaware','FinHub','Cronos','DataMinds','Skyline IT','ProxiSoft','BlueBridge','Itineris','OctoCloud','Brightlane','Corda Labs'];
+const ACCOUNTS=['Pod 1 — Sofie M.','Pod 2 — Karel D.','Pod 3 — Inès L.'];
+
+const state = {
+  detected:1284, scored:612, messaged:347, replied:146, qualified:38, meeting:19,
+  response:42.1, meetingRate:13.0, revenue:380, events:0, demoRunning:false,
+  view:'overview', filterStage:'all', filterLang:'all', search:'', sortKey:'score', sortDir:-1,
+};
+const econ = { tin:284000, tout:41000, uni:312, aiMonthBase:13.4, tool:112 };
+
+/* ================= HELPERS ================= */
+const $ = id => document.getElementById(id);
+const rnd = a => a[Math.floor(Math.random()*a.length)];
+const ri = (min,max) => Math.floor(Math.random()*(max-min+1))+min;
+const sleep = ms => new Promise(r=>setTimeout(r,ms));
+const fmt = n => n.toLocaleString('nl-BE');
+const now = () => new Date().toLocaleTimeString('nl-BE',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const stageIdx = key => STAGES.findIndex(s=>s.key===key);
+const sigLabel = s => s.replace(/_/g,' ');
+const AG = id => AGENTS.find(a=>a.id===id);
+const fmtTok = n => n>=1e6 ? (n/1e6).toFixed(2).replace('.',',')+'M' : Math.round(n/1e3)+'K';
+
+/* ================= PROSPECTS ================= */
+let PID = 0;
+function makeProspect(stageKey){
+  const f=rnd(FIRST), l=rnd(LAST), [city,lang]=rnd(CITIES);
+  const si = stageIdx(stageKey);
+  const nSig = si===0 ? ri(1,2) : ri(2,4);
+  const sigs = [...SIGNAL_KEYS].sort(()=>Math.random()-.5).slice(0,nSig)
+    .sort((a,b)=>SIGNAL_WEIGHTS[b]-SIGNAL_WEIGHTS[a]);
+  const score = si===0 ? null : Math.min(98, 60 + sigs.reduce((t,s)=>t+SIGNAL_WEIGHTS[s],0) - ri(0,18) + si*2);
+  const champ = si>=4 ? ri(7,9) : (si===3 && Math.random()<.3 ? ri(4,6) : null);
+  return {
+    id:++PID, name:f+' '+l, first:f, init:f[0]+l[0], title:rnd(TITLES), company:rnd(COMPANIES),
+    city, lang, stage:stageKey, signals:sigs, score, champ,
+    value: si>=4 ? ri(8,14) : null,
+    days: ri(0, 5 + si*4),
+    account: rnd(ACCOUNTS),
+    replyClass: si>=3 ? (si>=4 ? 'POSITIEF' : rnd(['POSITIEF','NEUTRAAL','BEZWAAR','POSITIEF'])) : null,
+  };
+}
+const PROSPECTS = [];
+function genProspects(){
+  const dist = [['detected',16],['scored',13],['messaged',15],['replied',9],['qualified',6],['meeting',5]];
+  dist.forEach(([k,n])=>{ for(let i=0;i<n;i++) PROSPECTS.push(makeProspect(k)); });
+}
+function msgFor(p){
+  const hook = {
+    open_to_work:'zag dat je profiel op "open to work" staat',
+    recent_job_change:'zag dat je recent van rol veranderd bent',
+    new_skills_added:'zag dat je nieuwe skills aan je profiel toevoegde',
+    active_poster:'las je recente posts',
+  }[p.signals[0]] || 'zag wat beweging op je profiel';
+  if(p.lang==='FR') return 'Bonjour '+p.first+", j'ai remarqué du mouvement sur ton profil. Plusieurs bureaux à "+p.city+' cherchent des profils '+p.title+' en ce moment — des projets concrets, pas des listes. Ouvert·e à un échange rapide cette semaine ? PS : Tu as trouvé mon profil via LinkedIn. Tu peux te désabonner en me le faisant savoir.';
+  if(p.lang==='EN') return 'Hi '+p.first+', I noticed some activity on your profile. A few firms around '+p.city+' are actively looking for '+p.title+' profiles right now — concrete projects, not list-blasting. Open to a quick chat this week? PS: You found my profile via LinkedIn. You can unsubscribe at any time by letting me know.';
+  return 'Dag '+p.first+', ik '+hook+'. Bij een paar bureaus in '+p.city+' zie ik nu sterke vraag naar '+p.title+'-profielen — concrete projecten, geen massamails. Sta je open voor een korte babbel deze week? PS: Je vond mijn profiel via LinkedIn. Je kan je uitschrijven door me dat te laten weten.';
+}
+function replyFor(p){
+  const pos = p.lang==='FR' ? '« Oui, ça m’intéresse — dis-m’en plus ! »'
+            : p.lang==='EN' ? '"Sounds interesting — tell me more!"'
+            : '"Klinkt interessant, vertel eens meer!"';
+  const map = {POSITIEF:pos, NEUTRAAL:'"Misschien later dit kwartaal, nu even druk."', BEZWAAR:'"Ik zit eigenlijk goed waar ik zit… wat maakt dit anders?"', NEGATIEF:'"Geen interesse, bedankt."'};
+  return map[p.replyClass] || pos;
+}
+
+/* ================= AGENT CARDS ================= */
+const AGENTLOG = {};
+function renderAgents(){
+  $('agentsGrid').innerHTML = AGENTS.map(a=>`
+    <div class="agent is-active ${a.big?'director':''}" id="ag-${a.id}" data-agent="${a.id}" role="button" tabindex="0" title="Klik: live taken & uitleg">
+      <div class="agent-top">
+        <div class="agent-ico">${a.icon}</div>
+        <div><div class="agent-name">${a.name}</div><div class="agent-role">${a.role}</div></div>
+        <div class="badge active" id="badge-${a.id}"><i></i><span>active</span></div>
+      </div>
+      <div class="agent-task" id="task-${a.id}">${a.task}</div>
+      <div class="agent-stats">${a.stats.map(s=>`<div class="astat"><div class="av">${s.v}</div><div class="al">${s.l}</div></div>`).join('')}</div>
+      <div class="agent-prog"><i id="prog-${a.id}"></i></div>
+    </div>`).join('');
+}
+function setAgent(id, status, task){
+  const card = $('ag-'+id), badge = $('badge-'+id);
+  if(!card) return;
+  card.classList.remove('is-active','is-processing','is-idle');
+  card.classList.add('is-'+status);
+  badge.className = 'badge '+status;
+  badge.querySelector('span').textContent = status;
+  if(task) $('task-'+id).textContent = task;
+}
+function pulseProgress(id, dur=1800){
+  const bar = $('prog-'+id); if(!bar) return;
+  bar.style.transition='none'; bar.style.width='0';
+  requestAnimationFrame(()=>{ bar.style.transition=`width ${dur}ms linear`; bar.style.width='100%'; });
+  setTimeout(()=>{ bar.style.transition='width .6s ease'; bar.style.width='0'; }, dur+150);
+}
+
+/* ================= TASK ENGINE (realistische snelheid) ================= */
+const BUSY = new Set();
+const LIVETASK = {};
+let SEQ = 0;
+function beginTask(id, task, dur){
+  const seq = ++SEQ;
+  BUSY.add(id);
+  LIVETASK[id] = {task, start:Date.now(), dur, steps:AG(id).workSteps, seq};
+  setAgent(id,'processing',task);
+  pulseProgress(id,dur);
+  return seq;
+}
+function endTask(id, seq){
+  const lt = LIVETASK[id];
+  if(!lt || lt.seq!==seq) return;
+  delete LIVETASK[id];
+  BUSY.delete(id);
+  setAgent(id,'active');
+  accrue(AG(id));
+}
+async function agentWork(id, task, dur){
+  if(BUSY.has(id)) return false;
+  const a = AG(id);
+  dur = dur || ri(a.speed[0], a.speed[1]);
+  const seq = beginTask(id, task, dur);
+  await sleep(dur);
+  endTask(id, seq);
+  return true;
+}
+function accrue(a){
+  if(!a) return;
+  if(a.tok.i===0){ econ.uni += ri(8,20); }
+  else{
+    econ.tin += Math.round(a.tok.i*(0.85+Math.random()*0.3));
+    econ.tout += Math.round(a.tok.o*(0.85+Math.random()*0.3));
+  }
+  renderEcon(true);
+}
+function renderEcon(pop){
+  function set(id,v){ const el=$(id); if(el && el.textContent!==v){ el.textContent=v; if(pop){ el.classList.remove('tick'); void el.offsetWidth; el.classList.add('tick'); } } }
+  const aiToday = econ.tin/1e6*3 + econ.tout/1e6*15;
+  const aiMonthEur = (econ.aiMonthBase + aiToday)*0.92;
+  const totalMonth = aiMonthEur + econ.tool;
+  const kpm = totalMonth/Math.max(state.meeting,1);
+  const roi = Math.round(state.revenue*1000/totalMonth);
+  set('ecTok', fmtTok(econ.tin+econ.tout));
+  const sub = $('ecTokSub'); if(sub) sub.textContent = fmtTok(econ.tin)+' in / '+fmtTok(econ.tout)+' out';
+  set('ecCost', '$'+aiToday.toFixed(2).replace('.',','));
+  set('ecMeet', '€'+kpm.toFixed(2).replace('.',','));
+  set('ecPipe', '€'+state.revenue+'K');
+  set('ecRoi', fmt(roi)+'×');
+}
+
+/* ================= FEED ================= */
+function addFeed(agentId, html, cls=''){
+  const a = AG(agentId);
+  const entry = {t:now(), html, cls};
+  (AGENTLOG[agentId] = AGENTLOG[agentId]||[]).unshift(entry);
+  if(AGENTLOG[agentId].length>30) AGENTLOG[agentId].pop();
+  const el = document.createElement('div');
+  el.className = 'fi '+cls;
+  el.innerHTML = `<div class="fi-ico">${a.icon}</div><div class="fi-body">
+    <div class="fi-meta"><span class="fi-agent">${a.name}</span><span class="fi-time">${entry.t}</span></div>
+    <div class="fi-msg">${html}</div></div>`;
+  const feed = $('feed');
+  feed.prepend(el);
+  while(feed.children.length>40) feed.lastChild.remove();
+  state.events++;
+  $('feedCount').textContent = state.events+' EVENTS';
+}
+
+/* ================= PIPELINE STRIP ================= */
+function renderPipeline(){
+  const max = state.detected;
+  $('pipeTrack').innerHTML = STAGES.map(s=>{
+    const v = state[s.key];
+    return `<div class="stage" data-stage="${s.key}" style="--sc:${s.color}" role="button" tabindex="0" title="Klik: bekijk ${s.label}-prospects">
+      <button class="info-btn" data-info="st-${s.key}">?</button>
+      <div class="stage-head"><div class="stage-ico">${s.icon}</div><div class="stage-name">${s.label}${s.key==='meeting'?'<br>Booked':''}</div></div>
+      <div class="stage-count" id="sc-${s.key}">${fmt(v)}</div>
+      <div class="stage-sub">${s.sub}</div>
+      <div class="stage-bar"><i style="transform:scaleX(${(v/max).toFixed(3)})"></i></div>
+    </div>`;
+  }).join('');
+}
+function bumpStage(key, inc=1){
+  state[key]+=inc;
+  const el = $('sc-'+key);
+  if(el) el.textContent = fmt(state[key]);
+  const stage = document.querySelector(`.stage[data-stage="${key}"]`);
+  if(stage){ stage.classList.remove('bump'); void stage.offsetWidth; stage.classList.add('bump'); setTimeout(()=>stage.classList.remove('bump'),900); }
+  $('convRate').textContent = (state.meeting/state.detected*100).toFixed(1).replace('.',',')+'%';
+}
+function flowPipeline(on){ document.querySelectorAll('#pipeTrack .stage').forEach(s=>s.classList.toggle('flow',on)); }
+
+/* ================= HOT LEADS ================= */
+function renderHotLeads(){
+  const hot = PROSPECTS.filter(p=>p.champ>=7).sort((a,b)=>b.champ-a.champ).slice(0,5);
+  $('hotList').innerHTML = hot.map(p=>`
+    <div class="hot-item" data-prospect="${p.id}" role="button" tabindex="0">
+      <div class="hi-av">${p.init}</div>
+      <div><div class="hi-name">${esc(p.name)}</div><div class="hi-sub">${esc(p.title)} · ${esc(p.company)}</div></div>
+      <div class="hi-champ">${p.champ}<small>CHAMP</small></div>
+    </div>`).join('') || '<div style="padding:14px;color:var(--muted);font-size:12px;">Geen hot leads — run de demo!</div>';
+}
+
+/* ================= FUNNEL ================= */
+function renderFunnel(){
+  const max = state.detected;
+  let html='';
+  STAGES.forEach((s,i)=>{
+    const v = state[s.key];
+    const pct = Math.max(v/max*100, 4);
+    const conv = i>0 ? (v/state[STAGES[i-1].key]*100).toFixed(0) : null;
+    if(i>0) html += `<div class="fdrop"><div class="fdrop-spacer"></div><div class="fdrop-txt">▼ ${conv}% conversie naar volgende fase</div></div>`;
+    html += `<div class="frow">
+      <div class="frow-label"><b>${s.label}${s.key==='meeting'?' Booked':''}</b><span>${s.sub}</span></div>
+      <div class="frow-bar" data-stage="${s.key}" style="--fc1:${i>=4?'#92400e':'#0e7490'};--fc2:${s.color}" role="button" tabindex="0">
+        <i data-w="${pct.toFixed(1)}"></i><span class="frow-val">${fmt(v)}</span>
+      </div>
+      <div class="frow-conv">${i===STAGES.length-1?`<b>${(v/max*100).toFixed(1).replace('.',',')}%</b> totaal`:''}</div>
+    </div>`;
+  });
+  $('funnel').innerHTML = html;
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    document.querySelectorAll('#funnel .frow-bar i').forEach(b=>{ b.style.width = b.dataset.w+'%'; });
+  }));
+}
+/* ================= KANBAN ================= */
+function renderKanban(){
+  $('kanban').innerHTML = STAGES.map(s=>{
+    const items = PROSPECTS.filter(p=>p.stage===s.key).slice(0,5);
+    const total = PROSPECTS.filter(p=>p.stage===s.key).length;
+    return `<div class="kcol" style="--kc:${s.color}">
+      <div class="kcol-head"><span>${s.icon}</span><span class="kn">${s.label}</span><button class="info-btn" data-info="st-${s.key}">?</button><span class="kc">${total}</span></div>
+      ${items.map(p=>`<div class="kchip" data-prospect="${p.id}" role="button" tabindex="0">
+        <div class="cn">${esc(p.name)}</div><div class="ct">${esc(p.title)}</div>
+        <div class="cm">${p.score!==null?`<span class="sc">★ ${p.score}</span>`:''}<span class="tag tag-lang">${p.lang}</span>${p.champ?`<span class="tag tag-hot">C${p.champ}</span>`:''}</div>
+      </div>`).join('')}
+      ${total>5?`<div class="kmore" data-gostage="${s.key}">+ ${total-5} meer →</div>`:''}
+    </div>`;
+  }).join('');
+}
+/* ================= TABLE ================= */
+const COLS = [
+  {key:'name', label:'Prospect'}, {key:'company', label:'Bedrijf'}, {key:'city', label:'Locatie'},
+  {key:'lang', label:'Taal'}, {key:'score', label:'Score'}, {key:'signals', label:'Top signal'},
+  {key:'stage', label:'Fase'}, {key:'days', label:'Dgn'}, {key:'value', label:'Waarde'},
+];
+function renderTableHead(){
+  $('tblHead').innerHTML = COLS.map(c=>
+    `<th data-sort="${c.key}" class="${state.sortKey===c.key?'sorted':''}">${c.label} ${state.sortKey===c.key?(state.sortDir>0?'↑':'↓'):''}</th>`).join('');
+}
+function filteredProspects(){
+  let list = [...PROSPECTS];
+  if(state.filterStage!=='all') list = list.filter(p=>p.stage===state.filterStage);
+  if(state.filterLang!=='all') list = list.filter(p=>p.lang===state.filterLang);
+  if(state.search){
+    const q = state.search.toLowerCase();
+    list = list.filter(p=>(p.name+' '+p.title+' '+p.company+' '+p.city).toLowerCase().includes(q));
+  }
+  const k = state.sortKey, d = state.sortDir;
+  list.sort((a,b)=>{
+    let va = a[k], vb = b[k];
+    if(k==='stage'){ va = stageIdx(a.stage); vb = stageIdx(b.stage); }
+    if(k==='signals'){ va = a.signals[0]||''; vb = b.signals[0]||''; }
+    if(va===null||va===undefined) va = -1; if(vb===null||vb===undefined) vb = -1;
+    if(typeof va==='string') return va.localeCompare(vb)*d;
+    return (va-vb)*d;
+  });
+  return list;
+}
+function stageBadge(key){
+  const s = STAGES[stageIdx(key)];
+  return `<span class="stagebadge" style="color:${s.color};border-color:${s.color}44;background:${s.color}14">${s.label}</span>`;
+}
+function renderTable(){
+  renderTableHead();
+  const list = filteredProspects();
+  $('tblBody').innerHTML = list.map(p=>`
+    <tr data-prospect="${p.id}">
+      <td><div class="tcell-name"><div class="t-av">${p.init}</div><div class="t-name"><b>${esc(p.name)}</b><span>${esc(p.title)}</span></div></div></td>
+      <td>${esc(p.company)}</td><td>${esc(p.city)}</td>
+      <td><span class="tag tag-lang">${p.lang}</span></td>
+      <td>${p.score!==null?`<span class="score-pill ${p.score>=85?'score-hi':p.score>=80?'score-mid':'score-low'}">${p.score}</span>`:'<span class="tag tag-mut">queue</span>'}</td>
+      <td style="font-family:var(--mono);font-size:10px;">${p.signals[0]?sigLabel(p.signals[0]):'—'}</td>
+      <td>${stageBadge(p.stage)}</td>
+      <td>${p.days}d</td>
+      <td>${p.value?'€'+p.value+'K':'—'}</td>
+    </tr>`).join('');
+  $('tblInfo').textContent = `${list.length} van ${PROSPECTS.length} prospects`;
+  $('ncProspects').textContent = PROSPECTS.length;
+}
+function renderChips(){
+  $('stageChips').innerHTML = [`<button class="chip ${state.filterStage==='all'?'on':''}" data-fstage="all">Alle fases</button>`]
+    .concat(STAGES.map(s=>`<button class="chip ${state.filterStage===s.key?'on':''}" data-fstage="${s.key}">${s.label}</button>`)).join('');
+  $('langChips').innerHTML = ['all','NL','FR','EN'].map(l=>
+    `<button class="chip ${state.filterLang===l?'on':''}" data-flang="${l}">${l==='all'?'NL+FR+EN':l}</button>`).join('');
+}
+/* ================= AGENTS BIG ================= */
+function sparkSVG(vals, color){
+  const w=270,h=44,max=Math.max(...vals),min=Math.min(...vals);
+  const pts = vals.map((v,i)=>`${(i/(vals.length-1)*w).toFixed(1)},${(h-4-((v-min)/((max-min)||1))*(h-10)).toFixed(1)}`);
+  return `<svg width="100%" height="${h}" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
+    <polyline points="${pts.join(' ')} ${w},${h} 0,${h}" fill="${color}" opacity=".1"/>
+    <polyline points="${pts.join(' ')}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`;
+}
+function renderAgentsBig(){
+  $('agentsBig').innerHTML = AGENTS.map(a=>`
+    <div class="panel agent-big" data-agent="${a.id}" role="button" tabindex="0">
+      <div class="ab-row">
+        <div class="agent-ico" style="width:42px;height:42px;font-size:19px;">${a.icon}</div>
+        <div style="flex:1"><div class="agent-name" style="font-size:15px;">${a.name}</div><div class="agent-role">${a.role}</div></div>
+        <div class="badge active"><i></i><span>active</span></div>
+      </div>
+      <div style="font-size:12px;color:var(--muted2);line-height:1.6;">${a.desc}</div>
+      <div class="ab-config">${a.config.map(([k,v])=>`<span class="ck">${k}</span><span class="cv">${v}</span>`).join('')}</div>
+      <div class="ab-spark">${sparkSVG(a.spark, a.id==='qualifier'||a.id==='analyst'?'#f59e0b':'#22d3ee')}</div>
+      <div class="ab-foot"><span class="au">throughput · 7 dagen</span><span class="al2">bekijk live taken & log →</span></div>
+    </div>`).join('');
+}
+/* ================= RAPPORTEN ================= */
+function renderReport(){
+  $('weekReport').innerHTML = `
+    <h3>📈 Weekrapport — Performance Analyst</h3>
+    <div class="rp-meta">WEEK 24 · MA 08 JUN — ZO 14 JUN 2026 · AUTOMATISCH GEGENEREERD MA 09:00</div>
+    <h4>Top 3 verbeterpunten komende week</h4>
+    <ol>
+      <li><b>Verschuif 30% van het verzendvolume naar di–wo 09:00–11:00.</b> Replies in dat venster converteren 2,1× beter dan het gemiddelde.</li>
+      <li><b>Verhoog de weging van <span class="hl">engagement_spike</span></b> — dit signaal correleerde deze week sterker met positieve replies dan new_skills_added.</li>
+      <li><b>Herschrijf template B (FR).</b> Reply rate 31% vs 44% voor template A. Nieuwe variant met sterkere opening klaargezet voor review.</li>
+    </ol>
+    <h4>Best presterende intent signal</h4>
+    <p><b class="hl">open_to_work</b> blijft de sterkste voorspeller: 3,2× hogere reply-kans. In combinatie met <b>recent_job_change</b> stijgt de meeting-conversie naar <b>8,4%</b>.</p>
+    <h4>Beste verzendmoment</h4>
+    <p>Dinsdag <b>09:40 CET</b> — 47% van alle positieve replies kwam binnen 4 uur na verzending in dit venster.</p>
+    <h4>Account-veiligheid</h4>
+    <p>✅ Geen tekenen van verdachte activiteit. Alle 3 accounts onder de daglimiet (max 14/20 invites). IPs stabiel sinds dag 1. Acceptatiegraad 38% — ruim boven de 25%-stopdrempel.</p>
+    <h4>KPI's vs doelen</h4>
+    <ul>
+      <li>Accept rate: <b>38%</b> (doel ≥ 35% ✅)</li>
+      <li>Reply rate: <b>42,1%</b> (doel ≥ 10% ✅)</li>
+      <li>Hot leads deze maand: <b>4</b> (doel 2–4 ✅)</li>
+      <li>Account warnings: <b>0</b> (doel 0 ✅)</li>
+    </ul>`;
+}
+function renderTrendChart(){
+  const vals=[34.2,35.8,37.1,36.4,38.9,40.2,41.5,42.1];
+  const w=420,h=120,max=46,min=30;
+  const pts = vals.map((v,i)=>[ (i/(vals.length-1)*(w-30)+24), (h-18-((v-min)/(max-min))*(h-34)) ]);
+  const line = pts.map(p=>p.map(n=>n.toFixed(1)).join(',')).join(' ');
+  $('chartTrend').innerHTML = `<svg width="100%" viewBox="0 0 ${w} ${h}">
+    ${[34,38,42].map(g=>{const y=h-18-((g-min)/(max-min))*(h-34);return `<line x1="24" x2="${w-6}" y1="${y}" y2="${y}" stroke="rgba(148,163,184,.15)"/><text x="0" y="${y+3}" fill="#64748b" font-size="8" font-family="JetBrains Mono">${g}%</text>`;}).join('')}
+    <polyline points="${line} ${pts[pts.length-1][0].toFixed(1)},${h-18} ${pts[0][0].toFixed(1)},${h-18}" fill="#22d3ee" opacity=".08"/>
+    <polyline points="${line}" fill="none" stroke="#22d3ee" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    ${pts.map((p,i)=>`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="${i===pts.length-1?4:2.5}" fill="${i===pts.length-1?'#fff':'#22d3ee'}" stroke="#22d3ee" stroke-width="1.5"/>`).join('')}
+    ${vals.map((v,i)=>`<text x="${pts[i][0].toFixed(1)}" y="${h-4}" fill="#64748b" font-size="7.5" font-family="JetBrains Mono" text-anchor="middle">W${17+i}</text>`).join('')}
+  </svg>`;
+}
+function renderSendsChart(){
+  const vals=[42,51,48,55,38,0,0,46,58,52,60,44,0,0].slice(0,14);
+  const w=420,h=110,bw=(w-30)/14-5,max=62;
+  $('chartSends').innerHTML = `<svg width="100%" viewBox="0 0 ${w} ${h}">
+    <defs><linearGradient id="gradB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#67e8f9"/><stop offset="1" stop-color="#0e7490"/></linearGradient></defs>
+    ${vals.map((v,i)=>{const x=24+i*((w-30)/14), bh=v/max*(h-30), y=h-18-bh;
+      return `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(bh,1.5).toFixed(1)}" rx="3" fill="${v===0?'rgba(148,163,184,.18)':'url(#gradB)'}"/>`;}).join('')}
+    ${['28/5','31/5','3/6','6/6','9/6'].map((d,i)=>`<text x="${24+i*3*((w-30)/14)}" y="${h-4}" fill="#64748b" font-size="7.5" font-family="JetBrains Mono">${d}</text>`).join('')}
+  </svg>`;
+}
+function renderSignalChart(){
+  const data=[['open_to_work',3.2],['recent_job_change',2.6],['engagement_spike',1.9],['active_poster',1.5],['new_skills_added',1.3],['profile_updated_recently',1.1]];
+  $('chartSignals').innerHTML = data.map(([s,v])=>`
+    <div class="hbar-row"><div class="hbar-label">${sigLabel(s)}</div>
+    <div class="hbar-track"><i data-w="${(v/3.2*100).toFixed(0)}"></i></div>
+    <div class="hbar-val">${String(v).replace('.',',')}×</div></div>`).join('');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    document.querySelectorAll('#chartSignals .hbar-track i').forEach(b=>{ b.style.width = b.dataset.w+'%'; });
+  }));
+}
+function renderHeatmap(){
+  const days=['ma','di','wo','do','vr'];
+  const peak={1:[1,2,3],2:[1,2],3:[6,7]};
+  let html = `<div class="hh"></div>`+Array.from({length:10},(_,h)=>`<div class="hh">${8+h}</div>`).join('');
+  days.forEach((d,di)=>{
+    html += `<div class="hh">${d}</div>`;
+    for(let h=0;h<10;h++){
+      let v = .08+Math.random()*.25;
+      if(peak[di] && peak[di].includes(h)) v = .7+Math.random()*.3;
+      else if(h<3) v += .2;
+      html += `<div class="hc" style="--v:${v.toFixed(2)}" title="${d} ${8+h}:00 — reply-kans ${(v*48).toFixed(0)}%"></div>`;
+    }
+  });
+  $('heatmap').innerHTML = html;
+}
+function renderAccounts(){
+  const rows = [
+    ['Pod 1 — Sofie M.','Talent Sourcer','BE · Antwerpen','✅ Actief','14 / 20','12 wk','0'],
+    ['Pod 2 — Karel D.','Talent Sourcer','BE · Gent','✅ Actief','11 / 20','9 wk','0'],
+    ['Pod 3 — Inès L.','Talent Sourcer','BE · Brussel','✅ Actief','13 / 20','8 wk','0'],
+    ['Pod 4 — backup','—','BE · Hasselt','🌡️ Warmup wk 3/6','3 / 5','3 wk','—'],
+    ['Pod 5 — backup','—','BE · Leuven','🌡️ Warmup wk 1/6','1 / 3','1 wk','—'],
+  ];
+  $('accTbl').innerHTML = `<thead><tr><th>Account</th><th>Profiel</th><th>Residential IP</th><th>Status</th><th>Invites vandaag</th><th>Actief sinds</th><th>Warnings</th></tr></thead>
+    <tbody>${rows.map(r=>`<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td style="font-family:var(--mono);font-size:10.5px;">${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td><td>${r[5]}</td><td>${r[6]}</td></tr>`).join('')}</tbody>`;
+}
+/* ================= PROSPECT MODAL ================= */
+let lastFocus = null;
+function openModalShell(){
+  lastFocus = document.activeElement;
+  $('modalBg').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  $('modalClose').focus();
+}
+function openProspect(id){
+  const p = PROSPECTS.find(x=>x.id===Number(id));
+  if(!p) return;
+  const si = stageIdx(p.stage);
+  const ringColor = p.score===null?'#64748b':p.score>=85?'#22c55e':'#f59e0b';
+  const tlSteps = STAGES.slice(0, si+1);
+  let html = `
+    <div class="modal-head">
+      <div class="m-av">${p.init}</div>
+      <div class="m-id">
+        <div class="mn">${esc(p.name)}</div>
+        <div class="mt">${esc(p.title)} · ${esc(p.company)}, ${esc(p.city)}</div>
+        <div class="mm">${stageBadge(p.stage)} <span class="tag tag-lang">${p.lang}</span> <span class="tag tag-mut">via ${esc(p.account)}</span></div>
+      </div>
+      <div class="m-score">
+        <div class="ring" style="--p:${p.score||0};--rc:${ringColor}"><b>${p.score!==null?p.score:'—'}</b></div>
+        <div class="ring-cap">Lead score</div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="m-sec">
+        <h5>Intent signals — gewicht in score <button class="info-btn" data-info="st-scored">?</button></h5>
+        <div class="sig-bars">${p.signals.map(sig=>`
+          <div class="hbar-row"><div class="hbar-label">${sigLabel(sig)}</div>
+          <div class="hbar-track"><i style="width:${(SIGNAL_WEIGHTS[sig]/30*100).toFixed(0)}%"></i></div>
+          <div class="hbar-val">+${SIGNAL_WEIGHTS[sig]}</div></div>`).join('')}
+        </div>
+      </div>
+      <div class="m-sec">
+        <h5>Pipeline-traject — ${p.days} dagen geleden gedetecteerd</h5>
+        <div class="timeline">${tlSteps.map((st,i)=>`
+          <div class="tl-item ${i>=4?'gold':''}"><div class="tt">${st.icon} ${st.label}${st.key==='meeting'?' Booked':''}</div>
+          <div class="td">${Math.max(p.days - i*2,0)} dagen geleden · ${st.key==='messaged'?'variant 2/3 goedgekeurd':st.key==='scored'?'score '+p.score+'/100':st.key==='replied'?'classificatie: '+p.replyClass:st.key==='detected'?p.signals.length+' signalen gevonden':st.key==='qualified'?'CHAMP '+p.champ+'/10':'discovery call di 10:30'}</div></div>`).join('')}
+        </div>
+      </div>`;
+  if(si>=2) html += `
+      <div class="m-sec">
+        <h5>Verzonden bericht <span class="tag tag-lang">${p.lang}</span> · ${msgFor(p).split(' ').length} woorden · GDPR Art. 14 ✓ <button class="info-btn" data-info="st-messaged">?</button></h5>
+        <div class="msg-box">${esc(msgFor(p))}</div>
+      </div>`;
+  if(si>=3) html += `
+      <div class="m-sec">
+        <h5>Conversatie</h5>
+        <div class="convo">
+          <div class="cv-msg out"><div class="cv-who">Agent · ${esc(p.account)}</div>${esc(msgFor(p))}</div>
+          <div class="cv-msg in"><div class="cv-who">${esc(p.name)} · ${p.replyClass==='POSITIEF'?'<span class="tag tag-pos">POSITIEF</span>':'<span class="tag tag-hot">'+p.replyClass+'</span>'}</div>${esc(replyFor(p))}</div>
+        </div>
+      </div>`;
+  if(p.champ) html += `
+      <div class="m-sec">
+        <h5>CHAMP-kwalificatie · score ${p.champ}/10 ${p.champ>=7?'<span class="tag tag-hot">HOT LEAD</span>':''} <button class="info-btn" data-info="st-qualified">?</button></h5>
+        <div class="champ-grid">
+          <div class="champ-cell"><div class="cl">Challenge</div><div class="cb">Worstelt met handmatige prospectie — 5+ uur per week verloren tijd.</div></div>
+          <div class="champ-cell"><div class="cl">Authority</div><div class="cb">${p.champ>=8?'Beslisser: rechtstreeks contact met managing director.':'Sterke influencer; beslisser is bereikbaar via intro.'}</div></div>
+          <div class="champ-cell"><div class="cl">Money</div><div class="cb">Bureau met ${ri(3,8)} recruiters — budget voor €1.500/mnd aanwezig.</div></div>
+          <div class="champ-cell"><div class="cl">Priority</div><div class="cb">${p.champ>=8?'Urgent: wil dit kwartaal nog starten.':'Hoge interesse, beslissing binnen 4–6 weken verwacht.'}</div></div>
+        </div>
+      </div>`;
+  if(p.value) html += `
+      <div class="m-sec">
+        <h5>Geschatte waarde</h5>
+        <p style="font-size:13px;color:var(--muted2);">Verwachte plaatsingsfee: <b style="color:var(--gold);font-family:var(--display);font-size:17px;">€${p.value}.000</b> — gebaseerd op functietype en regio.</p>
+      </div>`;
+  html += `
+      <div class="m-actions">
+        <button class="m-btn primary">📅 Plan discovery call</button>
+        <button class="m-btn ghost">Bekijk LinkedIn-profiel</button>
+        <button class="m-btn ghost">Markeer do-not-contact</button>
+      </div>
+    </div>`;
+  $('modalContent').innerHTML = html;
+  openModalShell();
+}
+function openBiz(){
+  $('modalContent').innerHTML = `
+    <div class="modal-head">
+      <div class="m-av" style="font-size:22px;">ℹ️</div>
+      <div class="m-id">
+        <div class="mn">Hoe dit systeem werkt</div>
+        <div class="mt">Het volledige businessverhaal achter het dashboard — voor klanten en investeerders</div>
+      </div>
+    </div>
+    <div class="modal-body biz">
+      <h5>Wat we verkopen</h5>
+      <p>Geen tool, maar een <b>Managed Outbound Pod</b>: een volledig uitbesteed outbound-team voor Belgische tech- en finance-recruitmentbureaus (3–15 recruiters), dat toevallig door AI wordt aangedreven. De klant logt nergens in, koppelt nóóit zijn eigen LinkedIn, en krijgt elke week een rapport plus 2–4 gekwalificeerde meetings per maand.</p>
+      <h5>Het prijsmodel</h5>
+      <p><b>€1.500 setup + €1.500 per maand.</b> Founding Clients (max 8, max 2 per provincie): €750/maand voor 6 maanden, daarna standaardtarief. Contract: 6 maanden minimum, testimonial na 60 dagen, 2 referral-intro's.</p>
+      <h5>Unit economics — waarom dit schaalt</h5>
+      <ul>
+        <li>Toolkost per klant: <b>±€112/maand</b> (Unipile €49 + Belgische IPs ±€30 + server €4 + Claude API ±€15)</li>
+        <li>AI-kost: <b>minder dan €18/maand</b> — zie de live tokenteller bovenaan</li>
+        <li>Marge: <b>±92%</b> op de maandprijs; het systeem draait 24/7 autonoom op een server van €4</li>
+        <li>Waarde voor de klant: één plaatsing (gem. fee €10K) betaalt <b>6+ maanden</b> service terug</li>
+      </ul>
+      <h5>De 7 agents in één zin elk</h5>
+      <ul>
+        <li><b>🧠 Director</b> — orkestreert alles en bewaakt limieten en timing.</li>
+        <li><b>🔍 Signal Detector</b> — vindt mensen op het moment dat ze ontvankelijk zijn (15 signalen).</li>
+        <li><b>🎯 Lead Scorer</b> — laat alleen de beste 38% door (score ≥ 80).</li>
+        <li><b>✉️ Message Writer</b> — schrijft persoonlijk, kort (≤75 wrd), in NL/FR/EN, GDPR-proof.</li>
+        <li><b>💬 Reply Handler</b> — verwerkt elk antwoord binnen het uur in de juiste flow.</li>
+        <li><b>📅 Meeting Qualifier</b> — alleen beslissers met budget komen in de agenda (CHAMP ≥ 7).</li>
+        <li><b>📈 Performance Analyst</b> — maakt het systeem elke week aantoonbaar beter.</li>
+      </ul>
+      <h5>Veiligheidsarchitectuur</h5>
+      <p>Eigen <b>agency-accounts</b> met 4–6 weken warmup, elk gekoppeld aan een <b>vast Belgisch residential IP</b> vanaf dag 1. Max 20 invites per account per dag, random delays, alleen Belgische kantooruren. Altijd 2–3 backup-accounts in warmup. Resultaat: <b>12 weken, 0 warnings</b> — en al het risico ligt bij ons, nooit bij de klant.</p>
+      <h5>GDPR & compliance</h5>
+      <p>Elk eerste bericht bevat de <b>Article 14-transparantiezin</b> in de taal van de ontvanger. Profieldata wordt max. 24 maanden bewaard, een "nee" wordt permanent gerespecteerd (do-not-contact), en er is een Legitimate Interest Assessment + DPA's met Unipile en Anthropic.</p>
+      <h5>Waarom dit wint</h5>
+      <p>De vijand is niet Lemlist of Expandi — de vijand is <b>de spam-bende</b> die generieke berichten stuurt vanaf het account van de recruiter zelf. Wij zijn het enige Belgische alternatief met NL+FR, eigen infrastructuur en een service-model in plaats van een tool. <span class="hl">42% response rate vs ±5% sectorgemiddelde</span> is daarvan het bewijs.</p>
+      <div class="m-actions" style="margin-top:16px;">
+        <button class="m-btn primary" id="bizClose">Begrepen — terug naar het dashboard</button>
+      </div>
+    </div>`;
+  openModalShell();
+}
+function closeModal(){
+  $('modalBg').classList.remove('open');
+  document.body.style.overflow = '';
+  if(lastFocus && lastFocus.focus) lastFocus.focus();
+}
+/* ================= AGENT DRAWER + LIVE TASKS ================= */
+let openAgentId = null, drawerTimer = null;
+function openDrawer(agentId){
+  const a = AG(agentId);
+  if(!a) return;
+  openAgentId = agentId;
+  $('drawerHead').innerHTML = `
+    <div class="agent-ico" style="width:44px;height:44px;font-size:20px;">${a.icon}</div>
+    <div style="flex:1"><div class="agent-name" style="font-size:16px;">${a.name}</div><div class="agent-role">${a.role}</div></div>
+    <button class="m-close" style="position:static;" id="drawerClose" aria-label="Sluiten">✕</button>`;
+  const log = AGENTLOG[a.id]||[];
+  $('drawerBody').innerHTML = `
+    <div id="drawerLive"></div>
+    <div class="d-h5">Hoe deze agent werkt</div>
+    <div class="d-txt">${a.desc}</div>
+    <div class="d-h5 why">Waarom hij dit zo doet</div>
+    <div class="d-txt">${a.why}</div>
+    <div class="ab-config" style="margin:0 0 16px;">${a.config.map(([k,v])=>`<span class="ck">${k}</span><span class="cv">${v}</span>`).join('')}</div>
+    <div class="agent-stats" style="margin-bottom:16px;">${a.stats.map(s=>`<div class="astat"><div class="av">${s.v}</div><div class="al">${s.l}</div></div>`).join('')}</div>
+    <div style="margin-bottom:14px;">${sparkSVG(a.spark,'#22d3ee')}</div>
+    <div class="d-h5">Live log — laatste activiteit</div>
+    <div class="d-log">${log.length? log.map(e=>`
+      <div class="fi ${e.cls}"><div class="fi-ico">${a.icon}</div><div class="fi-body">
+        <div class="fi-meta"><span class="fi-agent">${a.name}</span><span class="fi-time">${e.t}</span></div>
+        <div class="fi-msg">${e.html}</div></div></div>`).join('')
+      : '<div style="color:var(--muted);font-size:12px;padding:8px 0;">Nog geen activiteit deze sessie — laat het dashboard even draaien.</div>'}</div>`;
+  renderDrawerLive();
+  clearInterval(drawerTimer);
+  drawerTimer = setInterval(renderDrawerLive, 250);
+  lastFocus = document.activeElement;
+  $('drawerBg').classList.add('open');
+  $('drawer').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  $('drawerClose').focus();
+}
+function renderDrawerLive(){
+  const el = $('drawerLive');
+  if(!el || !openAgentId) return;
+  const a = AG(openAgentId), lt = LIVETASK[openAgentId];
+  if(lt){
+    const pct = Math.min((Date.now()-lt.start)/lt.dur, 1);
+    const cur = Math.min(Math.floor(pct*lt.steps.length), lt.steps.length-1);
+    el.innerHTML = `<div class="live-box">
+      <div class="lb-head"><span class="lb-spin">⚙</span> Nu bezig — live</div>
+      <div class="lb-task">${esc(lt.task)}</div>
+      <div class="lb-bar"><i style="width:${(pct*100).toFixed(0)}%"></i></div>
+      ${lt.steps.map((s,i)=>`<div class="lb-step ${i<cur?'done':i===cur?'cur':''}"><span class="si">${i<cur?'✓':i===cur?'▸':'○'}</span>${esc(s)}</div>`).join('')}
+      <div class="lb-meta">taakduur ~${(lt.dur/1000).toFixed(1).replace('.',',')}s · ${a.tok.i? '±'+fmt(a.tok.i+a.tok.o)+' tokens ≈ $'+((a.tok.i/1e6*3+a.tok.o/1e6*15)).toFixed(4).replace('.',',') : 'Unipile API — geen LLM-tokens'}</div>
+    </div>`;
+  } else {
+    el.innerHTML = `<div class="live-box idle">
+      <div class="lb-head">💤 Idle — wacht op volgende taak</div>
+      <div class="lb-meta" style="border:none;padding:0;margin:0;">Realistische taakduur: ${(a.speed[0]/1000).toString().replace('.',',')}–${(a.speed[1]/1000).toString().replace('.',',')}s per taak. De Director bepaalt wanneer deze agent aan de beurt is — laat het venster open en je ziet hem live aan het werk.</div>
+    </div>`;
+  }
+}
+function closeDrawer(){
+  openAgentId = null;
+  clearInterval(drawerTimer);
+  $('drawerBg').classList.remove('open');
+  $('drawer').classList.remove('open');
+  document.body.style.overflow = '';
+  if(lastFocus && lastFocus.focus) lastFocus.focus();
+}
+/* ================= INFO POPOVER ================= */
+function showInfo(key, btn){
+  const inf = INFO[key];
+  if(!inf){ hideInfo(); return; }
+  const po = $('popover');
+  po.innerHTML = `<h6>${inf.icon||'ℹ️'} ${inf.t}</h6>
+    <div class="po-sec"><div class="po-lbl how">Hoe het werkt</div><div class="po-txt">${inf.how}</div></div>
+    <div class="po-sec"><div class="po-lbl why">Waarom we dit zo doen</div><div class="po-txt">${inf.why}</div></div>`;
+  po.classList.add('open');
+  const r = btn.getBoundingClientRect();
+  const pw = Math.min(350, window.innerWidth*.92);
+  const left = Math.min(Math.max(8, r.left - 20), window.innerWidth - pw - 8);
+  po.style.left = left+'px';
+  po.style.top = '0px';
+  const ph = po.offsetHeight;
+  let top = r.bottom + 8;
+  if(top + ph > window.innerHeight - 8) top = Math.max(8, r.top - ph - 8);
+  po.style.top = top+'px';
+}
+function hideInfo(){ $('popover').classList.remove('open'); }
+/* ================= VIEWS ================= */
+function showView(name){
+  state.view = name;
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active', v.id==='view-'+name));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.toggle('active', t.dataset.view===name));
+  if(name==='pipeline'){ renderFunnel(); renderKanban(); }
+  if(name==='prospects'){ renderChips(); renderTable(); }
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function gotoStage(key){
+  state.filterStage = key;
+  showView('prospects');
+}
+/* ================= COUNTERS ================= */
+function animateCount(el, to, dur=1400, dec=0){
+  const t0 = performance.now();
+  function tick(t){
+    const p = Math.min((t-t0)/dur,1), e = 1-Math.pow(1-p,3), v = to*e;
+    el.textContent = dec? v.toFixed(dec).replace('.',',') : fmt(Math.round(v));
+    if(p<1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+function refreshMetrics(animate){
+  if(animate){
+    animateCount($('mResponse'), state.response, 1500, 1);
+    animateCount($('mMeeting'), state.meetingRate, 1500, 1);
+    animateCount($('mProspects'), state.detected, 1600);
+    animateCount($('mRevenue'), state.revenue, 1700);
+  } else {
+    $('mResponse').textContent = state.response.toFixed(1).replace('.',',');
+    $('mMeeting').textContent = state.meetingRate.toFixed(1).replace('.',',');
+    $('mProspects').textContent = fmt(state.detected);
+    $('mRevenue').textContent = fmt(state.revenue);
+  }
+}
+/* ================= TOAST + CONFETTI ================= */
+let toastTimer;
+function toast(title, sub){
+  $('toastTitle').textContent = title; $('toastSub').textContent = sub;
+  $('toast').classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>$('toast').classList.remove('show'), 4200);
+}
+function confetti(){
+  const colors = ['#22d3ee','#f59e0b','#22c55e','#67e8f9','#fde68a'];
+  for(let i=0;i<46;i++){
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.style.cssText = `left:${Math.random()*100}vw;width:${ri(5,9)}px;height:${ri(8,14)}px;background:${rnd(colors)};
+      animation-duration:${(Math.random()*1.4+1.6).toFixed(2)}s;animation-delay:${(Math.random()*0.5).toFixed(2)}s;`;
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(), 3800);
+  }
+}
+/* ================= AMBIENT SIM ================= */
+function ambientEvent(){
+  const r = Math.random();
+  if(r<.22){
+    const p = makeProspect('detected'); PROSPECTS.unshift(p);
+    addFeed('signal', `Hiring signal: <b>${esc(p.name)}</b> — ${esc(p.title)}, ${esc(p.city)} <span class="tag tag-lang">${sigLabel(p.signals[0])}</span>`);
+    bumpStage('detected'); $('mProspects').textContent = fmt(state.detected);
+    return ['signal','Scant profielen: regio '+p.city];
+  }
+  if(r<.42){
+    const cand = PROSPECTS.filter(x=>x.stage==='detected');
+    const p = cand.length? rnd(cand) : makeProspect('detected');
+    const sc = ri(58,97);
+    if(sc>=80){ p.stage='scored'; p.score=sc; bumpStage('scored'); }
+    addFeed('scorer', `<b>${esc(p.name)}</b> gescoord: <b>${sc}/100</b> (${p.signals.map(sigLabel).join(' + ')})${sc>=80?' — door naar Message Writer':''}`, sc>=80?'good':'');
+    return ['scorer','Scoring: '+p.name];
+  }
+  if(r<.58){
+    const cand = PROSPECTS.filter(x=>x.stage==='scored');
+    const p = cand.length? rnd(cand) : makeProspect('scored');
+    p.stage='messaged'; bumpStage('messaged');
+    addFeed('writer', `Bericht klaar voor <b>${esc(p.name)}</b> <span class="tag tag-lang">${p.lang}</span> — variant ${ri(1,3)}/3 goedgekeurd, ${ri(52,74)} woorden`);
+    return ['writer','Schrijft '+p.lang+'-bericht voor '+p.name];
+  }
+  if(r<.72){
+    const cand = PROSPECTS.filter(x=>x.stage==='messaged');
+    const p = cand.length? rnd(cand) : makeProspect('messaged');
+    const rr=Math.random();
+    const cls = rr<.45?['POSITIEF','tag-pos','good']: rr<.7?['NEUTRAAL','tag-lang','']: rr<.88?['BEZWAAR','tag-hot','']:['NEGATIEF','tag-neg',''];
+    p.stage='replied'; p.replyClass=cls[0]; bumpStage('replied');
+    addFeed('replies', `Reply van <b>${esc(p.name)}</b> geclassificeerd: <span class="tag ${cls[1]}">${cls[0]}</span>${cls[0]==='NEUTRAAL'?' — follow-up over 7 dagen':''}`, cls[2]);
+    return ['replies','Classificeert reply van '+p.name];
+  }
+  if(r<.84){
+    const cand = PROSPECTS.filter(x=>x.stage==='replied' && x.replyClass==='POSITIEF');
+    const p = cand.length? rnd(cand) : null;
+    const sc = ri(5,9);
+    if(p && sc>=7){ p.stage='qualified'; p.champ=sc; p.value=ri(8,14); bumpStage('qualified'); renderHotLeads(); }
+    addFeed('qualifier', `CHAMP-analyse <b>${esc(p?p.name:rnd(FIRST)+' '+rnd(LAST))}</b>: score <b>${sc}/10</b>${sc>=7?' — 🔥 hot lead, meeting voorstellen':' — nurture track'}`, sc>=7?'hot':'');
+    return ['qualifier','CHAMP-analyse actief'];
+  }
+  if(r<.93){
+    addFeed('director', `Prioriteiten herverdeeld — focus naar <b>${rnd(['finance-pool Brussel','tech-pool Gent','tech-pool Antwerpen','scale-ups Leuven'])}</b>`);
+    return ['director','Herplant dagschema voor 3 accounts'];
+  }
+  addFeed('analyst', `Insight: <b>${sigLabel(rnd(['open_to_work','recent_job_change','engagement_spike']))}</b> converteert ${ri(2,3)}× beter — gewichten bijgewerkt`);
+  return ['analyst','Analyseert signal-correlaties'];
+}
+let ambientTimer;
+function fire(){
+  const ev = ambientEvent();
+  if(ev) agentWork(ev[0], ev[1]);
+}
+function ambientTick(){
+  if(!state.demoRunning){
+    fire();
+    if(Math.random()<.35) setTimeout(()=>{ if(!state.demoRunning) fire(); }, ri(500,1500));
+    if(state.view==='prospects') renderTable();
+    if(state.view==='pipeline') renderKanban();
+  }
+  ambientTimer = setTimeout(ambientTick, ri(3200,6200));
+}
+/* ================= RUN DEMO ================= */
+async function runDemo(){
+  if(state.demoRunning) return;
+  state.demoRunning = true;
+  const btn = $('btnDemo');
+  btn.disabled = true;
+  btn.innerHTML = '<span>◉</span> Demo draait…';
+  showView('overview');
+  flowPipeline(true);
+  try{
+    const p = makeProspect('detected');
+    p.signals = ['open_to_work','recent_job_change'];
+    PROSPECTS.unshift(p);
+    const score = ri(84,94), champ = ri(7,9);
+
+    $('demoStrip').classList.add('show');
+    $('demoAvatar').textContent = p.init;
+    $('demoName').textContent = p.name;
+    $('demoTitle').textContent = p.title+' · '+p.company+', '+p.city;
+    $('demoSignal').textContent = p.signals.join(' · ');
+    $('demoScore').classList.remove('show');
+    const steps = [...$('demoSteps').children];
+    steps.forEach(s=>s.classList.remove('active','done'));
+    const phase = t=>{ $('demoPhase').textContent = t; };
+    const step = async (i,dur)=>{
+      if(!steps[i]){ await sleep(dur); return; }
+      steps[i].style.setProperty('--dur',dur+'ms'); steps[i].classList.add('active');
+      await sleep(dur);
+      steps[i].classList.remove('active'); steps[i].classList.add('done');
+    };
+
+    phase('Director start outreach-cyclus…');
+    addFeed('director', `<b>Demo-cyclus gestart</b> — target: ${esc(p.title)}s in ${esc(p.city)}`, 'demo');
+    let sq = beginTask('director','Outreach-cyclus gestart — target: '+p.city, 1400);
+    await sleep(1400); endTask('director', sq);
+
+    phase('Signal Detector scant LinkedIn…');
+    sq = beginTask('signal','Diepe scan: '+p.city+' · '+p.title, 2000);
+    await step(0,2000); endTask('signal', sq);
+    addFeed('signal', `🔥 Sterk signaal: <b>${esc(p.name)}</b> (${esc(p.title)}, ${esc(p.company)}) <span class="tag tag-hot">open to work</span> <span class="tag tag-lang">recent job change</span>`, 'demo');
+    bumpStage('detected'); $('mProspects').textContent = fmt(state.detected);
+
+    phase('Lead Scorer berekent intent-score…');
+    sq = beginTask('scorer','Scoort '+p.name+' op 15 intent signals', 1900);
+    await step(1,1900); endTask('scorer', sq);
+    p.stage='scored'; p.score=score;
+    $('demoScoreVal').textContent = score; $('demoScore').classList.add('show');
+    addFeed('scorer', `<b>${esc(p.name)}</b> gescoord: <b>${score}/100</b> — pitch angle: "actief op zoek, snelle plaatsing mogelijk"`, 'good demo');
+    bumpStage('scored');
+
+    phase('Message Writer schrijft gepersonaliseerd bericht…');
+    sq = beginTask('writer','3 '+p.lang+'-varianten voor '+p.name+' (≤75 woorden)', 2200);
+    await step(2,2200); endTask('writer', sq);
+    p.stage='messaged';
+    addFeed('writer', `3 varianten klaar voor <b>${esc(p.name)}</b> <span class="tag tag-lang">${p.lang}</span> — variant 2 goedgekeurd · GDPR Art. 14 ✓ · verzonden via BE residential IP`, 'demo');
+    bumpStage('messaged');
+
+    phase('Wachten op reply… ⏳ (versneld)');
+    await sleep(1300);
+    phase('Reply Handler classificeert antwoord…');
+    sq = beginTask('replies','Nieuwe reply van '+p.name+' — classificeren', 1800);
+    await step(3,1800); endTask('replies', sq);
+    p.stage='replied'; p.replyClass='POSITIEF';
+    addFeed('replies', `Reply van <b>${esc(p.name)}</b>: ${esc(replyFor(p))} → <span class="tag tag-pos">POSITIEF</span> — doorgestuurd naar Meeting Qualifier`, 'good demo');
+    bumpStage('replied');
+
+    phase('Meeting Qualifier draait CHAMP-analyse…');
+    sq = beginTask('qualifier','CHAMP: Challenge · Authority · Money · Priority', 2000);
+    await step(4,2000); endTask('qualifier', sq);
+    p.stage='qualified'; p.champ=champ; p.value=ri(8,14);
+    addFeed('qualifier', `CHAMP <b>${champ}/10</b> voor <b>${esc(p.name)}</b> — beslisser ✓ · budget ✓ · urgentie ✓ <span class="tag tag-hot">HOT LEAD</span>`, 'hot demo');
+    bumpStage('qualified'); renderHotLeads();
+
+    phase('Discovery call wordt ingepland…');
+    sq = beginTask('director','Cal-link verstuurd — slot wordt bevestigd', 1700);
+    await step(5,1700); endTask('director', sq);
+    setAgent('director','active','Dagplanning actief — 3 accounts');
+    p.stage='meeting'; bumpStage('meeting'); renderHotLeads();
+    addFeed('director', `📅 <b>Meeting geboekt</b> met ${esc(p.name)} — di 10:30 · discovery call 15 min · geschatte fee-waarde <b>€${p.value}K</b>`, 'hot demo');
+
+    state.response = Math.min(state.response+0.1, 49.9);
+    state.meetingRate = Math.min(state.meetingRate+0.1, 19.9);
+    state.revenue += 10;
+    refreshMetrics(false);
+    animateCount($('mRevenue'), state.revenue, 900);
+    renderEcon(true);
+
+    await sleep(500);
+    addFeed('analyst', `Cyclus voltooid in <b>4,2 dagen</b> (gesimuleerd) — klik op <b>${esc(p.name)}</b> bij Hot leads voor het volledige dossier`, 'demo');
+    phase('✅ Volledige cyclus voltooid — meeting geboekt!');
+    confetti();
+    toast('🔥 Meeting geboekt: '+p.name, p.title+' bij '+p.company+' · CHAMP '+champ+'/10 · klik op de hot lead voor het dossier');
+    setTimeout(()=>{ if(!state.demoRunning) $('demoStrip').classList.remove('show'); }, 9000);
+  } finally {
+    flowPipeline(false);
+    btn.disabled = false;
+    btn.innerHTML = '<span>▶</span> Run Demo';
+    state.demoRunning = false;
+    BUSY.clear();
+    Object.keys(LIVETASK).forEach(k=>delete LIVETASK[k]);
+    AGENTS.forEach(a=>setAgent(a.id,'active'));
+  }
+}
+/* ================= THEME ================= */
+function applyTheme(light){
+  document.body.classList.toggle('light', light);
+  $('themeBtn').textContent = light ? '☀️' : '🌙';
+  try{ localStorage.setItem('rocadelo-theme', light?'light':'dark'); }catch(e){}
+}
+/* ================= EVENTS ================= */
+function bindEvents(){
+  $('btnDemo').addEventListener('click', runDemo);
+  $('themeBtn').addEventListener('click', ()=>applyTheme(!document.body.classList.contains('light')));
+  document.addEventListener('click', e=>{
+    const ib = e.target.closest('.info-btn');
+    if(ib){ e.preventDefault(); showInfo(ib.dataset.info, ib); return; }
+    if(!e.target.closest('#popover')) hideInfo();
+    if(e.target.id==='bizClose'){ closeModal(); return; }
+    const nav = e.target.closest('.nav-tab');
+    if(nav){ if(nav.dataset.biz){ openBiz(); } else { showView(nav.dataset.view); } return; }
+    const goto_ = e.target.closest('[data-goto]');
+    if(goto_){ showView(goto_.dataset.goto); return; }
+    const gostage = e.target.closest('[data-gostage]');
+    if(gostage){ gotoStage(gostage.dataset.gostage); return; }
+    const stageEl = e.target.closest('.stage[data-stage], .frow-bar[data-stage]');
+    if(stageEl){ gotoStage(stageEl.dataset.stage); return; }
+    const pr = e.target.closest('[data-prospect]');
+    if(pr){ openProspect(pr.dataset.prospect); return; }
+    const ag = e.target.closest('[data-agent]');
+    if(ag){ openDrawer(ag.dataset.agent); return; }
+    const fst = e.target.closest('[data-fstage]');
+    if(fst){ state.filterStage = fst.dataset.fstage; renderChips(); renderTable(); return; }
+    const fl = e.target.closest('[data-flang]');
+    if(fl){ state.filterLang = fl.dataset.flang; renderChips(); renderTable(); return; }
+    const th = e.target.closest('th[data-sort]');
+    if(th){
+      const k = th.dataset.sort;
+      if(state.sortKey===k) state.sortDir*=-1; else { state.sortKey=k; state.sortDir=-1; }
+      renderTable(); return;
+    }
+    if(e.target.id==='modalClose' || e.target.id==='modalBg') closeModal();
+    if(e.target.id==='drawerClose' || e.target.id==='drawerBg') closeDrawer();
+  });
+  document.addEventListener('keydown', e=>{
+    if(e.key==='Escape'){ hideInfo(); closeModal(); closeDrawer(); }
+    if(e.key==='Enter' || e.key===' '){
+      const el = document.activeElement;
+      if(el && el.classList.contains('info-btn')) return;
+      if(el && (el.dataset.prospect || el.dataset.agent || el.dataset.stage)){ e.preventDefault(); el.click(); }
+    }
+  });
+  window.addEventListener('scroll', hideInfo, {passive:true});
+  $('searchInput').addEventListener('input', e=>{ state.search = e.target.value; renderTable(); });
+}
+/* ================= CLOCK & INIT ================= */
+function tickClock(){
+  $('clock').textContent = new Date().toLocaleString('nl-BE',{weekday:'short',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+}
+function init(){
+  try{ if(localStorage.getItem('rocadelo-theme')==='light') applyTheme(true); }catch(e){}
+  genProspects();
+  renderAgents();
+  renderPipeline();
+  renderHotLeads();
+  renderAgentsBig();
+  renderReport();
+  renderTrendChart();
+  renderSendsChart();
+  renderSignalChart();
+  renderHeatmap();
+  renderAccounts();
+  refreshMetrics(true);
+  renderEcon(false);
+  bindEvents();
+  tickClock();
+  setInterval(tickClock,1000);
+  $('convRate').textContent = (state.meeting/state.detected*100).toFixed(1).replace('.',',')+'%';
+
+  addFeed('director','Systeem online — 7 agents geïnitialiseerd · 3 LinkedIn-accounts gekoppeld · BE residential IPs actief','good');
+  addFeed('analyst','Weekrapport gegenereerd — reply rate <b>+2,3%</b> · beste verzendslot: <b>di 09:40</b>');
+  addFeed('signal','Ochtendscan gestart: <b>tech & finance bureaus</b> regio Antwerpen, Gent, Brussel');
+  setTimeout(ambientTick, 1800);
+}
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

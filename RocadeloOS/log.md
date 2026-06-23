@@ -1,0 +1,3 @@
+# Log — RocadeloOS
+
+- **2026-06-23** — RocadeloOS-vault opgezet (gesplitst uit `RocadeloOS-COMPLEET.md`): README/CLAUDE, `wiki/` (overzicht, agents, product, tech, business-model, go-to-market, compliance, roadmap, risico-90dagen, thiel, concurrenten + 7 spelers), `skills/`, `automations/`, `sources/`, `memory/`. Color-coded **`rocadelo-web.canvas`** (hoofdweb) uitgebouwd volgens kleurcode (1 rood markt/risico · 2 oranje business · 3 geel compliance/ops · 4 groen product/roadmap · 5 cyaan tech · 6 paars hub). `.gitignore` + `.env.example` toegevoegd; `wiki/partnerschap-matthias.md` aangemaakt. Open: hosting-keuze (privé repo vs in agenticOS), partnerschap-afspraken vastleggen, Fase -1 setup.

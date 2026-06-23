@@ -1,0 +1,35 @@
+{"nodes":[
+{"id":"hub","type":"text","text":"## AgenticOS — Nathan\nPersoonlijk besturingssysteem\n\nprofiel · projecten · toekomst","x":-200,"y":-60,"width":400,"height":130,"color":"6"},
+{"id":"projects","type":"file","file":"memory/projects.md","x":-200,"y":-220,"width":400,"height":60,"color":"3"},
+
+{"id":"profiel","type":"file","file":"wiki/nathan-profiel.md","x":-680,"y":-200,"width":320,"height":70,"color":"4"},
+{"id":"levensplan","type":"file","file":"wiki/nathans-levensplan.md","x":-680,"y":-100,"width":320,"height":70,"color":"4"},
+{"id":"psych","type":"file","file":"wiki/psycholoog-rapport-samenvatting.md","x":-680,"y":0,"width":320,"height":70,"color":"4"},
+{"id":"loop","type":"file","file":"wiki/dagelijkse-loop.md","x":-680,"y":100,"width":320,"height":70,"color":"4"},
+
+{"id":"rocadelo","type":"file","file":"RocadeloOS/rocadelo-web.canvas","x":320,"y":-200,"width":340,"height":80,"color":"6"},
+{"id":"flowstate","type":"file","file":"wiki/flowstate-masterplan.md","x":320,"y":-90,"width":340,"height":70,"color":"2"},
+{"id":"website","type":"file","file":"wiki/agency-website-business.md","x":320,"y":10,"width":340,"height":70,"color":"2"},
+{"id":"aiauto","type":"file","file":"wiki/ai-automation-agency.md","x":320,"y":110,"width":340,"height":70,"color":"2"},
+{"id":"etf","type":"file","file":"skills/etf-content.md","x":320,"y":210,"width":340,"height":70,"color":"2"},
+{"id":"burst","type":"file","file":"wiki/burst-productdossier.md","x":320,"y":310,"width":340,"height":70,"color":"2"},
+
+{"id":"nyc","type":"file","file":"wiki/nieuwe-york-ambitie.md","x":-200,"y":200,"width":400,"height":60,"color":"5"},
+{"id":"ruimte","type":"file","file":"wiki/ruimtevaartsector.md","x":-200,"y":280,"width":400,"height":60,"color":"5"},
+{"id":"financieel","type":"file","file":"wiki/financieel-plan.md","x":-200,"y":360,"width":400,"height":60,"color":"5"}
+],"edges":[
+{"id":"e1","fromNode":"hub","toNode":"projects","fromSide":"top","toSide":"bottom","label":"status"},
+{"id":"e2","fromNode":"hub","toNode":"profiel","fromSide":"left","toSide":"right","label":"wie ben ik"},
+{"id":"e3","fromNode":"profiel","toNode":"levensplan","fromSide":"bottom","toSide":"top"},
+{"id":"e4","fromNode":"levensplan","toNode":"psych","fromSide":"bottom","toSide":"top"},
+{"id":"e5","fromNode":"psych","toNode":"loop","fromSide":"bottom","toSide":"top"},
+{"id":"e6","fromNode":"hub","toNode":"rocadelo","fromSide":"right","toSide":"left","label":"Rocadelo HR · business-web"},
+{"id":"e7","fromNode":"hub","toNode":"flowstate","fromSide":"right","toSide":"left","label":"Flowstate"},
+{"id":"e8","fromNode":"hub","toNode":"website","fromSide":"right","toSide":"left","label":"Website agency"},
+{"id":"e9","fromNode":"hub","toNode":"aiauto","fromSide":"right","toSide":"left","label":"AI automation"},
+{"id":"e10","fromNode":"hub","toNode":"etf","fromSide":"right","toSide":"left","label":"ETF"},
+{"id":"e11","fromNode":"hub","toNode":"burst","fromSide":"right","toSide":"left","label":"BURST"},
+{"id":"e12","fromNode":"hub","toNode":"nyc","fromSide":"bottom","toSide":"top","label":"toekomst"},
+{"id":"e13","fromNode":"nyc","toNode":"ruimte","fromSide":"bottom","toSide":"top"},
+{"id":"e14","fromNode":"ruimte","toNode":"financieel","fromSide":"bottom","toSide":"top"}
+]}

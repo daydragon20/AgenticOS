@@ -1,0 +1,2 @@
+﻿Engelse README-intro voor de Thiel-evaluator (Nathan = individuele fellow; Matias = commercieel partner):
+"Rocadelo HR is an AI system that finds, qualifies, and engages recruiting leads on LinkedIn automatically … It runs as a team of seven specialized AI agents … built on the Claude API, with a full automation stack (Unipile, n8n, Supabase, Hetzner). We don't sell software. We operate as an embedded outbound partner on a no-cure-no-pay basis … He sources and closes; I build the machine that makes it scale."
