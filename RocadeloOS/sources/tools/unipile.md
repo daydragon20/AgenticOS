@@ -1,0 +1,1 @@
+﻿Unipile — unified messaging-API (LinkedIn/WhatsApp/e-mail/…). Webhooks (accepted-invite, new message, account status; 30s→200). Outreach-sequences, accepted-invite-detectie, search+export. Native n8n + MCP + Node SDK. Auth DSN+token. llms.txt voor AI. Provider-limits lezen vóór livegang.

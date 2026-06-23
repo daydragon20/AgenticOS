@@ -1,0 +1,1 @@
+﻿# Gesprek-capture — [bron] ([datum]) · ## Ruwe input (plak hier) · ## Te extraheren (Claude vult in): Feiten / Beslissingen / Leads-contacten / Ideeën→research-inbox / Naar welke wiki-memory-pagina's / Canvas-knoop + verbindingen. Flow: ../automations/capture.md.

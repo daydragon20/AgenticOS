@@ -1,0 +1,1 @@
+﻿Chat 07 — Learning OS / sprint roadmap (6 juni). Kernprincipe: webapp Claude = denken/ontwerpen/leren; Claude Code = bouwen (via n8n-mcp directe n8n-toegang). Flow: ontwerp in webapp → Claude Code bouwt in n8n. "Brok 0": teken eerst de 7-agent-graaf vóór je bouwt. Plus: 7 leerbrokken, Tech Radar, capture pipeline.

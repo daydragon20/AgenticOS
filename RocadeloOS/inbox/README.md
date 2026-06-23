@@ -1,0 +1,1 @@
+﻿Inbox — ruwe input. Dump hier alles wat nog niet verwerkt is (chat-exports, screenshots, WhatsApp-exports, documenten van Matias). Flow: dump → Claude verwerkt naar juiste wiki/memory-pagina (synthese) → knoop op ../rocadelo-web.canvas → regel in ../log.md (zie ../automations/capture.md).

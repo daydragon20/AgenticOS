@@ -1,0 +1,1 @@
+﻿Hetzner cost-optimized — goedkope EU-VPS (GDPR). CX23 2/4, CAX11 ARM 2/4, CX33 4/8, … CX53/CAX41 16/32. Per-uur met maandcap, instap ~enkele €/mnd (verifieer in console). API+CLI+Terraform, gratis firewall, snapshots. Start CX23/CAX11 voor pipeline+n8n.

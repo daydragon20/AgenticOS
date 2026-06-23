@@ -2,29 +2,32 @@
 .env
 .env.*
 !.env.example
+*.env
+secrets.*
+**/credentials*.json
+**/*token*.json
 
-# State / databases (klantdata, RAG-index) — privacy by design, klantdata niet in git
+# State / databases (klantdata, RAG-index) — privacy by design
 *.db
 *.sqlite
 *.sqlite3
 memory/rag-db/
-memory/*.db
-clients/
-client-data/
+**/rag-db/
 
-# Ruwe persoonlijke bronbestanden
-raw/
-
-# Obsidian workspace (machine-specifiek)
-.obsidian/
-
-# Node / Python (indien hier later code belandt)
-node_modules/
+# Python
 __pycache__/
 *.pyc
 .venv/
 venv/
 
-# Windows
+# Node
+node_modules/
+
+# Obsidian (machine-specifiek)
+.obsidian/workspace*.json
+.obsidian/cache/
+
+# OS
+.DS_Store
 desktop.ini
 Thumbs.db

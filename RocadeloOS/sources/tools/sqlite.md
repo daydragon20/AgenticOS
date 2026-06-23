@@ -1,0 +1,1 @@
+﻿SQLite — serverless file-DB (C-lib, public domain, meest gebruikt). Via Python sqlite3. State voor v1 (leads/messages/replies/clients). SQLite (start) vs Supabase/Postgres (schaal). DB niet committen (.gitignore).

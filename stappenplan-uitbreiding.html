@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uitbreiding Stappenplan — Accounts, Warming & Interview-tools</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0e1a;--surface:#111827;--surface2:#1a2235;--border:#1e2d45;--blue:#3b82f6;--blue-dim:#1d3a6e;--green:#22c55e;--green-dim:#14532d;--gold:#f59e0b;--gold-dim:#451a03;--purple:#a78bfa;--purple-dim:#2e1065;--red:#ef4444;--cyan:#22d3ee;--cyan-dim:#0c2a2e;--text:#e2e8f0;--muted:#64748b;--mono:'JetBrains Mono',monospace;--sans:'DM Sans',sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;padding:0 0 80px;}
+.header{background:linear-gradient(135deg,#0f1a2e 0%,#0b0e1a 100%);border-bottom:1px solid var(--border);padding:28px 24px 22px;position:sticky;top:0;z-index:100;}
+.header-top{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.hb{font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--blue);background:var(--blue-dim);padding:3px 8px;border-radius:3px;border:1px solid var(--blue);}
+.hv{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);background:var(--gold-dim);padding:3px 8px;border-radius:3px;border:1px solid var(--gold);}
+.header h1{font-size:20px;font-weight:700;color:#fff;line-height:1.2;}
+.header p{font-size:12px;color:var(--muted);margin-top:3px;}
+.progress-bar{display:flex;gap:3px;margin-top:14px;}
+.pb-step{flex:1;height:3px;border-radius:2px;background:var(--border);cursor:pointer;transition:background .2s;}
+.pb-step.done{background:var(--green);}
+.pb-step.active{background:var(--blue);}
+.phase-nav{display:flex;overflow-x:auto;border-bottom:1px solid var(--border);background:var(--surface);scrollbar-width:none;padding:0 12px;}
+.phase-nav::-webkit-scrollbar{display:none;}
+.phase-tab{padding:11px 14px;font-size:11px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:color .15s,border-color .15s;font-family:var(--sans);background:none;border-top:none;border-left:none;border-right:none;}
+.phase-tab.active{color:var(--blue);border-bottom-color:var(--blue);}
+.phase-tab:hover:not(.active){color:var(--text);}
+.content{padding:20px 16px;max-width:820px;margin:0 auto;}
+.phase-section{display:none;}
+.phase-section.active{display:block;}
+.step{background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:14px;overflow:hidden;}
+.step-header{display:flex;align-items:center;gap:10px;padding:14px 16px;cursor:pointer;user-select:none;}
+.step-num{font-family:var(--mono);font-size:9px;font-weight:600;padding:3px 7px;border-radius:4px;flex-shrink:0;}
+.num-do{background:var(--blue-dim);color:var(--blue);border:1px solid var(--blue);}
+.num-claude{background:var(--purple-dim);color:var(--purple);border:1px solid var(--purple);}
+.num-research{background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold);}
+.num-warn{background:#3b1a1a;color:var(--red);border:1px solid var(--red);}
+.num-insight{background:var(--cyan-dim);color:var(--cyan);border:1px solid var(--cyan);}
+.step-title{font-size:13.5px;font-weight:600;flex:1;color:#fff;}
+.step-type{font-size:9px;font-family:var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.08em;flex-shrink:0;}
+.step-chevron{color:var(--muted);font-size:11px;transition:transform .2s;flex-shrink:0;}
+.step.open .step-chevron{transform:rotate(90deg);}
+.step-body{display:none;padding:0 16px 16px;border-top:1px solid var(--border);}
+.step.open .step-body{display:block;}
+.step-desc{font-size:12.5px;color:#94a3b8;line-height:1.7;padding:12px 0 8px;}
+.prompt-box{background:#060b14;border:1px solid var(--border);border-radius:8px;margin-top:10px;overflow:hidden;}
+.prompt-label{display:flex;align-items:center;justify-content:space-between;padding:7px 12px;border-bottom:1px solid var(--border);background:var(--surface2);}
+.prompt-label span{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;}
+.copy-btn{font-family:var(--mono);font-size:9px;color:var(--blue);background:var(--blue-dim);border:1px solid var(--blue);border-radius:3px;padding:2px 7px;cursor:pointer;}
+.copy-btn.copied{color:var(--green);background:var(--green-dim);border-color:var(--green);}
+.prompt-text{font-family:var(--mono);font-size:11px;color:#c8d8f0;line-height:1.75;padding:12px 14px;white-space:pre-wrap;word-break:break-word;}
+.checklist{list-style:none;margin-top:10px;}
+.checklist li{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);font-size:12.5px;color:#94a3b8;line-height:1.5;}
+.checklist li:last-child{border-bottom:none;}
+.ci{flex-shrink:0;font-size:13px;margin-top:1px;}
+.action-link{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:12px;color:var(--blue);text-decoration:none;font-weight:600;}
+.phase-intro{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:18px;display:flex;gap:14px;align-items:flex-start;}
+.phase-icon{font-size:26px;flex-shrink:0;}
+.phase-intro h2{font-size:15px;font-weight:700;color:#fff;margin-bottom:4px;}
+.phase-intro p{font-size:12px;color:var(--muted);line-height:1.6;}
+.legend{display:flex;flex-wrap:wrap;gap:8px;padding:10px 16px;background:var(--surface);border-bottom:1px solid var(--border);}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--muted);font-family:var(--mono);}
+.ld{width:7px;height:7px;border-radius:50%;}
+.ldo{background:var(--blue);}
+.ldc{background:var(--purple);}
+.ldr{background:var(--gold);}
+.ldw{background:var(--red);}
+.ldi{background:var(--cyan);}
+.micro-wrap{margin-top:12px;border:1px solid #1a2a1a;border-radius:6px;overflow:hidden;}
+.micro-hdr{display:flex;align-items:center;gap:8px;padding:8px 12px;cursor:pointer;background:#070f07;font-family:var(--mono);font-size:9px;color:var(--green);text-transform:uppercase;letter-spacing:.1em;user-select:none;}
+.micro-hdr:hover{background:#0a160a;}
+.micro-chev{font-size:9px;transition:transform .2s;}
+.micro-open .micro-chev{transform:rotate(90deg);}
+.micro-body{display:none;padding:12px 14px;background:#040c04;}
+.micro-open .micro-body{display:block;}
+.micro-block{margin-bottom:14px;}
+.micro-block:last-child{margin-bottom:0;}
+.micro-lbl{font-family:var(--mono);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid #1a2a1a;}
+.micro-item{font-size:11.5px;color:#94a3b8;line-height:1.6;padding:2px 0;}
+.micro-item::before{content:"\2192 ";color:var(--green);font-family:var(--mono);}
+.micro-cmd{background:#020706;border:1px solid #1a3a1a;border-radius:4px;padding:8px 10px;font-family:var(--mono);font-size:10.5px;color:#86efac;margin:6px 0;word-break:break-all;}
+.micro-exp{font-size:11px;color:#64748b;margin:2px 0 8px;}
+.micro-exp::before{content:"Verwacht: ";color:var(--green);font-family:var(--mono);font-size:9px;}
+.micro-err{background:#1a0404;border-left:2px solid var(--red);padding:6px 8px;margin:4px 0;border-radius:0 4px 4px 0;}
+.micro-err-code{font-family:var(--mono);font-size:10px;color:var(--red);}
+.micro-err-fix{font-size:11px;color:#94a3b8;margin-top:2px;}
+.micro-int{background:#040c04;border:1px solid #1a3a1a;border-radius:4px;padding:8px 10px;font-family:var(--mono);font-size:10.5px;color:#fcd34d;margin:6px 0;word-break:break-all;}
+.banner{max-width:820px;margin:18px auto 0;padding:0 16px;}
+.banner-inner{background:linear-gradient(135deg,#1a1206,#0b0e1a);border:1px solid var(--gold);border-radius:10px;padding:14px 16px;font-size:12px;color:#cbb27a;line-height:1.6;}
+.banner-inner b{color:var(--gold);}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-top">
+    <div class="hb">Rocadelo HR x Nathan</div>
+    <div class="hv">Uitbreiding — Accounts, Warming & Interview-tools</div>
+  </div>
+  <h1>Uitbreiding op je Stappenplan</h1>
+  <p>2 nieuwe fases · 11 stappen · schuift tussen Fase 1↔2 en achter Fase 6 · Claude Code prompts + verificatie</p>
+  <div class="progress-bar" id="progressBar"></div>
+</div>
+<div class="banner"><div class="banner-inner">
+  <b>Hoe gebruik je dit?</b> Dit is een aanvulling op je bestaande plan, in dezelfde stijl. <b>Fase 1½ (Accounts & Warming)</b> vervangt en verrijkt de oude stap 1.4 en hoort tussen Infrastructuur en Basis Systeem. <b>Fase 7 (Spott-tools)</b> komt ná je eerste klant. Cijfers over LinkedIn-limieten zijn praktijk-consensus voor 2026, geen officiële LinkedIn-regels.
+</div></div>
+<div class="legend">
+  <div class="legend-item"><div class="ld ldo"></div>Jij doet dit</div>
+  <div class="legend-item"><div class="ld ldc"></div>Claude Code prompt</div>
+  <div class="legend-item"><div class="ld ldr"></div>Research prompt</div>
+  <div class="legend-item"><div class="ld ldw"></div>Opgelet</div>
+  <div class="legend-item"><div class="ld ldi"></div>Inzicht uit analyse</div>
+</div>
+<div class="phase-nav" id="phaseNav"></div>
+<div class="content" id="mainContent"></div>
+<script>
+const phases = [
+{
+  "id":"accounts","label":"\u00bd\uFE0F Accounts & Warming","icon":"\uD83D\uDD25",
+  "title":"Fase 1\u00bd — Accounts: kopen vs. aanmaken + opwarmen",
+  "desc":"Dit hoort tussen Fase 1 (Infrastructuur) en Fase 2, en vervangt de oude, te dunne stap 1.4. Het is de make-or-break van jullie model: jullie verkopen accountveiligheid, dus jullie eigen accounts moeten onberispelijk zijn. Begin het warmen 4-6 weken voor je live wilt.",
+  "steps":[
+    {"type":"insight","num":"1\u00bd.1","title":"Kopen vs. zelf aanmaken — de eerlijke beslissing","desc":"Jullie dachten eerst accounts te kopen en die te gebruiken. Lees dit eerst, want het botst met jullie eigen kernbelofte.","checklist":[
+      {"i":"\u2605","t":"Kopen of verkopen van LinkedIn-accounts is expliciet verboden in LinkedIn's User Agreement. Gedetecteerde accounts worden beperkt of permanent geband, en de oorspronkelijke eigenaar kan het account terugclaimen."},
+      {"i":"\u26a0","t":"LinkedIn's detectie is in 2026 erg goed: device-, cookie- en IP-mismatches verraden een gekocht account. Erger nog: als LinkedIn een gekocht account aan jullie andere accounts linkt (zelfde server, IP of device), kan het alles tegelijk bannen."},
+      {"i":"\u26a0","t":"Gekochte accounts gekoppeld aan een echte identiteit geven GDPR- en identiteitsproblemen, net waar recruitmentklanten gevoelig voor zijn."},
+      {"i":"\u2605","t":"De diepere reden: jullie hele propositie is 'wij houden je account veilig, wij zijn de compliant professionals'. Dat bouwen op een ToS-overtreding die LinkedIn bant, is een contradictie die je merk kan kelderen."},
+      {"i":"\u2192","t":"Aanbeveling: koop niet. Maak een kleine set echte agency-accounts aan (echte, instemmende persoon), met een compleet profiel, en warm ze traag op. Trager, maar duurzaam, ban-resistent en consistent met wat je verkoopt."},
+      {"i":"\u2192","t":"Side-note: 'rented' of pre-warmed accounts (MirrorProfiles e.d.) bestaan, maar zijn even ToS-grijs, je bezit ze niet, en ze dragen ban-risico. Niet aangeraden als fundament."}
+    ]},
+    {"type":"insight","num":"1\u00bd.2","title":"Hoe LinkedIn-limieten echt werken in 2026","desc":"Er is geen vaste tabel: LinkedIn gebruikt een dynamische 'trust score'. Begrijp dit en je begrijpt het hele warming-spel. (Cijfers = praktijk-consensus 2026, geen officiele LinkedIn-regels.)","checklist":[
+      {"i":"\u2605","t":"Het is een trust score, geen vast getal: gebaseerd op accountleeftijd, acceptatiegraad, reply rate, openstaande invites en organische activiteit."},
+      {"i":"\u2192","t":"Nieuw account (onder 3 maanden): veilig ongeveer 50-80 connectieverzoeken per week. Gevestigd account: rond 100 per week. High-trust (SSI 65+, 6+ maanden, acceptatie 40%+): tot 150-200 per week."},
+      {"i":"\u2192","t":"Het wekelijkse venster reset NIET op een vaste dag, maar ongeveer 7 dagen na je eerste verzoek van de cyclus. Een piek op maandag plus stilte = verdacht patroon."},
+      {"i":"\u2192","t":"Houd openstaande invites onder 500 (harde zone rond 700) en trek oude verzoeken regelmatig in. Te veel pending verlaagt je trust score."},
+      {"i":"\u2605","t":"Sales Navigator verhoogt je SSI en beschermt je account. In een vergelijkende test bleef het Sales-Nav-profiel ongedeerd terwijl het gewone profiel werd beperkt. Het verhoogt vooral targeting en trust, niet zomaar het ruwe plafond."},
+      {"i":"\u26a0","t":"Gratis account: max ongeveer 5-10 gepersonaliseerde invite-notities per maand (daarna enkel lege verzoeken), notitielimiet 200 tekens. Premium of Sales Nav: 300 tekens."}
+    ]},
+    {"type":"do","num":"1\u00bd.3","title":"Agency-account opzetten (dag 0) — voor je iets verstuurt","desc":"Een dun, leeg account dat meteen verzoeken spamt, wordt direct geflagd. Bouw eerst een geloofwaardig profiel.","checklist":[
+      {"i":"\u2605","t":"Het is een AGENCY-account: profiel = 'Talent Sourcer bij [Bureau]', met een echte, instemmende persoon als naam en gezicht. Nooit de naam van de klant-recruiter."},
+      {"i":"\u2192","t":"Compleet profiel voor dag 1: echte foto, banner, headline, uitgebreide About-sectie, 1-2 ervaringen. Een leeg profiel is een rode vlag."},
+      {"i":"\u26a0","t":"Koppel het vaste Belgische NodeMaven-IP VANAF DAG 1 en wissel het nooit. Een locatiewissel is een directe rode vlag."},
+      {"i":"\u2192","t":"Overweeg Sales Navigator per account: hogere SSI, betere targeting, meer bescherming. Reken dit mee in je kostprijs per klant."},
+      {"i":"\u26a0","t":"Nog GEEN automatisering. De eerste ongeveer 30 dagen is alles manueel (of via Unipile's geauthenticeerde sessie, traag)."},
+      {"i":"\u2192","t":"Een persoon = een device- of browseromgeving per account. Meng geen accounts op hetzelfde device zonder isolatie."}
+    ]},
+    {"type":"do","num":"1\u00bd.4","title":"Het warming-protocol — week voor week","desc":"Begin 4-6 weken voor je live wilt, parallel aan al de rest. Geleidelijk opbouwen, altijd een menselijk patroon.","checklist":[
+      {"i":"\u2192","t":"Week 1: enkel manueel. 5-10 connectieverzoeken per dag. Like of reageer op 3-5 posts per dag. Geen tools."},
+      {"i":"\u2192","t":"Week 2: 10-15 verzoeken per dag. Plaats 1 eigen post. Blijf manueel."},
+      {"i":"\u2192","t":"Week 3-4: 15-20 per dag. Reageer inhoudelijk op posts. Koppel pas aan het einde van week 4 voorzichtig aan Unipile."},
+      {"i":"\u2192","t":"Week 5-6: opbouwen naar ongeveer 20 per dag (rond 100 per week). Monitor: blijft de acceptatie boven 40%? Dan verder. Zo niet: terugschroeven."},
+      {"i":"\u2605","t":"Pre-engage voor elk verzoek: bezoek het profiel, like of reageer op een recente post, wacht 2-3 dagen, stuur dan een gepersonaliseerd verzoek. Dit kan je acceptatie verdubbelen en beschermt je trust score."},
+      {"i":"\u2605","t":"Spreid over Belgische kantooruren (08-18u), varieer de tijdstippen, nooit alles op maandagochtend. Een regelmatig, gespreid patroon oogt menselijk."},
+      {"i":"\u26a0","t":"Kwaliteit boven volume, altijd. 100 scherpe, gepersonaliseerde verzoeken verslaan 700 generieke, en beschermen je capaciteit op lange termijn."}
+    ]},
+    {"type":"warn","num":"1\u00bd.5","title":"Account-gezondheid bewaken & rotatie","desc":"Jullie nemen het accountrisico op je. Beheers het, anders is het je achilleshiel.","checklist":[
+      {"i":"\u2192","t":"KPI's per account: acceptatiegraad boven 35-40%, gezonde reply rate, 0 warnings, pending onder 500."},
+      {"i":"\u26a0","t":"Bij 2 warnings: stop dat account onmiddellijk en activeer een backup uit de pool. Forceer nooit door een waarschuwing heen."},
+      {"i":"\u2192","t":"Recovery na een beperking: de volgende week het volume 40-50% terugschroeven, focus op acceptatiekwaliteit, daarna langzaam terug opbouwen."},
+      {"i":"\u2605","t":"Pool-regel: altijd 6-8 actieve accounts PLUS 2-3 in warmup als backup. Een account verliezen mag nooit een klant platleggen."},
+      {"i":"\u2192","t":"Koppel de daglimiet in messaging.py (stap 3.2) aan de week-fase van elk account: een week-1-account mag max 10 per dag, een week-6-account max 20 per dag."}
+    ]},
+    {"type":"claude","num":"1\u00bd.6","title":"Claude Code: warming-tracker + health-monitor","desc":"Bouwt voort op unipile/client.py en messaging.py. Houdt per account de warming-fase, dagteller, acceptatiegraad en warnings bij, en dwingt het ramp-schema af.",
+     "prompt":"In linkedin_ai/unipile/account_health.py bouw je een warming-tracker en health-monitor.\n\nDatabase tabel 'accounts' met velden:\naccount_id, persoon_naam, warmup_start_datum, huidige_week (1-6+),\nstatus (warming/actief/restricted/paused), ip_adres, sales_nav (bool)\n\nFuncties:\n- daily_limit_for(account_id) -> int\n  Op basis van warmup-week: week1=10, week2=15, week3-4=20, week5+=20 (max). Restricted=0.\n- can_send(account_id) -> bool\n  Checkt: binnen daglimiet? binnen Belgische kantooruren (08-18u, werkdag)? status actief? pending invites onder 500?\n- record_action(account_id, type) -> None\n  Logt een verzoek of bericht met timestamp, verhoogt de dagteller.\n- acceptance_rate(account_id, days=14) -> float\n  Geaccepteerde verzoeken gedeeld door verstuurde verzoeken (laatste 14 dagen).\n- health_check() -> dict\n  Per account: week, daglimiet, acceptatiegraad, pending count, warnings, advies (doorgaan/terugschroeven/stoppen).\n- advance_week() -> None\n  Verhoogt huidige_week wekelijks automatisch (via cron), tot max 6.\n\nAlerts: print een kritieke waarschuwing bij acceptatie onder 35% of bij een warning.\nGeen AI nodig: pure logica plus database.",
+     "prep":["unipile/client.py en messaging.py werken (stappen 2.3 en 3.2 OK)","database.py heeft of krijgt een 'accounts' tabel","NodeMaven-IP per account genoteerd"],
+     "verify":{"cmd":"python3 -c \"from linkedin_ai.unipile.account_health import daily_limit_for; print('Daglimiet week-1:', daily_limit_for('TEST_W1'))\"","expected":"Daglimiet week-1: 10 (de waarde voor een account in week 1)","errors":[{"code":"no such table: accounts","fix":"Run: python3 -c \"from linkedin_ai.database import init_db; init_db()\" en voeg de accounts-tabel toe aan database.py."},{"code":"ImportError: cannot import name","fix":"Controleer of account_health.py correct is aangemaakt en de functienamen kloppen."}]},
+     "integration":{"cmd":"python3 -c \"from linkedin_ai.unipile.account_health import health_check; import json; print(json.dumps(health_check(), indent=2, default=str))\"","expected":"Overzicht per account met week, daglimiet, acceptatiegraad en advies"}}
+  ]
+},
+{
+  "id":"tools","label":"\u2467 Interview & Tools","icon":"\uD83C\uDF99\uFE0F",
+  "title":"Fase 7 — Spott-tools: AI note-taker, CV-reformat & delivery",
+  "desc":"De value-add tools die Spott heeft. Bouw dit NA je eerste betalende klant: het verdiept de service en is de eerste stap richting jullie platform-visie. Slot in naast Fase 5 (website/portal) en Fase 6 (klant).",
+  "steps":[
+    {"type":"insight","num":"7.1","title":"Welke Spott-tools overnemen — en wanneer","desc":"Niet alles tegelijk. Prioriteer wat je service meteen waardevoller maakt.","checklist":[
+      {"i":"\u2605","t":"Nu prioritair: (1) AI note-taker voor intake- en interviewgesprekken, (2) CV-reformatter naar het sjabloon van de klant. Twee zichtbare tijdwinsten."},
+      {"i":"\u2192","t":"Daarna: candidate presentation of portal (bouwt op je client portal uit Fase 5) en een scheduler (Cal.com-link)."},
+      {"i":"\u2192","t":"Later of optioneel: data-enrichment (ontbrekende e-mails en telefoons aanvullen). Unipile en losse providers kunnen dit."},
+      {"i":"\u26a0","t":"Pas op met scope: dit is uitbreiding NA de PoC. Laat het je eerste klant niet vertragen."},
+      {"i":"\u2605","t":"Strategisch: dit is waar jullie service stilaan een product wordt, precies Spott's pad (begon met een rapporten-tool, werd een platform)."}
+    ]},
+    {"type":"research","num":"7.2","title":"Research: AI note-taker architectuur","desc":"Stuur dit naar Claude (niet Claude Code) als voorbereiding voor stap 7.3.",
+     "prompt":"Ik wil een AI note-taker bouwen die meeluistert tijdens recruitment-interviews (Zoom, Teams, Google Meet) en automatisch een gestructureerd kandidaatrapport maakt.\n\n1. Hoe werkt de Recall.ai Meeting Bot API? Hoe stuur ik een bot naar een meeting via enkel de meeting-link?\n2. Hoe krijg ik de transcriptie terug (real-time vs na de meeting), en wat is 'speaker diarization' (wie zei wat)?\n3. Hoe gebruik ik een webhook om te weten wanneer de meeting klaar is?\n4. Alternatieven en afweging: Recall.ai (bot) vs. eigen opname plus AssemblyAI, Deepgram of Whisper voor transcriptie. Wat is goedkoper en sneller voor een kleine startup?\n5. GDPR: hoe regel ik correct toestemming voor opname in een interview?\n\nGeef per vraag een Python-voorbeeld. Documentatie: recall.ai"}
+    ,
+    {"type":"claude","num":"7.3","title":"Claude Code: AI note-taker (Recall.ai + Claude)","desc":"Een bot joint de meeting via de link, transcribeert, en Claude maakt er een gestructureerd kandidaatrapport van. Ongeveer 200 regels backend.",
+     "prompt":"In linkedin_ai/tools/notetaker.py bouw je een AI note-taker.\n\nPipeline:\n1. start_notetaker(meeting_url, candidate_id) -> bot_id\n   Stuurt via de Recall.ai Meeting Bot API een bot naar de meeting (Zoom, Teams of Meet) op basis van enkel de meeting-link.\n2. Webhook endpoint /webhook/recall (FastAPI):\n   Ontvangt het 'meeting done' event en haalt de gediarizeerde transcriptie op via de Recall.ai API.\n3. summarize_interview(transcript, candidate_id) -> dict\n   Stuurt de transcriptie naar de Claude API (claude-sonnet-4-6) met system prompt:\n   'Je bent een recruitment-analist. Vat dit interview samen als JSON met velden: samenvatting, sterktes (lijst), aandachtspunten (lijst), gevraagd_salaris, beschikbaarheid, fit_score (0-10), opvallende_quotes (lijst), aanbevolen_next_step. Antwoord ALLEEN als JSON.'\n4. Sla het rapport op in de database (tabel interview_reports) en genereer een PDF via reportlab.\n\nLaad RECALL_API_KEY en ANTHROPIC_API_KEY uit .env.\nVoeg een duidelijke veiligheidsnotitie toe: opname enkel met expliciete toestemming van alle deelnemers (GDPR).",
+     "prep":["Recall.ai account plus RECALL_API_KEY in .env","ANTHROPIC_API_KEY actief en credit aanwezig","FastAPI en uvicorn geinstalleerd (uit requirements)","pip install reportlab gedaan"],
+     "verify":{"cmd":"python3 -c \"from linkedin_ai.tools.notetaker import summarize_interview; r = summarize_interview('Interviewer: Vertel over je ervaring. Kandidaat: Ik werk 5 jaar als Python developer, zoek iets nieuws, beschikbaar over 1 maand.', 1); print('Fit score:', r['fit_score'])\"","expected":"Fit score: [getal 0-10] plus JSON met samenvatting en sterktes","errors":[{"code":"anthropic.AuthenticationError","fix":"ANTHROPIC_API_KEY controleren in .env."},{"code":"recall 401 Unauthorized","fix":"RECALL_API_KEY fout of leeg. Check je Recall.ai dashboard."},{"code":"json.JSONDecodeError","fix":"Voeg 'Antwoord ALLEEN als JSON' toe aan de system prompt."}]},
+     "integration":{"cmd":"python3 -c \"import os; p='reports/interviews/'; print('PDF map:', os.listdir(p) if os.path.exists(p) else 'nog leeg (maak na eerste echte run)')\"","expected":"Een of meer .pdf rapporten na een echte interview-run"}}
+    ,
+    {"type":"claude","num":"7.4","title":"Claude Code: CV-reformatter","desc":"Zet elk binnenkomend cv om naar het sjabloon van de klant. Spott's tijdwinst, bij jullie als onderdeel van de service.",
+     "prompt":"In linkedin_ai/tools/cv_reformatter.py bouw je een CV-reformatter.\n\n1. parse_cv(file_path) -> dict\n   Leest een cv (PDF of docx), haalt de tekst eruit, en laat Claude (claude-sonnet-4-6) de gegevens structureren als JSON: naam, contact, samenvatting, ervaring (lijst), opleiding (lijst), skills (lijst), talen (lijst).\n2. reformat_to_template(data, template_naam) -> pdf_path\n   Genereert via reportlab een net cv in het sjabloon van het bureau (logo, kleuren, vaste secties).\n   [AANPASSEN: logo-pad en kleuren per klant in een aparte config.]\n3. CLI: python3 -m linkedin_ai.tools.cv_reformatter pad/naar/cv.pdf --template rocadelo\n\nLaad ANTHROPIC_API_KEY uit .env.",
+     "prep":["pip install reportlab pypdf python-docx gedaan","ANTHROPIC_API_KEY actief"],
+     "verify":{"cmd":"python3 -c \"from linkedin_ai.tools.cv_reformatter import parse_cv; print('parse_cv functie OK')\"","expected":"parse_cv functie OK","errors":[{"code":"ImportError: pypdf","fix":"pip install pypdf python-docx"}]},
+     "integration":{"cmd":"python3 -c \"from linkedin_ai.tools.cv_reformatter import reformat_to_template; print('reformat functie OK')\"","expected":"reformat functie OK"}}
+    ,
+    {"type":"insight","num":"7.5","title":"Candidate presentation & scheduler — in je client portal","desc":"Geen aparte tool: breid je bestaande client portal (stap 5.6) uit. Zo blijf je een service, geen los gereedschap.","checklist":[
+      {"i":"\u2192","t":"Voeg aan het portal een 'Kandidaten'-view toe waar de klant per kandidaat het AI-interviewrapport en het geformatteerde cv ziet (read-only)."},
+      {"i":"\u2192","t":"Scheduler: plak een Cal.com-link in het portal en in je outreach, zodat warme leads zelf een gesprek boeken, gekoppeld aan de agenda."},
+      {"i":"\u2605","t":"Branding: rapport en portal in de huisstijl van het bureau. Dat voelt als 'hun team', niet als een externe tool, exact jullie positionering."},
+      {"i":"\u2192","t":"Enrichment (later): laat ontbrekende e-mails en telefoons automatisch aanvullen via Unipile of een provider, zodat dossiers compleet zijn."}
+    ]}
+  ]
+}
+];
+
+function typeLabel(t){
+  if(t==='do') return 'JIJ DOET DIT';
+  if(t==='claude') return 'CLAUDE CODE';
+  if(t==='research') return 'RESEARCH';
+  if(t==='warn') return 'OPGELET';
+  if(t==='insight') return 'INZICHT';
+  return '';
+}
+function numClass(t){
+  if(t==='do') return 'num-do';
+  if(t==='claude') return 'num-claude';
+  if(t==='research') return 'num-research';
+  if(t==='warn') return 'num-warn';
+  if(t==='insight') return 'num-insight';
+  return '';
+}
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function renderMicro(step, pi, si){
+  if(!step.prep && !step.verify && !step.integration) return '';
+  let html = '<div class="micro-wrap" id="mw-'+pi+'-'+si+'">';
+  html += '<div class="micro-hdr" onclick="toggleMicro('+pi+','+si+')">';
+  html += '<span class="micro-chev" id="mchev-'+pi+'-'+si+'">&#9654;</span>';
+  html += 'Voorbereiding &amp; Verificatie</div>';
+  html += '<div class="micro-body" id="mb-'+pi+'-'+si+'">';
+  if(step.prep){
+    html += '<div class="micro-block"><div class="micro-lbl">Voorbereiding — wat moet klaarstaan</div>';
+    step.prep.forEach(function(p){ html += '<div class="micro-item">'+esc(p)+'</div>'; });
+    html += '</div>';
+  }
+  if(step.verify){
+    html += '<div class="micro-block"><div class="micro-lbl">Verificatie — run dit na de Claude Code prompt</div>';
+    html += '<div class="micro-cmd">'+esc(step.verify.cmd)+'</div>';
+    html += '<div class="micro-exp">'+esc(step.verify.expected)+'</div>';
+    if(step.verify.errors){
+      step.verify.errors.forEach(function(e){
+        html += '<div class="micro-err"><div class="micro-err-code">&#9888; '+esc(e.code)+'</div>';
+        html += '<div class="micro-err-fix">'+esc(e.fix)+'</div></div>';
+      });
+    }
+    html += '</div>';
+  }
+  if(step.integration){
+    html += '<div class="micro-block"><div class="micro-lbl">Integratietest</div>';
+    html += '<div class="micro-int">'+esc(step.integration.cmd)+'</div>';
+    html += '<div class="micro-exp">'+esc(step.integration.expected)+'</div>';
+    html += '</div>';
+  }
+  html += '</div></div>';
+  return html;
+}
+
+let activePhase = 0;
+
+function renderProgress(){
+  var b = document.getElementById('progressBar');
+  b.innerHTML = phases.map(function(p,i){
+    return '<div class="pb-step '+(i<activePhase?'done':i===activePhase?'active':'')+'" onclick="switchPhase('+i+')" title="'+esc(p.label)+'"></div>';
+  }).join('');
+}
+
+function renderTabs(){
+  var n = document.getElementById('phaseNav');
+  n.innerHTML = phases.map(function(p,i){
+    return '<button class="phase-tab '+(i===activePhase?'active':'')+'" onclick="switchPhase('+i+')">'+esc(p.label)+'</button>';
+  }).join('');
+}
+
+function renderContent(){
+  var c = document.getElementById('mainContent');
+  c.innerHTML = phases.map(function(phase, pi){
+    var html = '<div class="phase-section '+(pi===activePhase?'active':'')+'" id="phase-'+pi+'">';
+    html += '<div class="phase-intro"><div class="phase-icon">'+phase.icon+'</div>';
+    html += '<div><h2>'+esc(phase.title)+'</h2><p>'+esc(phase.desc)+'</p></div></div>';
+    phase.steps.forEach(function(step, si){
+      html += '<div class="step" id="step-'+pi+'-'+si+'">';
+      html += '<div class="step-header" onclick="toggleStep('+pi+','+si+')">';
+      html += '<span class="step-num '+numClass(step.type)+'">'+esc(step.num)+'</span>';
+      html += '<span class="step-title">'+esc(step.title)+'</span>';
+      html += '<span class="step-type">'+typeLabel(step.type)+'</span>';
+      html += '<span class="step-chevron">&#9654;</span></div>';
+      html += '<div class="step-body">';
+      html += '<div class="step-desc">'+esc(step.desc)+'</div>';
+      if(step.checklist){
+        html += '<ul class="checklist">';
+        step.checklist.forEach(function(item){
+          html += '<li><span class="ci">'+item.i+'</span><span>'+esc(item.t)+'</span></li>';
+        });
+        html += '</ul>';
+      }
+      if(step.link){
+        html += '<a class="action-link" href="'+step.link+'" target="_blank">'+esc(step.linkLabel)+'</a>';
+      }
+      if(step.prompt){
+        html += '<div class="prompt-box">';
+        html += '<div class="prompt-label"><span>'+(step.type==='claude'?'Claude Code prompt':'Research / actie prompt')+'</span>';
+        html += '<button class="copy-btn" id="copy-'+pi+'-'+si+'" onclick="copyPrompt('+pi+','+si+')">Kopieer</button></div>';
+        html += '<div class="prompt-text" id="prompt-'+pi+'-'+si+'">'+esc(step.prompt)+'</div></div>';
+      }
+      html += renderMicro(step, pi, si);
+      html += '</div></div>';
+    });
+    html += '</div>';
+    return html;
+  }).join('');
+}
+
+function switchPhase(i){
+  activePhase = i;
+  renderTabs();
+  renderProgress();
+  document.querySelectorAll('.phase-section').forEach(function(s,idx){ s.classList.toggle('active', idx===i); });
+  window.scrollTo(0,0);
+}
+function toggleStep(pi,si){
+  document.getElementById('step-'+pi+'-'+si).classList.toggle('open');
+}
+function toggleMicro(pi,si){
+  var wrap = document.getElementById('mw-'+pi+'-'+si);
+  var body = document.getElementById('mb-'+pi+'-'+si);
+  if(!wrap||!body) return;
+  var isOpen = body.style.display==='block';
+  body.style.display = isOpen ? 'none' : 'block';
+  wrap.classList.toggle('micro-open', !isOpen);
+}
+function copyPrompt(pi,si){
+  var el = document.getElementById('prompt-'+pi+'-'+si);
+  var btn = document.getElementById('copy-'+pi+'-'+si);
+  if(!el||!btn) return;
+  navigator.clipboard.writeText(el.textContent).then(function(){
+    btn.textContent='Gekopieerd!';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent='Kopieer'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+renderProgress();
+renderTabs();
+renderContent();
+</script>
+</body>
+</html>

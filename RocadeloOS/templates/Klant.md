@@ -1,0 +1,1 @@
+﻿# Klant — [bureau] · Contactpersoon: · Niche/sector: · Status: pilot/actief/gepauzeerd · Model: no-cure-no-pay (25%)/hybride · Gekoppelde (eigen) accounts: · Tone-of-voice: · Start: · ## Afspraken · ## Resultaten (verzonden/acceptatie-%/respons-%/meetings/plaatsingen)
