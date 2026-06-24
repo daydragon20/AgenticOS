@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rocadelo — De Pipeline, stap voor stap</title>
+<style>
+  :root {
+    --bg: #f6f7fb;
+    --paper: #ffffff;
+    --ink: #1d2433;
+    --muted: #5b6678;
+    --line: #e7e9f0;
+    --accent: #4f6ef2;
+    --accent-soft: #eef1ff;
+    --green: #2bb673;
+    --green-soft: #e7f7ef;
+    --amber: #e0a32e;
+    --amber-soft: #fdf4e3;
+    --radius: 18px;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background:
+      radial-gradient(900px 500px at 90% -5%, #eaf0ff, transparent),
+      radial-gradient(700px 400px at -5% 100%, #eafff5, transparent),
+      var(--bg);
+    color: var(--ink);
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+    padding: clamp(1.2rem, 1rem + 2vw, 3rem) 1.2rem;
+    min-height: 100vh;
+  }
+  .wrap { max-width: 780px; margin: 0 auto; }
+
+  header.page { text-align: center; margin-bottom: 2.4rem; }
+  header.page .kicker {
+    text-transform: uppercase; letter-spacing: 0.26em; font-size: 0.72rem;
+    color: var(--accent); font-weight: 700;
+  }
+  header.page h1 {
+    font-size: clamp(1.9rem, 1.3rem + 3vw, 3rem); font-weight: 800;
+    margin: 0.5rem 0 0.7rem; letter-spacing: -0.02em;
+  }
+  header.page p { color: var(--muted); max-width: 54ch; margin: 0 auto; }
+
+  .oversee {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--accent);
+    border-radius: 14px;
+    padding: 1.1rem 1.3rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 8px 22px rgba(31,36,51,0.05);
+  }
+  .oversee b { color: var(--accent); }
+  .oversee p { color: var(--muted); font-size: 0.93rem; margin-top: 0.35rem; }
+
+  .step {
+    position: relative;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.3rem 1.4rem;
+    box-shadow: 0 8px 24px rgba(31,36,51,0.06);
+    transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease), border-color 0.4s var(--ease);
+  }
+  .step:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 34px rgba(79,110,242,0.13);
+    border-color: #c9d2ff;
+  }
+  .step .row { display: flex; align-items: center; gap: 0.85rem; }
+  .step .dot {
+    flex: 0 0 auto; width: 44px; height: 44px; border-radius: 12px;
+    display: grid; place-items: center; font-size: 1.3rem;
+    background: var(--accent-soft);
+  }
+  .step .idx { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase; }
+  .step h3 { font-size: 1.15rem; letter-spacing: -0.01em; line-height: 1.2; }
+  .step .what { font-size: 0.95rem; margin-top: 0.7rem; }
+  .step .what b { color: var(--ink); }
+  .step .pass {
+    margin-top: 0.85rem; font-size: 0.85rem; color: var(--muted);
+    border-top: 1px dashed var(--line); padding-top: 0.6rem;
+  }
+  .step .pass b { color: var(--accent); }
+
+  .link { width: 2px; height: 30px; margin: 0 auto; background: linear-gradient(#c9d2ff, #eef1ff); position: relative; }
+  .link::after {
+    content: ""; position: absolute; bottom: -1px; left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 8px; height: 8px;
+    border-right: 2px solid #b9c4ff; border-bottom: 2px solid #b9c4ff;
+  }
+
+  .start .dot { background: var(--amber-soft); }
+  .start { border-color: #f2e3c2; }
+  .start .idx { color: var(--amber); }
+  .finish .dot { background: var(--green-soft); }
+  .finish { border-color: #c7ecd9; }
+  .finish h3 { color: var(--green); }
+  .finish .idx { color: var(--green); }
+
+  .loop {
+    margin-top: 2rem;
+    background: var(--green-soft);
+    border: 1px dashed #aee0c6;
+    border-radius: 14px;
+    padding: 1.1rem 1.3rem;
+  }
+  .loop .row { display: flex; align-items: center; gap: 0.85rem; }
+  .loop .dot { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; font-size: 1.3rem; background: #d6f2e4; flex: 0 0 auto; }
+  .loop b { color: var(--green); }
+  .loop p { color: #3c6553; font-size: 0.93rem; margin-top: 0.6rem; }
+
+  footer.page { text-align: center; margin-top: 2.6rem; color: var(--muted); font-size: 0.8rem; }
+
+  .reveal { opacity: 0; transform: translateY(14px); animation: rise 0.6s var(--ease) forwards; }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { animation: none; opacity: 1; transform: none; }
+    .step { transition: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="page reveal">
+    <div class="kicker">Rocadelo · AI Recruitment</div>
+    <h1>De Pipeline, stap voor stap</h1>
+    <p>Lees dit van boven naar onder en je hebt het volledige pad afgelegd: van een openstaande vacature tot een kandidaat die klaar is voor een gesprek. Elke agent doet één taak en geeft het stokje door.</p>
+  </header>
+
+  <div class="oversee reveal" style="animation-delay:.05s">
+    <b>De Regisseur — het brein boven de lijn</b>
+    <p>De Regisseur start de juiste agents, bewaakt de kwaliteit van wat ze opleveren en houdt de volgorde in de gaten. Is het werk van een agent niet goed genoeg, dan stuurt hij het terug om opnieuw te doen. Lukt het na een paar pogingen nog niet, dan schuift hij het door naar een mens. Zo draait alles automatisch, maar zonder dat er rommel doorglipt.</p>
+  </div>
+
+  <!-- 1 START -->
+  <div class="step start reveal" style="animation-delay:.1s">
+    <div class="row"><div class="dot">📌</div><div><div class="idx">Start</div><h3>Vacature open</h3></div></div>
+    <p class="what">Alles begint bij een <b>openstaande functie</b> die ingevuld moet worden. Dit is de opdracht: hier moeten we mensen voor vinden. Vanaf dit punt neemt het systeem het over.</p>
+    <p class="pass"><b>Geeft door →</b> de profielschets van de gezochte persoon aan de Signaaldetector.</p>
+  </div>
+  <div class="link reveal" style="animation-delay:.12s"></div>
+
+  <!-- 2 SIGNAL DETECTOR -->
+  <div class="step reveal" style="animation-delay:.15s">
+    <div class="row"><div class="dot">🔎</div><div><div class="idx">Agent 1</div><h3>Signaaldetector</h3></div></div>
+    <p class="what">Gaat zelf op zoek. Hij speurt meerdere bronnen af naar mensen die bij de functie passen en haalt er <b>veel kandidaten</b> uit. Bij elk profiel verzamelt hij extra info (wie het is, wat ze doen), maar hij oordeelt nog niet — hij <b>verzamelt en verrijkt</b>, meer niet.</p>
+    <p class="pass"><b>Geeft door →</b> een ruwe lijst van verrijkte profielen aan de Beoordelaar.</p>
+  </div>
+  <div class="link reveal" style="animation-delay:.17s"></div>
+
+  <!-- 3 LEAD SCORER -->
+  <div class="step reveal" style="animation-delay:.2s">
+    <div class="row"><div class="dot">🎯</div><div><div class="idx">Agent 2</div><h3>Beoordelaar</h3></div></div>
+    <p class="what">Kijkt naar elk profiel en weegt af: <b>hoe goed past deze persoon</b> en hoe groot is de kans dat ze nú openstaan voor een gesprek? Hij let op kleine signalen die wijzen op interesse. Alleen de <b>sterkste kandidaten</b> blijven over; de rest valt af. Zo verspilt de rest van de lijn geen tijd aan zwakke leads.</p>
+    <p class="pass"><b>Geeft door →</b> een korte lijst met topkandidaten aan de Berichtenschrijver. Hij controleert ook of de Signaaldetector wel goed werk leverde.</p>
+  </div>
+  <div class="link reveal" style="animation-delay:.22s"></div>
+
+  <!-- 4 MESSAGE WRITER -->
+  <div class="step reveal" style="animation-delay:.25s">
+    <div class="row"><div class="dot">✍️</div><div><div class="idx">Agent 3</div><h3>Berichtenschrijver</h3></div></div>
+    <p class="what">Schrijft voor elke topkandidaat een <b>persoonlijk bericht</b> dat menselijk en gewoon klinkt — kort, vriendelijk, alsof een echt persoon het typte. Hij maakt telkens een paar varianten zodat er gekozen kan worden welke het beste aanvoelt. Geen massamail, maar een bericht dat echt op die persoon slaat.</p>
+    <p class="pass"><b>Geeft door →</b> de klaargemaakte berichten naar de verzendstap.</p>
+  </div>
+  <div class="link reveal" style="animation-delay:.27s"></div>
+
+  <!-- 5 VERSTUREN -->
+  <div class="step reveal" style="animation-delay:.3s">
+    <div class="row"><div class="dot">📨</div><div><div class="idx">Stap</div><h3>Versturen</h3></div></div>
+    <p class="what">De berichten gaan de deur uit via <b>eigen, opgewarmde accounts</b> — de klant hoeft nooit zijn eigen profiel te koppelen. Het versturen gebeurt met een <b>rustige, menselijke timing</b> en nette daglimieten, zodat het overkomt als een echt persoon en niet als een machine die spamt.</p>
+    <p class="pass"><b>Geeft door →</b> verzonden berichten; vanaf nu wachten we op reacties.</p>
+  </div>
+  <div class="link reveal" style="animation-delay:.32s"></div>
+
+  <!-- 6 REPLY HANDLER -->
+  <div class="step reveal" style="animation-delay:.35s">
+    <div class="row"><div class="dot">💬</div><div><div class="idx">Agent 4</div><h3>Antwoordverwerker</h3></div></div>
+    <p class="what">Leest binnenkomende reacties en <b>sorteert ze meteen</b>: geïnteresseerd, twijfelend, niet nu, of met een bezwaar. Zo weet het systeem precies met wie het verder moet en wie het met rust laat. Geen enkel antwoord blijft liggen.</p>
+    <p class="pass"><b>Geeft door →</b> de geïnteresseerde kandidaten aan de Gesprekskwalificatie. Hij controleert ook of de berichten van de schrijver goed scoorden.</p>
+  </div>
+  <div class="link reveal" style="animation-delay:.37s"></div>
+
+  <!-- 7 MEETING QUALIFIER -->
+  <div class="step reveal" style="animation-delay:.4s">
+    <div class="row"><div class="dot">✅</div><div><div class="idx">Agent 5</div><h3>Gesprekskwalificatie</h3></div></div>
+    <p class="what">Gaat met de geïnteresseerden <b>verder in gesprek</b> en checkt of ze écht geschikt zijn: passen ze bij de functie, is er een klik, en zijn ze klaar voor een afspraak? Alleen wie er echt toe doet, gaat door. Zo krijgt de mens straks alleen <b>kwalitatieve gesprekken</b> op zijn bord.</p>
+    <p class="pass"><b>Geeft door →</b> een gekwalificeerde kandidaat met afspraak aan de mens.</p>
+  </div>
+  <div class="link reveal" style="animation-delay:.42s"></div>
+
+  <!-- 8 RESULTAAT -->
+  <div class="step finish reveal" style="animation-delay:.45s">
+    <div class="row"><div class="dot">🤝</div><div><div class="idx">Eind</div><h3>Klaar voor de mens</h3></div></div>
+    <p class="what">De kandidaat is gevonden, benaderd, beantwoord en gekwalificeerd — <b>volledig automatisch</b>. De mens hoeft alleen nog het gesprek te voeren en de plaatsing af te ronden. Het werk dat normaal uren handwerk kost, is door de pijplijn gedaan.</p>
+    <p class="pass"><b>Resultaat →</b> een ingevulde vacature, met minimale menselijke tijd.</p>
+  </div>
+
+  <!-- FEEDBACK LOOP -->
+  <div class="loop reveal" style="animation-delay:.5s">
+    <div class="row"><div class="dot">↻</div><div><b>Agent 6 — De Analist (de leerlus)</b></div></div>
+    <p>Op de achtergrond kijkt de Analist regelmatig terug op de hele lijn: welke profielen leidden tot gesprekken, welke berichten kregen antwoord, waar liep het vast? Daaruit haalt hij de grootste verbeterpunten en stelt hij de agents <b>scherper af</b>. Elke ronde wordt de pijplijn een beetje beter — dat is wat het systeem in de tijd slimmer maakt.</p>
+  </div>
+
+  <footer class="page reveal" style="animation-delay:.55s">
+    Rocadelo · automatische recruitment-pipeline · van vacature tot gesprek · 6 agents + regisseur
+  </footer>
+
+</div>
+</body>
+</html>
