@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Origami — Grab &amp; Fold (V1)</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #12141a; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+  #app { position: fixed; inset: 0; }
+  #panel {
+    position: fixed; top: 14px; left: 14px; z-index: 10;
+    background: rgba(22, 25, 34, 0.92); color: #e8eaf0;
+    border: 1px solid #2c3140; border-radius: 12px;
+    padding: 14px 16px; width: 235px; backdrop-filter: blur(6px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  }
+  #panel h1 { font-size: 15px; margin: 0 0 10px; letter-spacing: 0.3px; }
+  #panel .grp { margin-bottom: 10px; }
+  #panel .lbl { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #8b93a7; margin-bottom: 5px; }
+  #panel .row { display: flex; gap: 6px; flex-wrap: wrap; }
+  button {
+    background: #262b38; color: #e8eaf0;
+    border: 1px solid #3a4155; border-radius: 8px; padding: 6px 10px;
+    font-size: 12.5px; cursor: pointer; flex: 1; white-space: nowrap;
+  }
+  button:hover { background: #303748; }
+  button.active { background: #3d5afe; border-color: #5c73ff; }
+  button.warn:hover { background: #6b2a35; border-color: #a04352; }
+  #help { font-size: 12px; color: #aab2c5; line-height: 1.5; margin-top: 8px; border-top: 1px solid #2c3140; padding-top: 8px; }
+  #status {
+    position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 10;
+    background: rgba(22,25,34,0.92); color: #e8eaf0; border: 1px solid #2c3140;
+    border-radius: 999px; padding: 8px 20px; font-size: 13.5px; max-width: 80vw;
+    text-align: center; transition: border-color .2s;
+  }
+  #status.flash { border-color: #ffb454; color: #ffd9a0; }
+  #angle {
+    position: fixed; right: 18px; top: 16px; z-index: 10;
+    background: rgba(22,25,34,0.92); color: #7fd0ff; border: 1px solid #2c3140;
+    border-radius: 10px; padding: 8px 14px; font-size: 20px; font-variant-numeric: tabular-nums;
+    display: none;
+  }
+</style>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+<div id="app"></div>
+
+<div id="panel">
+  <h1>Origami — Grab &amp; Fold</h1>
+  <div class="grp">
+    <div class="lbl">Papier</div>
+    <div class="row">
+      <button id="btnSquare" class="active">Vierkant</button>
+      <button id="btnA4">A4</button>
+    </div>
+  </div>
+  <div class="grp">
+    <div class="lbl">Vouwrichting</div>
+    <div class="row">
+      <button id="btnDal" class="active">Dal &#9662; omhoog</button>
+      <button id="btnBerg">Berg &#9652; omlaag</button>
+    </div>
+  </div>
+  <div class="grp">
+    <div class="lbl">Acties</div>
+    <div class="row">
+      <button id="btnCancel">Annuleer lijn (Esc)</button>
+    </div>
+    <div class="row" style="margin-top:6px">
+      <button id="btnUndo">&#8630; Ongedaan</button>
+      <button id="btnReset" class="warn">Reset papier</button>
+    </div>
+    <div class="row" style="margin-top:6px">
+      <button id="btnCam">Camera reset</button>
+    </div>
+  </div>
+  <div id="help">
+    <b>1.</b> Klik <b>twee punten op de rand</b> &rarr; vouwlijn.<br>
+    <b>2.</b> <b>Pak een kant vast en sleep</b> &rarr; de flap klapt mee.<br>
+    <b>3.</b> Loslaten = vouw vastzetten.<br>
+    <span style="color:#6f7890">Slepen = camera draaien &middot; scrollen = zoomen</span>
+  </div>
+</div>
+
+<div id="status">Klik twee punten op de rand van het papier om een vouwlijn te maken.</div>
+<div id="angle">0&deg;</div>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+/* ================================================================
+   CONFIG
+================================================================ */
+const COLOR_FRONT = 0xe8702a;   // voorkant: warm oranje
+const COLOR_BACK  = 0xf6ecd9;   // achterkant: crème
+const COLOR_BG    = 0x12141a;
+const LAYER_OFF   = 0.004;      // cosmetische z-offset per laag
+const SNAP_DIST   = 0.14;       // max afstand om op een rand te klikken
+const EPS         = 1e-5;
+const CAM0        = new THREE.Vector3(1.9, 2.3, 2.7);
+
+/* ================================================================
+   DATAMODEL
+   Een face = { pts: [Vector3], layer: int,
+                disp: null | [Vector3] (live posities tijdens slepen) }
+   Vouwpunten mag je op élke rand klikken — ook op gevouwen randen,
+   net als bij echt origami.
+================================================================ */
+let faces = [];
+let undoStack = [];
+
+function makePaper(shape) {
+  const w = shape === 'a4' ? 1.30 : 1.55;
+  const h = shape === 'a4' ? 1.30 * Math.SQRT2 : 1.55;
+  return [{
+    pts: [ // volgorde zó dat de voorkant (+Y) naar boven wijst
+      new THREE.Vector3(-w / 2, 0, -h / 2),
+      new THREE.Vector3(-w / 2, 0,  h / 2),
+      new THREE.Vector3( w / 2, 0,  h / 2),
+      new THREE.Vector3( w / 2, 0, -h / 2),
+    ],
+    layer: 0,
+    disp: null,
+  }];
+}
+
+function cloneFace(f) {
+  return { pts: f.pts.map(p => p.clone()), layer: f.layer, disp: null };
+}
+const snapshot = () => faces.map(cloneFace);
+
+function centroid(pts) {
+  const c = new THREE.Vector3();
+  pts.forEach(p => c.add(p));
+  return c.multiplyScalar(1 / pts.length);
+}
+
+function polyNormal(pts) { // Newell
+  const n = new THREE.Vector3();
+  for (let i = 0; i < pts.length; i++) {
+    const a = pts[i], b = pts[(i + 1) % pts.length];
+    n.x += (a.y - b.y) * (a.z + b.z);
+    n.y += (a.z - b.z) * (a.x + b.x);
+    n.z += (a.x - b.x) * (a.y + b.y);
+  }
+  return n;
+}
+const polyArea = pts => polyNormal(pts).length() / 2;
+
+/* ================================================================
+   KERN 1 — vlak splitsen langs het vouwvlak (p0, n)
+   Geeft 1 face terug (niet geraakt) of 2 faces (gesplitst).
+================================================================ */
+function splitFaceByPlane(face, p0, n) {
+  const pts = face.pts, N = pts.length;
+  const d = pts.map(p => p.clone().sub(p0).dot(n));
+  const side = d.map(x => x > EPS ? 1 : (x < -EPS ? -1 : 0));
+  if (!side.includes(1) || !side.includes(-1)) return [face];
+
+  const P = [];  // positieve kant
+  const Q = [];  // negatieve kant
+  for (let i = 0; i < N; i++) {
+    const j = (i + 1) % N;
+    const si = side[i], sj = side[j];
+    const vi = pts[i];
+    if (si === 0) { // vertex ligt óp het vlak -> hoort bij beide helften
+      P.push(vi.clone()); Q.push(vi.clone());
+      continue;
+    }
+    (si > 0 ? P : Q).push(vi.clone());
+    if (sj !== 0 && sj !== si) { // rand kruist het vlak -> snijpunt invoegen
+      const t = d[i] / (d[i] - d[j]);
+      const X = vi.clone().lerp(pts[j], t);
+      P.push(X.clone()); Q.push(X.clone());
+    }
+  }
+  const valid = r => r.length >= 3 && polyArea(r) > 1e-6;
+  if (!valid(P) || !valid(Q)) return [face];
+  const mk = r => ({ pts: r, layer: face.layer, disp: null });
+  return [mk(P), mk(Q)];
+}
+
+function splitAllFaces(p0, n) {
+  const out = [];
+  let cntP = 0, cntQ = 0;
+  for (const f of faces) {
+    for (const g of splitFaceByPlane(f, p0, n)) {
+      out.push(g);
+      const s = centroid(g.pts).sub(p0).dot(n);
+      if (s > 0) cntP++; else cntQ++;
+    }
+  }
+  if (!cntP || !cntQ) return false; // lijn splitst het papier niet echt
+  faces = out;
+  return true;
+}
+
+/* ================================================================
+   SCENE
+================================================================ */
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(innerWidth, innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+document.getElementById('app').appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(COLOR_BG);
+
+const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.01, 100);
+camera.position.copy(CAM0);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.mouseButtons = { LEFT: THREE.MOUSE.ROTATE, MIDDLE: THREE.MOUSE.DOLLY, RIGHT: THREE.MOUSE.ROTATE };
+
+scene.add(new THREE.HemisphereLight(0xcfd8ff, 0x3a3325, 1.15));
+const dir = new THREE.DirectionalLight(0xffffff, 1.4);
+dir.position.set(2.5, 4, 1.5);
+scene.add(dir);
+const grid = new THREE.GridHelper(7, 14, 0x2a2f3c, 0x1c202a);
+grid.position.y = -0.8;
+scene.add(grid);
+
+const paperGroup = new THREE.Group();
+scene.add(paperGroup);
+const uiGroup = new THREE.Group(); // markers + vouwlijn-preview
+scene.add(uiGroup);
+
+/* ---- faces -> meshes (voor- en achterkant apart voor 2 kleuren) ---- */
+let faceObjs = [];
+const lineMat = new THREE.LineBasicMaterial({ color: 0x4a4034, transparent: true, opacity: 0.65 });
+
+function disposeSceneFaces() {
+  for (const o of faceObjs) {
+    o.geo.dispose(); o.lineGeo.dispose(); o.matF.dispose(); o.matB.dispose();
+  }
+  paperGroup.clear();
+  faceObjs = [];
+}
+
+function rebuildScene() {
+  disposeSceneFaces();
+  faces.forEach((f, idx) => {
+    const triCount = (f.pts.length - 2) * 3;
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(triCount * 3), 3));
+    const lineGeo = new THREE.BufferGeometry();
+    lineGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(f.pts.length * 3), 3));
+
+    const po = (m) => { m.polygonOffset = true; m.polygonOffsetFactor = -f.layer; m.polygonOffsetUnits = -f.layer * 2; return m; };
+    const matF = po(new THREE.MeshStandardMaterial({ color: COLOR_FRONT, side: THREE.FrontSide, roughness: 0.85 }));
+    const matB = po(new THREE.MeshStandardMaterial({ color: COLOR_BACK,  side: THREE.BackSide,  roughness: 0.9 }));
+    const meshF = new THREE.Mesh(geo, matF);
+    const meshB = new THREE.Mesh(geo, matB);
+    meshF.userData.faceIdx = meshB.userData.faceIdx = idx;
+    const line = new THREE.LineLoop(lineGeo, lineMat);
+    paperGroup.add(meshF, meshB, line);
+    faceObjs.push({ geo, lineGeo, matF, matB, meshF, meshB, line });
+    updateFacePositions(idx);
+  });
+}
+
+function updateFacePositions(idx) {
+  const f = faces[idx], o = faceObjs[idx];
+  const pts = f.disp || f.pts;
+  const yoff = f.layer * LAYER_OFF;
+  const pos = o.geo.attributes.position.array;
+  let k = 0;
+  for (let i = 1; i < pts.length - 1; i++) { // fan-triangulatie (faces blijven convex)
+    for (const p of [pts[0], pts[i], pts[i + 1]]) {
+      pos[k++] = p.x; pos[k++] = p.y + yoff; pos[k++] = p.z;
+    }
+  }
+  o.geo.attributes.position.needsUpdate = true;
+  o.geo.computeVertexNormals();
+  o.geo.computeBoundingSphere();
+  const lp = o.lineGeo.attributes.position.array;
+  k = 0;
+  for (const p of pts) { lp[k++] = p.x; lp[k++] = p.y + yoff + 0.0006; lp[k++] = p.z; }
+  o.lineGeo.attributes.position.needsUpdate = true;
+  o.lineGeo.computeBoundingSphere();
+}
+
+/* ================================================================
+   INTERACTIE-STATE
+   idle    -> punten klikken       (klik 1 = p1, klik 2 = p2 + splitsen)
+   armed   -> vouwlijn actief      (sleep op papier = vouwen)
+   folding -> bezig met slepen
+================================================================ */
+let mode = 'idle';
+let foldType = 'dal'; // 'dal' = omhoog (naar je toe), 'berg' = omlaag
+let crease = null;    // { p1, p2, u (as-richting), n (splitvlak-normaal) }
+let grab = null;      // actieve sleep: { A, u, C, a0, allowedSign, movingIdx, orig, theta, up }
+let foldCount = 0;
+
+const raycaster = new THREE.Raycaster();
+const pointerNDC = new THREE.Vector2();
+
+function pickPaper(ev) {
+  const r = renderer.domElement.getBoundingClientRect();
+  pointerNDC.set(((ev.clientX - r.left) / r.width) * 2 - 1, -((ev.clientY - r.top) / r.height) * 2 + 1);
+  raycaster.setFromCamera(pointerNDC, camera);
+  const targets = [];
+  for (const o of faceObjs) targets.push(o.meshF, o.meshB);
+  const hits = raycaster.intersectObjects(targets, false);
+  return hits.length ? hits[0] : null;
+}
+
+/* ---- dichtstbijzijnde punt op een rand (ook gevouwen randen) ---- */
+function nearestBoundaryPoint(p) {
+  let best = null, bestD = Infinity, bestNormal = null;
+  const tmp = new THREE.Vector3(), seg = new THREE.Line3();
+  for (const f of faces) {
+    const pts = f.disp || f.pts;
+    for (let i = 0; i < pts.length; i++) {
+      seg.set(pts[i], pts[(i + 1) % pts.length]);
+      seg.closestPointToPoint(p, true, tmp);
+      const d = tmp.distanceTo(p);
+      if (d < bestD) { bestD = d; best = tmp.clone(); bestNormal = polyNormal(pts).normalize(); }
+    }
+  }
+  return best && bestD < SNAP_DIST ? { point: best, normal: bestNormal } : null;
+}
+
+/* ---- markers & vouwlijn-preview ---- */
+const markerMat = new THREE.MeshBasicMaterial({ color: 0xffd54a });
+let marker1 = null, marker2 = null, previewLine = null;
+
+function makeMarker(p) {
+  const m = new THREE.Mesh(new THREE.SphereGeometry(0.024, 16, 12), markerMat);
+  m.position.copy(p);
+  uiGroup.add(m);
+  return m;
+}
+function creaseColor() { return foldType === 'dal' ? 0x53a8ff : 0xff5470; }
+function updatePreviewLine(a, b) {
+  if (previewLine) { uiGroup.remove(previewLine); previewLine.geometry.dispose(); previewLine.material.dispose(); }
+  const g = new THREE.BufferGeometry().setFromPoints([a.clone().setY(a.y + 0.003), b.clone().setY(b.y + 0.003)]);
+  previewLine = new THREE.Line(g, new THREE.LineDashedMaterial({ color: creaseColor(), dashSize: 0.05, gapSize: 0.035 }));
+  previewLine.computeLineDistances();
+  uiGroup.add(previewLine);
+}
+function clearCreaseVisuals() {
+  uiGroup.clear();
+  marker1 = marker2 = previewLine = null;
+}
+
+/* ================================================================
+   KERN 2 — vouwlijn maken (2 klikken op de rand)
+================================================================ */
+function placePoint(ev) {
+  const hit = pickPaper(ev);
+  if (!hit) return;
+  const snap = nearestBoundaryPoint(hit.point);
+  if (!snap) { flash('Klik dichter bij de rand van het papier.'); return; }
+
+  if (mode === 'idle') {
+    clearCreaseVisuals();
+    crease = { p1: snap.point, p1n: snap.normal };
+    marker1 = makeMarker(snap.point);
+    mode = 'placing';
+    setStatus('Klik het tweede punt op de rand.');
+    return;
+  }
+  // tweede punt
+  const p1 = crease.p1, p2 = snap.point;
+  if (p1.distanceTo(p2) < 0.06) { flash('Punten liggen te dicht bij elkaar.'); return; }
+
+  const u = p2.clone().sub(p1).normalize();
+  let n = new THREE.Vector3().crossVectors(u, new THREE.Vector3(0, 1, 0));
+  if (n.lengthSq() < 0.02) n = new THREE.Vector3().crossVectors(u, crease.p1n); // verticale scharnier-as
+  n.normalize();
+
+  undoStack.push(snapshot());
+  if (!splitAllFaces(p1, n)) {
+    undoStack.pop();
+    flash('Die lijn splitst het papier niet — kies twee andere randpunten.');
+    return;
+  }
+  crease = { p1, p2, u, n };
+  marker2 = makeMarker(p2);
+  updatePreviewLine(p1, p2);
+  rebuildScene();
+  mode = 'armed';
+  setStatus(`Vouwlijn klaar (${foldType === 'dal' ? 'dal · omhoog' : 'berg · omlaag'}). Pak een kant vast en sleep.`);
+}
+
+/* ================================================================
+   KERN 3 — vastpakken & real-time rond de scharnier draaien
+================================================================ */
+function startFold(hit, ev) {
+  const { p1: A, u, n } = crease;
+  let sign = Math.sign(hit.point.clone().sub(A).dot(n));
+  if (sign === 0) sign = Math.sign(centroid(faces[hit.object.userData.faceIdx].pts).sub(A).dot(n)) || 1;
+
+  const movingIdx = [];
+  faces.forEach((f, i) => { if (Math.sign(centroid(f.pts).sub(A).dot(n)) === sign) movingIdx.push(i); });
+  if (!movingIdx.length) return;
+
+  let P0 = hit.point.clone();
+  const C = A.clone().add(u.clone().multiplyScalar(P0.clone().sub(A).dot(u)));
+  if (P0.distanceTo(C) < 0.03) { // te dicht bij de as gegrepen -> pak het zwaartepunt
+    P0 = centroid(faces[hit.object.userData.faceIdx].pts);
+    C.copy(A).add(u.clone().multiplyScalar(P0.clone().sub(A).dot(u)));
+    if (P0.distanceTo(C) < 0.03) return;
+  }
+  const a0 = P0.clone().sub(C);
+
+  // welke draairichting is "omhoog"? (bewegingsrichting bij +theta vs. wereld-omhoog)
+  const vTan = new THREE.Vector3().crossVectors(u, P0.clone().sub(A));
+  let up = new THREE.Vector3(0, 1, 0);
+  if (Math.abs(vTan.dot(up)) < 0.05) up = polyNormal(faces[hit.object.userData.faceIdx].pts).normalize();
+  const sUp = Math.sign(vTan.dot(up)) || 1;
+  const allowedSign = (foldType === 'dal' ? 1 : -1) * sUp;
+
+  grab = {
+    A, u, C, a0, allowedSign, movingIdx, theta: 0, sUp,
+    orig: movingIdx.map(i => faces[i].pts.map(p => p.clone())),
+  };
+  mode = 'folding';
+  controls.enabled = false;
+  angleEl.style.display = 'block';
+  updateFold(ev);
+}
+
+function updateFold(ev) {
+  const r = renderer.domElement.getBoundingClientRect();
+  pointerNDC.set(((ev.clientX - r.left) / r.width) * 2 - 1, -((ev.clientY - r.top) / r.height) * 2 + 1);
+  raycaster.setFromCamera(pointerNDC, camera);
+  const ray = raycaster.ray;
+
+  // snijd de muis-ray met het cirkelvlak van het grijppunt (vlak door C, normaal u)
+  const denom = ray.direction.dot(grab.u);
+  if (Math.abs(denom) > 1e-4) {
+    const t = grab.C.clone().sub(ray.origin).dot(grab.u) / denom;
+    if (t > 0) {
+      const M = ray.origin.clone().add(ray.direction.clone().multiplyScalar(t));
+      const w = M.sub(grab.C);
+      w.addScaledVector(grab.u, -w.dot(grab.u));
+      if (w.lengthSq() > 1e-8) {
+        const raw = Math.atan2(new THREE.Vector3().crossVectors(grab.a0, w).dot(grab.u), grab.a0.dot(w));
+        grab.theta = Math.sign(raw) === grab.allowedSign ? raw : 0;
+      }
+    }
+  }
+  applyTheta(grab.theta);
+  angleEl.innerHTML = Math.round(THREE.MathUtils.radToDeg(Math.abs(grab.theta))) + '&deg;';
+}
+
+function applyTheta(theta) {
+  const q = new THREE.Quaternion().setFromAxisAngle(grab.u, theta);
+  grab.movingIdx.forEach((fi, k) => {
+    faces[fi].disp = grab.orig[k].map(p => p.clone().sub(grab.A).applyQuaternion(q).add(grab.A));
+    updateFacePositions(fi);
+  });
+}
+
+function endFold() {
+  controls.enabled = true;
+  angleEl.style.display = 'none';
+  const g = grab; grab = null;
+
+  if (Math.abs(g.theta) < 0.06) { // bijna niks gevouwen -> annuleer, lijn blijft actief
+    g.movingIdx.forEach(i => { faces[i].disp = null; updateFacePositions(i); });
+    mode = 'armed';
+    setStatus('Vouw geannuleerd — de vouwlijn staat nog. Sleep opnieuw, of Esc.');
+    return;
+  }
+
+  const flat = Math.abs(g.theta) > THREE.MathUtils.degToRad(163);
+  const finalTheta = flat ? g.allowedSign * Math.PI : g.theta;
+  grab = g; applyTheta(finalTheta); grab = null;
+
+  g.movingIdx.forEach(i => { faces[i].pts = faces[i].disp; faces[i].disp = null; });
+
+  if (flat) { // plat gevouwen -> lagen herschikken (gespiegelde volgorde op/onder de stapel)
+    const movSet = new Set(g.movingIdx);
+    const statL = faces.filter((_, i) => !movSet.has(i)).map(f => f.layer);
+    const movL = g.movingIdx.map(i => faces[i].layer);
+    const Lmax = Math.max(...movL), Lmin = Math.min(...movL);
+    const above = g.allowedSign * g.sUp > 0;
+    if (above) {
+      const top = Math.max(...statL);
+      g.movingIdx.forEach(i => { faces[i].layer = top + 1 + (Lmax - faces[i].layer); });
+    } else {
+      const bot = Math.min(...statL);
+      g.movingIdx.forEach(i => { faces[i].layer = bot - 1 - (faces[i].layer - Lmin); });
+    }
+  }
+
+  crease = null;
+  clearCreaseVisuals();
+  rebuildScene();
+  mode = 'idle';
+  foldCount++;
+  const deg = Math.round(THREE.MathUtils.radToDeg(Math.abs(finalTheta)));
+  setStatus(`Vouw ${foldCount} vastgezet (${deg}°${flat ? ' · plat' : ''}). Klik twee randpunten voor de volgende vouw.`);
+}
+
+/* ================================================================
+   POINTER-EVENTS  (klik = punt plaatsen · sleep op papier = vouwen ·
+                    sleep naast papier = camera)
+================================================================ */
+let downPos = null;
+const el = renderer.domElement;
+
+el.addEventListener('pointerdown', (ev) => {
+  if (ev.button !== 0) return;
+  downPos = { x: ev.clientX, y: ev.clientY };
+  if (mode === 'armed') {
+    const hit = pickPaper(ev);
+    if (hit) { startFold(hit, ev); return; }
+  }
+});
+
+el.addEventListener('pointermove', (ev) => {
+  if (mode === 'folding' && grab) { updateFold(ev); return; }
+  if (mode === 'placing' && crease) {
+    const hit = pickPaper(ev);
+    if (hit) {
+      const snap = nearestBoundaryPoint(hit.point);
+      updatePreviewLine(crease.p1, snap ? snap.point : hit.point);
+    }
+  }
+});
+
+el.addEventListener('pointerup', (ev) => {
+  if (ev.button !== 0) return;
+  if (mode === 'folding' && grab) { endFold(); downPos = null; return; }
+  if (downPos) {
+    const moved = Math.hypot(ev.clientX - downPos.x, ev.clientY - downPos.y);
+    if (moved < 6 && (mode === 'idle' || mode === 'placing')) placePoint(ev);
+  }
+  downPos = null;
+});
+
+window.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') cancelCrease(); });
+
+/* ================================================================
+   ACTIES / UI
+================================================================ */
+const statusEl = document.getElementById('status');
+const angleEl = document.getElementById('angle');
+function setStatus(msg) { statusEl.classList.remove('flash'); statusEl.textContent = msg; }
+function flash(msg) { statusEl.classList.add('flash'); statusEl.textContent = msg; }
+
+function cancelCrease() {
+  if (mode === 'folding') return;
+  if (mode === 'armed') { faces = undoStack.pop(); rebuildScene(); }
+  crease = null;
+  clearCreaseVisuals();
+  mode = 'idle';
+  setStatus('Vouwlijn geannuleerd. Klik twee randpunten voor een nieuwe vouw.');
+}
+
+function undo() {
+  if (mode === 'folding') return;
+  if (mode !== 'idle') { cancelCrease(); return; }
+  if (!undoStack.length) { flash('Niets om ongedaan te maken.'); return; }
+  faces = undoStack.pop();
+  foldCount = Math.max(0, foldCount - 1);
+  rebuildScene();
+  setStatus('Laatste vouw ongedaan gemaakt.');
+}
+
+let shape = 'square';
+function resetPaper(newShape) {
+  shape = newShape || shape;
+  faces = makePaper(shape);
+  undoStack = [];
+  crease = null; grab = null; foldCount = 0;
+  clearCreaseVisuals();
+  controls.enabled = true;
+  angleEl.style.display = 'none';
+  mode = 'idle';
+  rebuildScene();
+  setStatus('Nieuw vel. Klik twee punten op de rand om te vouwen.');
+  document.getElementById('btnSquare').classList.toggle('active', shape === 'square');
+  document.getElementById('btnA4').classList.toggle('active', shape === 'a4');
+}
+
+document.getElementById('btnSquare').onclick = () => resetPaper('square');
+document.getElementById('btnA4').onclick = () => resetPaper('a4');
+document.getElementById('btnReset').onclick = () => resetPaper();
+document.getElementById('btnUndo').onclick = undo;
+document.getElementById('btnCancel').onclick = cancelCrease;
+document.getElementById('btnCam').onclick = () => {
+  camera.position.copy(CAM0);
+  controls.target.set(0, 0, 0);
+  controls.update();
+};
+function setFoldType(t) {
+  foldType = t;
+  document.getElementById('btnDal').classList.toggle('active', t === 'dal');
+  document.getElementById('btnBerg').classList.toggle('active', t === 'berg');
+  if (mode === 'armed' && crease) updatePreviewLine(crease.p1, crease.p2);
+  if (grab) grab.allowedSign = (t === 'dal' ? 1 : -1) * grab.sUp;
+}
+document.getElementById('btnDal').onclick = () => setFoldType('dal');
+document.getElementById('btnBerg').onclick = () => setFoldType('berg');
+
+/* ================================================================
+   START
+================================================================ */
+window.addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+
+resetPaper('square');
+
+// klein debug-hook (handig voor testen/itereren, geen invloed op de app)
+window.__origami = {
+  get faces() { return faces; },
+  get mode() { return mode; },
+  worldToScreen(x, y, z) {
+    const v = new THREE.Vector3(x, y, z).project(camera);
+    const r = renderer.domElement.getBoundingClientRect();
+    return { x: r.left + (v.x + 1) / 2 * r.width, y: r.top + (1 - v.y) / 2 * r.height };
+  },
+};
+
+(function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene, camera);
+})();
+</script>
+</body>
+</html>
