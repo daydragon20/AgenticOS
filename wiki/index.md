@@ -25,6 +25,8 @@ _(landen, plekken, seizoenswerk, exchange — de geografische dimensie van je br
 - [[Verenigde Staten]] — Exchange (NY/Californië) + NYC business-thuisbasis
 - [[Japan]] — Tokyo/Kyoto droomreis + ski-seizoenswerk Hokkaido
 - [[Noorwegen]] — Waar de vonk ontstond; fjord-seizoenswerk & outdoor guiding
+  - [[Regio Lofoten]] · [[Regio Tromsø]] · [[Regio Fjorden Bergen]] — regio's, diep uitgewerkt
+  - [[Seizoenswerk Noorwegen]] · [[Guide Certificaten Noorwegen]] · [[Praktisch Noorwegen]] — thema's, atoom-niveau
 - [[Spitsbergen Svalbard]] — Eindpunt van het nomadenpad: kajak guiden in de poolwereld
 - [[IJsland]] — Sterk instap-seizoenswerk richting Svalbard
 - [[Portugal]] — Surf (Nazaré) + Europees remote-basiskamp
@@ -61,6 +63,14 @@ _(summaries of specific sources you've ingested)_
 
 - [[Instagram DM Links]] — 16 externe links uit Instagram DM's (export 2026-05-01): AI tools, communities, YouTube, events
 - [[AI Dev Resources]] — Manueel verzamelde AI/Claude Code links: guides, GitHub repos, APIs, communities, build-tools
+
+---
+
+## Meta / Systeem
+
+_(hoe je brein zelf is opgebouwd)_
+
+- [[Kennis-Structuur Conventie]] — De vaste wet: alles opdelen tot atoomniveau (4 diepteniveaus, atoom-principe, statuslabels)
 
 ---
 
