@@ -27,12 +27,20 @@ Sterke match met het [[Seizoenswerk Nomademodel]] — de Nederlander uit je excu
 ## 4. Business / Thuisbasis
 Geen thuisbasis, wél interessant als markt: Japan is technologisch, koopkrachtig en houdt van automation. Mogelijk latere expansiemarkt voor [[AI Automation Agency]] (maar taalbarrière is groot).
 
-## Plekken
-| Plek | Waarvoor |
-|------|----------|
-| Tokyo | Tech, cultuur, een maand verblijven |
-| Kyoto | Cultuur, nachttrein-bestemming |
-| Hokkaido / Niseko | Ski-seizoenswerk |
+## Dieper — subnotities (diepste detail)
+> Steden en praktische lagen tot op atoomniveau (zie [[Kennis-Structuur Conventie]]).
+
+- [[Tokyo]] — wijken, een maand verblijven, tech & cultuur
+- [[Kyoto]] — tempels, cultuur, de treinreis (bucket-list)
+- [[Hokkaido Niseko]] — ski-seizoenswerk + de visum-drempel
+- [[Praktisch Japan]] — visum, taal, transport (shinkansen/JR Pass), kosten
+
+## Plekken (overzicht)
+| Plek | Waarvoor | Diep |
+|------|----------|------|
+| Tokyo | Tech, cultuur, een maand verblijven | [[Tokyo]] |
+| Kyoto | Cultuur, nachttrein-bestemming | [[Kyoto]] |
+| Hokkaido / Niseko | Ski-seizoenswerk | [[Hokkaido Niseko]] |
 
 ## Praktisch
 - **Taal:** Engels beperkt bruikbaar; wat Japans opent veel deuren

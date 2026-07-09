@@ -32,13 +32,26 @@ Dit is waar de VS écht telt. Volledig plan in [[Nieuwe York Ambitie]]:
 - **Route:** USD-revenue nu → B-1/B-2 → Delaware C-Corp → O-1A visa → EB-1A green card
 - **Netwerk:** NYC Tech Week (juni), SF Tech Week (oktober)
 
-## Plekken
-| Plek | Waarvoor |
-|------|----------|
-| New York City | Business-thuisbasis, droom-penthouse |
-| Silicon Valley / SF | Tech-netwerk, Stanford bezoeken |
-| Boston | Harvard bezoeken, exchange-staat |
-| Cape Canaveral (FL) | SpaceX-lancering live → [[Ruimtevaartsector]] |
+## Dieper — subnotities (diepste detail)
+> Steden en het visa-pad tot op atoomniveau (zie [[Kennis-Structuur Conventie]]).
+
+**Steden & plekken:**
+- [[New York City]] — business-thuisbasis, penthouse, buurten
+- [[San Francisco Silicon Valley]] — tech-netwerk, Stanford
+- [[Boston]] — Harvard/MIT, exchange-staat
+- [[Cape Canaveral]] — SpaceX-lancering, ruimtevaart-anker
+
+**Traject:**
+- [[Visa-Pad VS]] — ESTA → B-1/B-2 → O-1A → EB-1A green card
+- [[USA Uitwisseling]] — exchange-programma's, staatkeuze, beurzen
+
+## Plekken (overzicht)
+| Plek | Waarvoor | Diep |
+|------|----------|------|
+| New York City | Business-thuisbasis, droom-penthouse | [[New York City]] |
+| Silicon Valley / SF | Tech-netwerk, Stanford bezoeken | [[San Francisco Silicon Valley]] |
+| Boston | Harvard bezoeken, exchange-staat | [[Boston]] |
+| Cape Canaveral (FL) | SpaceX-lancering live → [[Ruimtevaartsector]] | [[Cape Canaveral]] |
 
 ## Praktisch
 - **Taal:** Engels naar C1 (zie voorbereiding in [[USA Uitwisseling]])
