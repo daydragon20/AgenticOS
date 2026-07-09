@@ -56,4 +56,7 @@ tags: [financieel, beleggen, vrijheid, belgie, belasting, sparen]
 - Geen aparte zakelijke rekening
 - Te veel uitgeven aan tools/cursussen in early stages
 
-**Zie ook:** [[AI Automation Agency]] · [[Nieuwe York Ambitie]] · [[Nathans Levensplan]] · [[Examencommissie Strategie]]
+## Diepe onderverdeling
+> Atoomnotities (zie [[Kennis-Structuur Conventie]]): [[Financieel Juridisch Minderjarig]] · [[Financieel Beleggen ETF]] · [[Financieel Revenue Allocatie]] · [[Financieel Belastingoptimalisatie]] · [[Financieel Vastgoed Timing]] · [[Financieel Pad Vrijheid]]
+
+**Zie ook:** [[Financieel MOC]] · [[AI Automation Agency]] · [[Nieuwe York Ambitie]] · [[Nathans Levensplan]] · [[Examencommissie Strategie]]

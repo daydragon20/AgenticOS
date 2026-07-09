@@ -69,4 +69,7 @@ Reeks voor koude outreach naar lokale ondernemers zonder website:
 - Nee zeggen tegen recurring revenue
 - Te veel tijd aan branding/logo vóór eerste klant
 
-**Zie ook:** [[AI Automation Agency]] · [[Outreach Email Reeks]] · [[Financieel Plan]] · [[Nathans Levensplan]]
+## Diepe onderverdeling
+> Atoomnotities (zie [[Kennis-Structuur Conventie]]): [[Agency Offer en Pricing]] · [[Agency Outreach 5 Mails]] · [[Agency Niches Doelgroep]] · [[Agency Werkproces en Schaal]]
+
+**Zie ook:** [[Business MOC]] · [[AI Automation Agency]] · [[Financieel Plan]] · [[Nathans Levensplan]]

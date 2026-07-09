@@ -63,4 +63,7 @@ tags: [discipline, routine, productiviteit, mindset, gewoonten]
 - **Shiny object syndrome:** elke maand andere taal/stack leren
 - **Te veel boeken, te weinig implementeren:** één boek/maand, 30 dagen écht toepassen
 
-**Zie ook:** [[Nathans Levensplan]] · [[AI Automation Agency]] · [[Examencommissie Strategie]]
+## Diepe onderverdeling
+> Atoomnotities (zie [[Kennis-Structuur Conventie]]): [[Discipline Dagstructuur]] · [[Discipline Phone Hygiene]] · [[Discipline Mindset Frameworks]] · [[Discipline Energie Management]] · [[Discipline Wekelijkse Review]] · [[Discipline Leeslijst]]
+
+**Zie ook:** [[Persoonlijk MOC]] · [[Nathans Levensplan]] · [[AI Automation Agency]] · [[Examencommissie Strategie]]

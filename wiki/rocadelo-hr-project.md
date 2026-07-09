@@ -227,4 +227,7 @@ Founding Client deal is hard: 6 maanden minimum, testimonial-clausule, 2 referra
 *Rapport gegenereerd op basis van projectdocumenten: Eerste Mail (Matias), Business Tips Playbook, Rocadelo HR Flow, AI LinkedIn Outreach v2.0*
 *Rocadelo HR × Nathan Charita — Vertrouwelijk*
 
-**Zie ook:** [[AI Automation Agency]] · [[Nathans Levensplan]] · [[Financieel Plan]] · [[Netwerk Belgie]]
+## Diepe onderverdeling
+> Atoomnotities (zie [[Kennis-Structuur Conventie]]): [[Rocadelo Samenwerking]] · [[Rocadelo 7 Agents]] · [[Rocadelo Tech Stack Kosten]] · [[Rocadelo Pricing en GTM]] · [[Rocadelo Groeistrategie]]
+
+**Zie ook:** [[Business MOC]] · [[AI Automation Agency]] · [[Nathans Levensplan]] · [[Financieel Plan]] · [[Netwerk Belgie]]

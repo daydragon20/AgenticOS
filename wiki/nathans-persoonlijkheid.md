@@ -241,4 +241,7 @@ Barack Obama · John Cusack · Malala Yousafzai · Sean Connery · Oprah Winfrey
 
 ---
 
-**Zie ook:** [[Nathans Levensplan]] · [[Nathans Ideaal Leven]] · [[Discipline Systemen]] · [[Jonge Founders Patronen]]
+## Diepe onderverdeling
+> Atoomnotities (zie [[Kennis-Structuur Conventie]]): [[Persoonlijk Sterktes Hefbomen]] · [[Persoonlijk Zwaktes Tegengif]] · [[Persoonlijk Groei 2026]]
+
+**Zie ook:** [[Persoonlijk MOC]] · [[Nathans Levensplan]] · [[Nathans Ideaal Leven]] · [[Discipline Systemen]] · [[Jonge Founders Patronen]]

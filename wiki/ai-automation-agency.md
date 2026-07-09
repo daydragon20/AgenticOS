@@ -68,4 +68,7 @@ tags: [business, AI, automation, n8n, agency, strategie, internationaal]
 - OF: ouder richt BV op, schenkt aandelen aan jou (route 2)
 - Op 18e: jij neemt over of Delaware C-Corp erbij
 
-**Zie ook:** [[Agency Website Business]] · [[Nieuwe York Ambitie]] · [[Financieel Plan]] · [[Nathans Levensplan]]
+## Diepe onderverdeling
+> Atoomnotities (zie [[Kennis-Structuur Conventie]]): [[AI Agency Aanbod en Pricing]] · [[AI Agency GTM Kanalen]] · [[AI Agency Skills Stack]] · [[AI Agency Schaal Bottlenecks]]
+
+**Zie ook:** [[Business MOC]] · [[Agency Website Business]] · [[Nieuwe York Ambitie]] · [[Financieel Plan]] · [[Nathans Levensplan]]
