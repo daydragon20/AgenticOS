@@ -26,13 +26,26 @@ Dit is Noorwegens sterkste kaart voor jou:
 ## 4. Business / Thuisbasis
 Hoog inkomen maar duur land. Niet je business-thuisbasis, wél een uitstekende plek om te verdienen én een outdoor-netwerk op te bouwen dat je naar IJsland/Svalbard brengt.
 
-## Plekken
-| Plek | Waarvoor |
-|------|----------|
-| Lofoten | Kajak, hiking, fotografie, seizoenswerk |
-| Tromsø | Noorderlicht-toerisme, poort naar het Noorden |
-| Bergen / Geiranger | Fjord-toerisme, instap-seizoenswerk |
-| Longyearbyen | Vertrekpunt naar [[Spitsbergen Svalbard]] |
+## Dieper — subnotities (diepste detail)
+> Deze regio- en thema-notities werken Noorwegen tot op atoomniveau uit (zie [[Kennis-Structuur Conventie]]).
+
+**Regio's:**
+- [[Regio Lofoten]] — kajak/hiking/fotografie, iconisch water-guiding
+- [[Regio Tromsø]] — winter/noorderlicht + poort naar Svalbard
+- [[Regio Fjorden Bergen]] — makkelijkste instapregio voor je eerste seizoen
+
+**Thema's:**
+- [[Seizoenswerk Noorwegen]] — job-typen, solliciteren, loon, kost & inwoon
+- [[Guide Certificaten Noorwegen]] — opleidingsladder naar kajakgids
+- [[Praktisch Noorwegen]] — EER-registratie, D-nummer, belasting, transport
+
+## Plekken (overzicht)
+| Plek | Waarvoor | Diep |
+|------|----------|------|
+| Lofoten | Kajak, hiking, fotografie, seizoenswerk | [[Regio Lofoten]] |
+| Tromsø | Noorderlicht-toerisme, poort naar het Noorden | [[Regio Tromsø]] |
+| Bergen / Geiranger | Fjord-toerisme, instap-seizoenswerk | [[Regio Fjorden Bergen]] |
+| Longyearbyen | Vertrekpunt naar [[Spitsbergen Svalbard]] | [[Spitsbergen Svalbard]] |
 
 ## Praktisch
 - **Werken:** vrij als EER-burger (België)
@@ -42,4 +55,4 @@ Hoog inkomen maar duur land. Niet je business-thuisbasis, wél een uitstekende p
 ## Open vragen
 Zie [[Vragenlijst Wereld & Context]] — o.a.: wat vertelde de Nederlander precies over hoe hij begon? Naam/contact bewaard?
 
-**Zie ook:** [[Wereldkaart|🌍 Wereldkaart]] · [[Seizoenswerk Nomademodel]] · [[IJsland]] · [[Spitsbergen Svalbard]]
+**Zie ook:** [[Wereldkaart|🌍 Wereldkaart]] · [[Seizoenswerk Nomademodel]] · [[IJsland]] · [[Spitsbergen Svalbard]] · [[Kennis-Structuur Conventie]]
