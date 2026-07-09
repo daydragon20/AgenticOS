@@ -23,7 +23,10 @@ _(landen, plekken, seizoenswerk, exchange — de geografische dimensie van je br
 - [[Wereldkaart|🌍 Wereldkaart]] — Hub voor alle landen: droom / exchange / seizoenswerk / business per land
 - [[Seizoenswerk Nomademodel]] — Een seizoen werken per land (IJsland→Japan→Noorwegen→Svalbard); ladder + kalender
 - [[Verenigde Staten]] — Exchange (NY/Californië) + NYC business-thuisbasis
+  - [[New York City]] · [[San Francisco Silicon Valley]] · [[Boston]] · [[Cape Canaveral]] — steden/plekken, diep
+  - [[Visa-Pad VS]] — ESTA → O-1A → EB-1A green card
 - [[Japan]] — Tokyo/Kyoto droomreis + ski-seizoenswerk Hokkaido
+  - [[Tokyo]] · [[Kyoto]] · [[Hokkaido Niseko]] · [[Praktisch Japan]] — steden + praktisch, diep
 - [[Noorwegen]] — Waar de vonk ontstond; fjord-seizoenswerk & outdoor guiding
   - [[Regio Lofoten]] · [[Regio Tromsø]] · [[Regio Fjorden Bergen]] — regio's, diep uitgewerkt
   - [[Seizoenswerk Noorwegen]] · [[Guide Certificaten Noorwegen]] · [[Praktisch Noorwegen]] — thema's, atoom-niveau
