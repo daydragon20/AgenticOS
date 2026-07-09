@@ -76,4 +76,4 @@ EB-1A green card → permanent residency → eventueel naturalisatie.
 3. Web Summit, Lissabon (november)
 4. NYC Tech Week (juni) + SF Tech Week (oktober)
 
-**Zie ook:** [[AI Automation Agency]] · [[Financieel Plan]] · [[Ruimtevaartsector]] · [[Nathans Levensplan]]
+**Zie ook:** [[AI Automation Agency]] · [[Financieel Plan]] · [[Ruimtevaartsector]] · [[Nathans Levensplan]] · [[Verenigde Staten]] · [[Wereldkaart|🌍 Wereldkaart]]

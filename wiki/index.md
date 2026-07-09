@@ -16,6 +16,24 @@ _(people, places, organizations, products — pages that describe a thing)_
 - [[Ruimtevaartsector]] — ESA BIC Belgium funding (€60K), Belgische spelers, hybrid SaaS→space-tech pad voor Nathan op 22–24
 - [[USA Uitwisseling]] — YFU/AFS/WEP semester v.a. €13.950, beurzen (Rotary volledig dekkend), tijdlijn en spaarplan
 
+## Wereld & Bestemmingen
+
+_(landen, plekken, seizoenswerk, exchange — de geografische dimensie van je brein)_
+
+- [[Wereldkaart|🌍 Wereldkaart]] — Hub voor alle landen: droom / exchange / seizoenswerk / business per land
+- [[Seizoenswerk Nomademodel]] — Een seizoen werken per land (IJsland→Japan→Noorwegen→Svalbard); ladder + kalender
+- [[Verenigde Staten]] — Exchange (NY/Californië) + NYC business-thuisbasis
+- [[Japan]] — Tokyo/Kyoto droomreis + ski-seizoenswerk Hokkaido
+- [[Noorwegen]] — Waar de vonk ontstond; fjord-seizoenswerk & outdoor guiding
+- [[Spitsbergen Svalbard]] — Eindpunt van het nomadenpad: kajak guiden in de poolwereld
+- [[IJsland]] — Sterk instap-seizoenswerk richting Svalbard
+- [[Portugal]] — Surf (Nazaré) + Europees remote-basiskamp
+- [[Spanje]] — Spaans leren + warm basiskamp (Barcelona/Canarische Eilanden)
+- [[Costa Rica]] — Strandhuis-droom met beste vriend
+- [[Dubai VAE]] — Penthouse-maand + fiscale/business-hub
+- [[Italië]] — Eten, cultuur, lifestyle-land
+- [[Vragenlijst Wereld & Context]] — Open vragen om je brein verder aan te vullen
+
 ## Concepts
 
 _(ideas, frameworks, patterns, principles — pages that describe a concept)_
