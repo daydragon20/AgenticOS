@@ -50,4 +50,7 @@ Examencommissie geeft Nathan **1.000+ uren/jaar extra** t.o.v. normale school �
 
 **Combineer zo:** ochtend = examenstof deepwork (3–4u), middag = business (3–4u), avond = outreach/sales (1u)
 
-**Zie ook:** [[Nathans Levensplan]] · [[USA Uitwisseling]] · [[AI Automation Agency]]
+## Diepe onderverdeling
+> Atoomnotities (zie [[Kennis-Structuur Conventie]]): [[Examencommissie Wat]] · [[Examencommissie Richting Keuze]] · [[Examencommissie Aanvraag Stappen]] · [[Examencommissie Studieplanning]]
+
+**Zie ook:** [[Onderwijs MOC]] · [[Nathans Levensplan]] · [[USA Uitwisseling]] · [[AI Automation Agency]]

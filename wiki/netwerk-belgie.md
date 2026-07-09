@@ -47,4 +47,7 @@ tags: [netwerk, belgie, events, communities, ondernemers]
 - **Word de jongste in elke kamer waar ze zijn**
 - **Leeftijd is een asset:** "coffee met 15-jarige uit België die €8K/m runt" is een ja-knop voor senior founders
 
-**Zie ook:** [[Jonge Founders Patronen]] · [[AI Automation Agency]] · [[Nieuwe York Ambitie]]
+## Diepe onderverdeling
+> Atoomnotities (zie [[Kennis-Structuur Conventie]]): [[Netwerk Organisaties Nu]] · [[Netwerk Organisaties Later]] · [[Netwerk Online Aanwezigheid]] · [[Netwerk Mentors Benaderen]]
+
+**Zie ook:** [[Netwerk MOC]] · [[Jonge Founders Patronen]] · [[AI Automation Agency]] · [[Nieuwe York Ambitie]]

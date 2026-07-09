@@ -240,4 +240,7 @@ Ga op zoek naar grotere samenwerkingen (bijv. bedrijven die je systeem intern wi
 
 ---
 
-**Zie ook:** [[Flowstate Strategie]] · [[Flowstate Onderzoek]] · [[Flowstate Pitch]] · [[Nathans Levensplan]] · [[AI Automation Agency]] · [[Financieel Plan]]
+## Diepe onderverdeling
+> Atoomnotities (zie [[Kennis-Structuur Conventie]]): [[Flowstate 6 Fases]] · [[Flowstate Verdienmodel]] · [[Flowstate Hardware Pad]]
+
+**Zie ook:** [[Business MOC]] · [[Flowstate Strategie]] · [[Flowstate Onderzoek]] · [[Flowstate Pitch]] · [[Nathans Levensplan]] · [[AI Automation Agency]] · [[Financieel Plan]]

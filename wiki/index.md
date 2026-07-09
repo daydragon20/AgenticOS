@@ -4,6 +4,24 @@ This is the catalog of every page in your wiki. Claude updates it automatically.
 
 **Pattern:** `- [[Page Name]] — one-line summary`
 
+> 🧠 Begin bij de [[Brein-Kaart|🧠 Brein-Kaart]] — de master-MOC die alle domeinen samenbindt.
+
+---
+
+## Domeinen (MOC-hubs)
+
+_(elk domein is een map met een hub die verder opdeelt tot atoomniveau — zie [[Kennis-Structuur Conventie]])_
+
+- [[Brein-Kaart|🧠 Brein-Kaart]] — master-hub over alle domeinen
+- [[Wereldkaart|🌍 Wereldkaart]] — landen, reizen, exchange, seizoenswerk
+- [[Business MOC]] — agency, AI-automation, Rocadelo, Flowstate, Burst
+- [[Financieel MOC]] — beleggen, belasting, vastgoed, vrijheid
+- [[Persoonlijk MOC]] — persoonlijkheid, discipline, gewoontes, groei
+- [[Onderwijs MOC]] — examencommissie, richting, studieplanning
+- [[Netwerk MOC]] — BE-organisaties, online aanwezigheid, mentors
+- [[Ruimtevaart MOC]] — ESA BIC, engineer-route, hybride pad
+- [[Outdoor MOC]] — kajak/ski/EHBO-certificaten, fysieke basis
+
 ---
 
 ## Entities
@@ -73,7 +91,10 @@ _(summaries of specific sources you've ingested)_
 
 _(hoe je brein zelf is opgebouwd)_
 
+- [[Brein-Kaart|🧠 Brein-Kaart]] — Master-MOC over alle domeinen
 - [[Kennis-Structuur Conventie]] — De vaste wet: alles opdelen tot atoomniveau (4 diepteniveaus, atoom-principe, statuslabels)
+- [[Vragenlijst Wereld & Context]] — Open vragen over landen/reizen
+- [[Vragenlijst Domeinen & Verdieping]] — Open vragen over business, financieel, persoonlijk, onderwijs, netwerk, ruimtevaart, outdoor
 
 ---
 

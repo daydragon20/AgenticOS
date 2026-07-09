@@ -89,4 +89,7 @@ tags: [burst, drankje, product, vitamine, hardware, concept, startup]
 
 ---
 
-**Zie ook:** [[Nathans Levensplan]] · [[Financieel Plan]] · [[AI Automation Agency]]
+## Diepe onderverdeling
+> Atoomnotities (zie [[Kennis-Structuur Conventie]]): [[Burst Product Concept]] · [[Burst Capsules Vitamines]] · [[Burst Doelgroep Marketing]]
+
+**Zie ook:** [[Business MOC]] · [[Nathans Levensplan]] · [[Financieel Plan]] · [[AI Automation Agency]]

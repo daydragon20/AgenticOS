@@ -50,4 +50,7 @@ Bouw eerst SaaS-bedrijf (jaar 19–26), genereer €500K–€2M cash via exit, 
 - Te vroeg "space" willen doen zonder business-fundamenten
 - ESA BIC aanvragen zonder duidelijke space-link
 
-**Zie ook:** [[Nathans Levensplan]] · [[Financieel Plan]] · [[Nieuwe York Ambitie]] · [[AI Automation Agency]]
+## Diepe onderverdeling
+> Atoomnotities (zie [[Kennis-Structuur Conventie]]): [[Ruimtevaart Pad 1 ESA BIC]] · [[Ruimtevaart Pad 2 Engineer]] · [[Ruimtevaart Pad 3 Hybride]] · [[Ruimtevaart Belgische Spelers]]
+
+**Zie ook:** [[Ruimtevaart MOC]] · [[Nathans Levensplan]] · [[Financieel Plan]] · [[Nieuwe York Ambitie]] · [[AI Automation Agency]]
