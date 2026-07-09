@@ -42,4 +42,4 @@ Vraag Californië, New York, Massachusetts, Texas of Illinois (tech/business hub
 - Beste scenario: semester januari–juni 2027 (tijdens examencommissie-periode)
 - Spaarplan: €3.000 vóór deadline = €250/maand gemiddeld
 
-**Zie ook:** [[Examencommissie Strategie]] · [[Nathans Levensplan]] · [[Financieel Plan]]
+**Zie ook:** [[Examencommissie Strategie]] · [[Nathans Levensplan]] · [[Financieel Plan]] · [[Verenigde Staten]] · [[Wereldkaart|🌍 Wereldkaart]]

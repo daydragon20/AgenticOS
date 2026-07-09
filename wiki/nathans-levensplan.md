@@ -85,4 +85,4 @@ Eigen tech bedrijf, ruimtevaartsector, financiële vrijheid, wereldwijd werken, 
 | Motivatie grillig | Discipline = consistentie, 1 vast routine-anker per dag |
 | Startangst | 2-minuten start, maak het ultra-concreet, falen op 15 heeft nul gevolgen |
 
-**Zie ook:** [[Agency Website Business]] · [[AI Automation Agency]] · [[Ruimtevaartsector]] · [[Financieel Plan]] · [[Nieuwe York Ambitie]] · [[Examencommissie Strategie]]
+**Zie ook:** [[Agency Website Business]] · [[AI Automation Agency]] · [[Ruimtevaartsector]] · [[Financieel Plan]] · [[Nieuwe York Ambitie]] · [[Examencommissie Strategie]] · [[Wereldkaart|🌍 Wereldkaart]] · [[Seizoenswerk Nomademodel]]

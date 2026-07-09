@@ -81,4 +81,4 @@ tags: [dromen, bucket-list, doelen, ambitie, leven]
 - Totaal: 50 doelen | Afgerond: 0 | Compleet: 0%
 - **Al bijna bereikt:** "Eerste eigen bedrijf starten" (zit in de ronde van eerste klant)
 
-**Zie ook:** [[Nathans Levensplan]] · [[Nieuwe York Ambitie]] · [[Ruimtevaartsector]] · [[Financieel Plan]] · [[Nathans Ideaal Leven]]
+**Zie ook:** [[Nathans Levensplan]] · [[Nieuwe York Ambitie]] · [[Ruimtevaartsector]] · [[Financieel Plan]] · [[Nathans Ideaal Leven]] · [[Wereldkaart|🌍 Wereldkaart]] · [[Seizoenswerk Nomademodel]]

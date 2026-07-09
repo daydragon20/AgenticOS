@@ -119,4 +119,4 @@ Business en geld zijn de fundering. Dit zijn de verdiepingen daarboven.
 
 ---
 
-**Zie ook:** [[Nathans Levensplan]] · [[Nathans Bucket List]] · [[Nieuwe York Ambitie]] · [[Discipline Systemen]] · [[Financieel Plan]]
+**Zie ook:** [[Nathans Levensplan]] · [[Nathans Bucket List]] · [[Nieuwe York Ambitie]] · [[Discipline Systemen]] · [[Financieel Plan]] · [[Wereldkaart|🌍 Wereldkaart]]
