@@ -229,5 +229,7 @@ Founding Client deal is hard: 6 maanden minimum, testimonial-clausule, 2 referra
 
 ## Diepe onderverdeling
 > Atoomnotities (zie [[Kennis-Structuur Conventie]]): [[Rocadelo Samenwerking]] · [[Rocadelo 7 Agents]] · [[Rocadelo Tech Stack Kosten]] · [[Rocadelo Pricing en GTM]] · [[Rocadelo Groeistrategie]]
+>
+> 💡 Concept: [[Rocadelo Impact: recruiting met een reintegratie-motor|Rocadelo Impact]] — sociale reïntegratie-tak als groeimotor (geparkeerd idee)
 
 **Zie ook:** [[Business MOC]] · [[AI Automation Agency]] · [[Nathans Levensplan]] · [[Financieel Plan]] · [[Netwerk Belgie]]

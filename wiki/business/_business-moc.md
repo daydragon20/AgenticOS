@@ -28,6 +28,7 @@ tags: [business, moc, hub, agency, rocadelo, flowstate, burst, ondernemen]
 
 ### Rocadelo → [[Rocadelo HR Project]]
 - [[Rocadelo Samenwerking]] · [[Rocadelo 7 Agents]] · [[Rocadelo Tech Stack Kosten]] · [[Rocadelo Pricing en GTM]] · [[Rocadelo Groeistrategie]]
+- 💡 [[Rocadelo Impact: recruiting met een reintegratie-motor|Rocadelo Impact]] — sociale reïntegratie-tak als flywheel (concept, geparkeerd)
 
 ### Flowstate → [[Flowstate Masterplan]]
 - [[Flowstate 6 Fases]] · [[Flowstate Verdienmodel]] · [[Flowstate Hardware Pad]]
