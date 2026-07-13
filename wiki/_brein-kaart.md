@@ -27,7 +27,8 @@ tags: [brein, hub, index, domeinen, moc, master]
 - [[Nathans Ideaal Leven]] — het eindbeeld
 - [[Nathan Profiel]] — wie je bent
 
-## Systeem
+## Systeem & archief
+- [[Master-Context MOC|🗂️ Master-Context]] — archief van Claude-app-context; **begin bij de [[Master Leesregels AI|leesregels]]** en de [[Master Correcties Repo|correcties op de repo]]
 - [[Kennis-Structuur Conventie]] — hoe alles wordt opgedeeld
 - [[Wiki Index|Volledige index]] — catalogus van elke pagina
 - Open input: [[Vragenlijst Wereld & Context]] · [[Vragenlijst Domeinen & Verdieping]]
