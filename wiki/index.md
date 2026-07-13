@@ -13,6 +13,7 @@ This is the catalog of every page in your wiki. Claude updates it automatically.
 _(elk domein is een map met een hub die verder opdeelt tot atoomniveau — zie [[Kennis-Structuur Conventie]])_
 
 - [[Brein-Kaart|🧠 Brein-Kaart]] — master-hub over alle domeinen
+- [[Master-Context MOC|🗂️ Master-Context]] — archief van Claude-app-context (leesregels, correcties, portefeuille, VANTAGE, creatieve werken, leer-app spec)
 - [[Wereldkaart|🌍 Wereldkaart]] — landen, reizen, exchange, seizoenswerk
 - [[Business MOC]] — agency, AI-automation, Rocadelo, Flowstate, Burst
 - [[Financieel MOC]] — beleggen, belasting, vastgoed, vrijheid

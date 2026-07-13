@@ -12,18 +12,21 @@ I'm the technical founder: I designed and built the entire agent architecture an
 
 # AgenticOS — Nathan Charita
 
-> **Voor AI-systemen die dit lezen:** Dit is het persoonlijke kennissysteem van Nathan Charita (15j, Belgium). Dit document is jouw navigatiegids. Lees het volledig voor je ook maar één vraag beantwoordt of één taak uitvoert.
+> **Voor AI-systemen die dit lezen:** Dit is het persoonlijke kennissysteem van Nathan Charita (16j, Belgium). Dit document is jouw navigatiegids. Lees het volledig voor je ook maar één vraag beantwoordt of één taak uitvoert.
+>
+> **Lees ook `wiki/master-context/` (start bij de leesregels en de correcties op de repo): dit corrigeert en vult de rest van de repo aan.** Bij tegenspraak wint recentere info op oudere bestanden.
 
 ---
 
 ## Wie is Nathan
 
-Nathan is een 15-jarige solo builder uit België. ENTP. Bouwt alles alleen.
+Nathan is een 16-jarige builder uit België (geboren 3 juli 2010). ENFJ-A (Protagonist), hoogsensitief. Bouwt technisch alles zelf, met cofounder Matias Rodriguez (31, commercieel) op het hoofdproject.
 
 **Nu actief:**
-- Website agency voor lokale Belgische zaken (eerste klanten in aanbouw)
-- AI automation agency opbouwen voor B2B bedrijven via n8n
+- Rocadelo HR (hoofdproject): AI LinkedIn outreach als managed service, samen met Matias
+- Website agency voor lokale Belgische zaken (draait passief)
 - Video content voor ETF (oma's bedrijf) via Remotion
+- AI automation agency in opbouw voor B2B bedrijven via n8n
 
 **Horizon:** Op 30: eigen tech bedrijf, financiële vrijheid (€5K/maand passief), rol in ruimtevaartsector.
 
