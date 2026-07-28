@@ -15,7 +15,8 @@ _(elk domein is een map met een hub die verder opdeelt tot atoomniveau — zie [
 - [[Brein-Kaart|🧠 Brein-Kaart]] — master-hub over alle domeinen
 - [[Master-Context MOC|🗂️ Master-Context]] — archief van Claude-app-context (leesregels, correcties, portefeuille, VANTAGE, creatieve werken, leer-app spec)
 - [[Wereldkaart|🌍 Wereldkaart]] — landen, reizen, exchange, seizoenswerk
-- [[Business MOC]] — agency, AI-automation, Rocadelo, Flowstate, Burst
+- [[Business MOC]] — agency, AI-automation, Rocadelo, Flowstate, Burst, Framework AI
+  - [[Framework AI|🏗️ Framework AI]] — OS voor autonome ondernemingen: missie, blueprints, agent-architectuur, 4 fases
 - [[Financieel MOC]] — beleggen, belasting, vastgoed, vrijheid
 - [[Persoonlijk MOC]] — persoonlijkheid, discipline, gewoontes, groei
 - [[Onderwijs MOC]] — examencommissie, richting, studieplanning
@@ -66,6 +67,7 @@ _(ideas, frameworks, patterns, principles — pages that describe a concept)_
 - [[Discipline Systemen]] — Dagstructuur, phone hygiene, mindset frameworks (Long-term greedy, 2-dag regel), energie management
 - [[Examencommissie Strategie]] — Aanbevolen richting (Eco-wiskunde/Wetenschappen), AgODi huisonderwijs aanvraag, 1.000+ uur extra/jaar
 - [[Financieel Plan]] — Beleggingsstrategie (IWDA ETF), revenue-allocatie per fase, weg naar financiële vrijheid op 30
+- [[Framework AI]] — The Operating System for Autonomous Companies: infrastructuur waarmee bedrijven autonoom ontstaan en draaien (12 atomen + brondocument)
 - [[Flowstate Strategie]] — Trademark vs. patent uitleg, USPTO-risico's bij bestaande naam, merkdifferentiatie-opties
 - [[Jonge Founders Patronen]] — Profielen (Yip/Guillem/Edholm), 5 mentale traits, vroege validatie loop, Belgische mogelijkheden
 - [[Netwerk Belgie]] — Organisaties (Voka Bryo/BeCentral/Sinc), 6-maanden actieplan, online aanwezigheid (LinkedIn 5K→30K)
