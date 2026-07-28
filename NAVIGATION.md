@@ -22,6 +22,7 @@
 - [**discipline-systemen.md**](wiki/discipline-systemen.md) — Hoe Nathan zichzelf organiseert
 
 ### Business & Projecten
+- [**business/framework-ai/**](wiki/business/framework-ai/_framework-ai.md) — **Framework AI** — OS voor autonome ondernemingen (visie, blueprints, agent-architectuur, 4 fases, brondocument)
 - [**ai-automation-agency.md**](wiki/ai-automation-agency.md) — AI automation voor B2B (n8n)
 - [**agency-website-business.md**](wiki/agency-website-business.md) — Website agency voor lokale Belgische zaken
 - [**financieel-plan.md**](wiki/financieel-plan.md) — Roadmap naar €5K/maand passief
@@ -104,6 +105,9 @@ Gebruik deze als snelle startpunten:
 
 ### "Business & Geld verdienen?"
 → [ai-automation-agency.md](wiki/ai-automation-agency.md) → [agency-website-business.md](wiki/agency-website-business.md) → [financieel-plan.md](wiki/financieel-plan.md)
+
+### "Wat is de lange-termijnvisie op AI & bedrijven?"
+→ [framework-ai (hub)](wiki/business/framework-ai/_framework-ai.md) → [eerste bewijs: recruitment](wiki/business/framework-ai/eerste-bewijs-recruitment.md) → [rocadelo-hr-project.md](wiki/rocadelo-hr-project.md)
 
 ### "Toekomst & Dromen?"
 → [nathans-levensplan.md](wiki/nathans-levensplan.md) → [nieuwe-york-ambitie.md](wiki/nieuwe-york-ambitie.md) → [ruimtevaartsector.md](wiki/ruimtevaartsector.md)

@@ -37,6 +37,13 @@ Spreek mij altijd aan in het Nederlands. Houd antwoorden kort en praktisch.
 - Nog in conceptfase
 - Detail: `wiki/burst-productdossier.md`
 
+### 6. Framework AI — OS voor Autonome Ondernemingen
+- Visie: infrastructuurlaag waarmee bedrijven autonoom ontstaan, draaien en evolueren
+- Eerste bewijs = één autonome recruitmentonderneming (Rocadelo is die bouwsteen)
+- Fases: Product → Platform → Blueprint Economy → Fysieke automatisatie
+- Status: idee, nog geen bouw
+- Detail: `wiki/business/framework-ai/_framework-ai.md`
+
 ## Tools & toegang
 - **n8n**: lokale of cloud instantie voor automatisatie
 - **Remotion**: programmatische video in React/TypeScript

@@ -1,14 +1,14 @@
 ---
 date: 2026-07-09
 type: MOC
-tags: [business, moc, hub, agency, rocadelo, flowstate, burst, ondernemen]
+tags: [business, moc, hub, agency, rocadelo, flowstate, burst, framework-ai, ondernemen]
 ---
 
 # 💼 Business MOC
 
 > Hub voor al je ondernemingen. Elke venture is opgedeeld tot atoomniveau (aanbod, pricing, GTM, product, schaal). Regels: [[Kennis-Structuur Conventie]].
 
-## De 5 ventures
+## De 6 ventures
 
 | Venture | Status | Kern | Diep |
 |---------|--------|------|------|
@@ -17,6 +17,7 @@ tags: [business, moc, hub, agency, rocadelo, flowstate, burst, ondernemen]
 | **Rocadelo HR × Nathan** | bezig | AI LinkedIn outreach, managed service | [[Rocadelo HR Project]] |
 | **Flowstate** | idee→plan | Productiviteits-app → wearable | [[Flowstate Masterplan]] |
 | **Burst** | concept | Vitaminedrank met capsules | [[Burst Productdossier]] |
+| **Framework AI** | idee | OS voor autonome ondernemingen (de paraplu-visie) | [[Framework AI]] |
 
 ## Diepe onderverdeling per venture
 
@@ -36,7 +37,14 @@ tags: [business, moc, hub, agency, rocadelo, flowstate, burst, ondernemen]
 ### Burst → [[Burst Productdossier]]
 - [[Burst Product Concept]] · [[Burst Capsules Vitamines]] · [[Burst Doelgroep Marketing]]
 
+### Framework AI → [[Framework AI]]
+- [[Framework AI Missie en Wereldbeeld]] · [[Framework AI Naam en Positionering]] · [[Framework AI Eerste Bewijs Recruitment]] · [[Framework AI Business Blueprint Library]] · [[Framework AI Klantreis en Marketplace]] · [[Framework AI OS Architectuur]]
+- [[Framework AI Groeiplan 4 Fases]] · [[Framework AI Economisch Model]] · [[Framework AI Transitiepad]] · [[Framework AI Uitdagingen]] · [[Framework AI Concurrentiepositie]] · [[Framework AI Ultieme Visie]]
+- 📄 [[Framework AI Brondocument]] — originele visiedocument, integraal
+
 ## Rode draad
 Alle ventures voeden [[Financieel Plan]] en de fasen in [[Nathans Levensplan]]. Agency + Rocadelo = cashflow nu; Flowstate/SaaS = exit-potentieel richting [[Ruimtevaart MOC]].
+
+**Framework AI is de paraplu boven de rest:** Rocadelo bewijst één autonome bedrijfsfunctie (recruitment), de AI-automation agency levert de bouwstenen, en Framework AI generaliseert dat naar élk bedrijfstype. Zie [[Framework AI Eerste Bewijs Recruitment]].
 
 **Zie ook:** [[Brein-Kaart|🧠 Brein-Kaart]] · [[Financieel MOC]] · [[Netwerk MOC]] · [[Nathans Levensplan]]

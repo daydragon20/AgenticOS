@@ -13,6 +13,7 @@
 {"id":"aiauto","type":"file","file":"wiki/ai-automation-agency.md","x":320,"y":110,"width":340,"height":70,"color":"2"},
 {"id":"etf","type":"file","file":"skills/etf-content.md","x":320,"y":210,"width":340,"height":70,"color":"2"},
 {"id":"burst","type":"file","file":"wiki/burst-productdossier.md","x":320,"y":310,"width":340,"height":70,"color":"2"},
+{"id":"frameworkai","type":"file","file":"wiki/business/framework-ai/_framework-ai.md","x":320,"y":410,"width":340,"height":80,"color":"6"},
 
 {"id":"nyc","type":"file","file":"wiki/nieuwe-york-ambitie.md","x":-200,"y":200,"width":400,"height":60,"color":"5"},
 {"id":"ruimte","type":"file","file":"wiki/ruimtevaartsector.md","x":-200,"y":280,"width":400,"height":60,"color":"5"},
@@ -31,5 +32,7 @@
 {"id":"e11","fromNode":"hub","toNode":"burst","fromSide":"right","toSide":"left","label":"BURST"},
 {"id":"e12","fromNode":"hub","toNode":"nyc","fromSide":"bottom","toSide":"top","label":"toekomst"},
 {"id":"e13","fromNode":"nyc","toNode":"ruimte","fromSide":"bottom","toSide":"top"},
-{"id":"e14","fromNode":"ruimte","toNode":"financieel","fromSide":"bottom","toSide":"top"}
+{"id":"e14","fromNode":"ruimte","toNode":"financieel","fromSide":"bottom","toSide":"top"},
+{"id":"e15","fromNode":"hub","toNode":"frameworkai","fromSide":"right","toSide":"left","label":"Framework AI — paraplu-visie"},
+{"id":"e16","fromNode":"frameworkai","toNode":"rocadelo","fromSide":"top","toSide":"bottom","label":"eerste bewijs"}
 ]}

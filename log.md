@@ -14,6 +14,9 @@ Chronological, append-only record of everything that's happened in this wiki.
 
 ---
 
+## [2026-07-28 00:00] ingest | Framework AI visiedocument — opgesplitst tot atoomniveau
+Touched: wiki/business/framework-ai/ (13 bestanden), wiki/business/_business-moc.md, wiki/index.md, wiki/_brein-kaart.md, NAVIGATION.md, memory/projects.md, memory/log.md, CLAUDE.md
+
 ## [2026-05-01 00:00] session | Instagram DM links + manuele AI resources ingested
 Touched: wiki/instagram-dm-links.md, wiki/ai-dev-resources.md, wiki/index.md
 

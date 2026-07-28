@@ -13,7 +13,7 @@ tags: [brein, hub, index, domeinen, moc, master]
 | Domein | Hub | Waarover |
 |--------|-----|----------|
 | 🌍 **Wereld** | [[Wereldkaart\|🌍 Wereldkaart]] | Landen, reizen, exchange, seizoenswerk |
-| 💼 **Business** | [[Business MOC]] | Agency, AI-automation, Rocadelo, Flowstate, Burst |
+| 💼 **Business** | [[Business MOC]] | Agency, AI-automation, Rocadelo, Flowstate, Burst, [[Framework AI]] |
 | 💰 **Financieel** | [[Financieel MOC]] | Beleggen, belasting, vastgoed, financiële vrijheid |
 | 🧭 **Persoonlijk** | [[Persoonlijk MOC]] | Persoonlijkheid, discipline, gewoontes, groei |
 | 🎓 **Onderwijs** | [[Onderwijs MOC]] | Examencommissie, richting, studieplanning |
