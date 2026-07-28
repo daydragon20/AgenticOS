@@ -75,6 +75,13 @@
 
 ---
 
+## 🎬 Film — afleveringen
+
+- [**film/README.md**](film/README.md) — overzicht van de afleveringen
+- [**film/aflevering-01-stille-motor.html**](film/aflevering-01-stille-motor.html) — *Stille Motor*, 30 min, 12 scènes, volledig procedureel in WebGL (fictie op basis van deze repo)
+
+---
+
 ## 🎛️ Dashboard & Meta
 
 - [**dashboard/README.md**](dashboard/README.md) — Dagelijkse routine en snelle links
