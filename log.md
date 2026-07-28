@@ -14,6 +14,9 @@ Chronological, append-only record of everything that's happened in this wiki.
 
 ---
 
+## [2026-07-28 18:00] session | Aflevering 1 herbouwd in echte 3D (raymarching, bewegende camera)
+Touched: film/aflevering-01-stille-motor.html, film/archief-aflevering-01-2d.html, film/README.md, memory/log.md
+
 ## [2026-07-28 12:00] session | Aflevering 1 'Stille Motor' — 30 min procedurele WebGL-film
 Touched: film/aflevering-01-stille-motor.html, film/README.md, NAVIGATION.md, memory/log.md
 

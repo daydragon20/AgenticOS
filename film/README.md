@@ -1,7 +1,7 @@
 ---
 date: 2026-07-28
 type: index
-tags: [film, aflevering, remotion-vrij, webgl, fictie, nathan]
+tags: [film, aflevering, webgl, 3d, raymarching, fictie, nathan]
 ---
 
 # 🎬 Film — afleveringen over Nathan
@@ -13,38 +13,46 @@ tags: [film, aflevering, remotion-vrij, webgl, fictie, nathan]
 | # | Titel | Duur | Bestand |
 |---|-------|------|---------|
 | 1 | **Stille Motor** — één dag, van 05:41 tot 23:26 | 30:00 | [`aflevering-01-stille-motor.html`](aflevering-01-stille-motor.html) |
+| — | *archief: eerste 2D-versie* | 30:00 | [`archief-aflevering-01-2d.html`](archief-aflevering-01-2d.html) |
 
-## Aflevering 1 — Stille Motor
+## Aflevering 1 — Stille Motor (3D)
 
-**Wat het is:** een zelfstandig HTML-bestand dat 30 minuten lang een dag afspeelt in 12 scènes, met ondertitels, kapittelmenu en procedureel sfeergeluid. Geen video, geen afbeeldingen, geen externe bestanden — élk beeld wordt live in WebGL gerekend.
+**Wat het is:** één zelfstandig HTML-bestand van 30 minuten in 12 scènes. Elke scène is een **echte 3D-wereld**: geometrie die per beeldpunt geraymarcheerd wordt, met een perspectiefcamera die per shot beweegt. Geen video, geen afbeeldingen, geen externe bestanden.
 
 **De 12 scènes**
 
-| # | Tijd | Scène |
-|---|------|-------|
-| 1 | 05:41 | zijn kamer, boven de garage |
-| 2 | 06:22 | het veld achter de tuin |
-| 3 | 07:05 | bureau, twee schermen |
-| 4 | 08:30 | videogesprek, Antwerpen–Schilde |
-| 5 | 10:15 | dezelfde stoel, andere strijd |
-| 6 | 12:40 | de loods, drie dorpen verder |
-| 7 | 14:20 | de beek in het bos |
-| 8 | 16:02 | alles rood |
-| 9 | 18:47 | twee uur later |
-| 10 | 21:10 | de vijver aan de rand van het dorp |
-| 11 | 22:35 | beneden, één lamp aan |
-| 12 | 23:26 | kamer, licht uit |
+| # | Tijd | Scène | Wereld |
+|---|------|-------|--------|
+| 1 | 05:41 | zijn kamer, boven de garage | kamer |
+| 2 | 06:22 | het veld achter de tuin | veld |
+| 3 | 07:05 | bureau, twee schermen | kamer |
+| 4 | 08:30 | videogesprek, Antwerpen–Schilde | kamer |
+| 5 | 10:15 | dezelfde stoel, andere strijd | kamer (regen) |
+| 6 | 12:40 | de loods, drie dorpen verder | loods |
+| 7 | 14:20 | de beek in het bos | beek |
+| 8 | 16:02 | alles rood | kamer (alarm) |
+| 9 | 18:47 | twee uur later | kamer (avond) |
+| 10 | 21:10 | de vijver aan de rand van het dorp | vijver |
+| 11 | 22:35 | beneden, één lamp aan | pianokamer |
+| 12 | 23:26 | kamer, licht uit | kamer (nacht) |
 
-**Grafisch, wat er echt gerekend wordt**
-- Grasveld: 13 diepte-lagen losse halmen, elk met eigen lengte, richting en buiging; windvlagen lopen als golven over het veld; tegenlicht in de toppen; onscherpe halmen vlak voor de lens.
-- Stromende beek: hoogteveld dat met de stroom meebeweegt, normalen daaruit, spiegeling, caustics op de bodem, schuim stroomafwaarts van elke steen, oevers die met perspectief versmallen.
-- Gezichten: geraymarcheerde koppen (schedel, kaak, oogkassen, neus, lippen, oren) met huidverstrooiing, poriën, knipperende oogleden en een low-key driekwartlicht.
-- Licht: godsstralen met stof in de loods, lichtbundel uit het raam bij dageraad, noorderlichtgordijnen met verticale strengen, warme lamp bij de piano.
-- Film-look: ACES-tonemap, vignet, korrel, letterbox 2.39:1.
+**Zes 3D-werelden, allemaal in code gebouwd**
+- **Kamer** — vloer, plafond, vier wanden met een echte raamopening, bureau met twee monitoren en een laptop op twee boeken, stoel, bed met deken en kussen, prikbord, plank met boeken, mok met oor, bureaulamp. Zeven lichtstemmingen (dageraad, ochtend, gesprek, regen, alarm, avondlamp, nacht).
+- **Veld** — terrein uit ruis, gras als hoogteveld met windvlagen die er als golven over lopen, halmstructuur in de normaal, bomenrij aan de horizon, wandelende figuur.
+- **Loods** — hal van 17 × 14 m, stellingen en pallets via domeinherhaling, hoge ramen als echte openingen, godsstralen die per punt getest worden tegen de raamopening, stof in de bundels, hanglampen, twee figuren.
+- **Beek** — bedding met meanderende geul, wateroppervlak met meestromende golven, normalen daaruit, echte spiegeling via een tweede march, caustics op de bodem, schuim stroomafwaarts van elke steen, bomen met kronen, riet, gehurkte figuur.
+- **Vijver** — waterplas die de hele hemel spiegelt, noorderlichtgordijnen, sterren, bergruggen aan de horizon, riet en een figuur aan de waterkant.
+- **Pianokamer** — piano met klep, witte en zwarte toetsen, bank, notenblad, tapijt, staande lamp als warme puntbron met volumetrische gloed.
 
-**Bediening**
-`space` pauze · `←/→` 15 s · `1/2/3` snelheid (1×/2×/8×) · `c` ondertitels · `f` volledig scherm · knop *Scènes* voor het kapittelmenu · *Kwaliteit* voor vlot/hoog/max.
+**Mensen** — één figuur uit capsules met vier poses (staan, lopen met loopcyclus, zitten, hurken), hoofd met haar, neus, oren, ogen en wenkbrauwen.
 
-**Wat opzettelijk niet letterlijk uit de repo komt:** geen enkele naam van een project, geen prijzen, geen bestaande zinnen. De partner heet Milan, de commissie is "september", het noorden blijft "het noorden".
+**Camera** — 48 shots in totaal, vier per scène. Elke shot is een echte beweging: dolly, kraan, push-in of travelling, met eigen brandpuntsafstand, plus handheld-ruis op positie, blikrichting en rol. Tussen shots harde cuts, tussen scènes een korte overvloeier.
+
+**Licht en beeld** — zachte schaduwen (shadow marching), ambient occlusion, volumetrische bundels, mist per wereld, ACES-tonemap, vignet, korrel, letterbox 2.39:1.
+
+**Bediening** — geen balk onderaan: alleen een dunne voortgangslijn. Bediening zweeft en verdwijnt na 2,6 s.
+`space` pauze · `←/→` 15 s · `1/2/3` snelheid · `m` scènes · `c` ondertitels · `f` volledig scherm · knop *Kwaliteit* voor renderresolutie (45 / 60 / 80 / 100 %).
+
+**Wat opzettelijk niet letterlijk uit de repo komt:** geen projectnamen, geen prijzen, geen bestaande zinnen. De partner heet Sander, de commissie is "september", het noorden blijft "het noorden".
 
 **Zie ook:** [[Nathans Levensplan]] · [[Nathan Profiel]] · [[Business MOC]] · [[Framework AI]] · [[Dagelijkse Loop]]
