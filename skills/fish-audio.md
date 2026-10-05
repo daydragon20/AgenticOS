@@ -33,8 +33,18 @@ Eigen stem klonen kan ook (10–30 s opname) → eigen `reference_id`.
 3. `node stem.mjs` → maakt `stem/v01.mp3 … v24.mp3`, waarschuwt als een zin te lang is (zet dan `"snelheid"` in `teksten.json`)
 4. `node bouw.mjs` → stem ingebakken; muziek zakt automatisch onder de stem (ducking)
 
+## Wat ik geleerd heb bij de eerste echte run (5 okt 2026)
+- **Sleutel-formaat:** begint met `sk-fish-`. Nooit in git of chat bewaren: alleen in een lokaal `.env` (staat in `.gitignore`). Een sleutel die ooit in een chat is geplakt: na gebruik vernieuwen op fish.audio.
+- **Controleren wat een account heeft** (zonder iets te verbruiken): `GET https://api.fish.audio/wallet/self/api-credit` en `GET .../wallet/self/package`, beide met `Authorization: Bearer <sleutel>`.
+- **Een nieuw gratis account is niet "unlimited":** pakket van 8.000 per maand en 0 betaald tegoed. Gebruik daarom het model `s2.1-pro-free` (`FISH_MODEL=s2.1-pro-free`): gratis voor API-gebruik, zelfde kwaliteit, geen tegoed nodig.
+- **24 zinnen (±1.600 tekens) kosten niets** met dat model; ze zijn in ±1 minuut gemaakt.
+- **Duur controleren per zin:** eerst één zin proberen, dan de rest. Een zin die langer is dan de ruimte in de film: verschuif de start of zet `"snelheid": 1.06` in `teksten.json`, niet de hele stem versnellen.
+- **Lokale Fish-server** (Fish Speech/OpenAudio op je eigen pc): zet `FISH_URL=http://127.0.0.1:<poort>` in `.env`; dan is geen sleutel nodig.
+- **Let op:** de Examencommissie-app maakt haar stemmen lokaal (Windows SAPI/Piper in `app/server/engine/stem.js`), niet met Fish Audio.
+
 ## Open vragen
-- Welke stem klinkt het best voor 14–16-jarigen: rustig, Vlaams of episch?
+- Welke stem klinkt het best voor 14–16-jarigen: rustig, Vlaams of episch? (nu: "Rustige Nederlandse Stem")
+- Vervolgens: de Examencommissie-stem (SAPI/Piper) vervangen door Fish Audio voor betere voorleesstemmen?
 - Eigen stem klonen voor ETF-video's (zie [[remotion|Skill Remotion]])?
 
 **Zie ook:** [[Skill Motion Design]] · [[Scout Atlas Film]] · [[Scoutskamp 2027]]
