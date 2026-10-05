@@ -66,6 +66,14 @@
 - [**skills/n8n.md**](skills/n8n.md) — n8n setup, workflows, business logica
 - [**skills/remotion.md**](skills/remotion.md) — Remotion voor video content
 - [**skills/etf-content.md**](skills/etf-content.md) — ETF stijl en tone-of-voice
+- [**skills/motion-design.md**](skills/motion-design.md) — tempo & gevoel in motion design (3 referentievideo's geanalyseerd)
+- [**skills/fish-audio.md**](skills/fish-audio.md) — Nederlandse voice-over via de Fish Audio-API
+
+---
+
+## 🏕️ Scouts
+
+- [**wiki/outdoor/scoutskamp-2027/_scoutskamp-2027.md**](wiki/outdoor/scoutskamp-2027/_scoutskamp-2027.md) — buitenlands kamp verkenners 2027: film, ranglijst (Slovenië v1), open vragen
 
 ---
 

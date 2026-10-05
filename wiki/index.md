@@ -23,6 +23,7 @@ _(elk domein is een map met een hub die verder opdeelt tot atoomniveau — zie [
 - [[Netwerk MOC]] — BE-organisaties, online aanwezigheid, mentors
 - [[Ruimtevaart MOC]] — ESA BIC, engineer-route, hybride pad
 - [[Outdoor MOC]] — kajak/ski/EHBO-certificaten, fysieke basis
+  - [[Scoutskamp 2027|🏕️ Scoutskamp 2027]] — keuze buitenlands kamp verkenners: film, ranglijst, open vragen
 
 ---
 

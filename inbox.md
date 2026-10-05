@@ -27,6 +27,9 @@ Voorbeeld:
 
 <!-- Hier dump ik alles, de hele week door. Bovenaan toevoegen. -->
 
+- [ ] [2026-10-05] TOOL — eigen stem klonen in Fish Audio (10–30 s opname) — voor Scout Atlas én ETF-video's, zie [[Skill Fish Audio]]
+- [ ] [2026-10-05] IDEE — MP4-export standaard maken voor HTML-films — makkelijker delen in WhatsApp-groepen
+
 - [ ] 
 
 ---

@@ -1,5 +1,11 @@
 # Dagelijks Log
 
+## 2026-10-05
+- **Scout Atlas 2027 v2**: film herbouwd op tempo en gevoel (3:28, 80 BPM, spanningsboog) i.p.v. sneller: proloog met zonsopgang, draaiende 3D-rugzak, kubuslandschap van 4.700 scores, afvaltocht 25 → 1, "waarom Slovenië", eerlijke afsluiter. Daarna een verkenner met alle data (zoomen/slepen, ranglijst, gewichten, CSV). PR #3 in `animaties`
+- **Datafouten gevonden en opgelost**: Polen hoort vóór Oostenrijk, Frankrijk vóór Montenegro (afronding); categoriescores nu gewogen; oorzaak "Griekenland 87 onderaan" = sorteren op onzichtbare tussenstand
+- **Inzicht**: Slovenië wint geen enkele categorie, maar heeft de 2e hoogste "bodem" → consistentie wint
+- **Drie inspiratievideo's** beeld per beeld geanalyseerd → `skills/motion-design.md`; stem-pijplijn → `skills/fish-audio.md`
+
 ## 2026-07-28
 - **Aflevering 1 herbouwd als echte 3D-wereld**: 6 geraymarcheerde werelden (kamer, veld, loods, beek, vijver, pianokamer), 48 camerashots met dolly/kraan/handheld, figuren met loopcyclus en poses, godsstralen en waterreflecties. Balk onderaan weg, partner heet nu Sander. 2D-versie bewaard als `film/archief-aflevering-01-2d.html`
 - **Aflevering 1 "Stille Motor"** gemaakt: `film/aflevering-01-stille-motor.html` — 30 minuten, 12 scènes, alles procedureel in WebGL (gras met wind, stromend water, geraymarcheerde gezichten, godsstralen, noorderlicht). Fictieve dialoog, omgeving verwijst naar de repo; geen letterlijke tekst of projectnamen overgenomen
