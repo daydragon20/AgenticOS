@@ -14,6 +14,9 @@ Chronological, append-only record of everything that's happened in this wiki.
 
 ---
 
+## [2026-10-05 18:00] session | Scout Atlas 2027 v2 + motion-design-inspiratie + Fish Audio
+Touched: wiki/outdoor/scoutskamp-2027/ (hub + 3 atomen), wiki/outdoor/_outdoor-moc.md, wiki/index.md, skills/motion-design.md, skills/fish-audio.md, memory/projects.md, memory/log.md, NAVIGATION.md, inbox.md
+
 ## [2026-07-28 18:00] session | Aflevering 1 herbouwd in echte 3D (raymarching, bewegende camera)
 Touched: film/aflevering-01-stille-motor.html, film/archief-aflevering-01-2d.html, film/README.md, memory/log.md
 

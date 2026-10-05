@@ -22,3 +22,11 @@
 - **Tools:** n8n (lokaal), VideoDB (video-workflows), Claude Code
 - **Aanpak:** solo, leren terwijl je bouwt, schaalbaarheid is het doel
 - **Skill:** `skills/n8n.md`
+
+## 4. Scout Atlas 2027 — buitenlands kamp verkenners
+- **Status:** bezig — film v2 + verkenner klaar (PR #3 in `daydragon20/animaties`), stem nog te maken
+- **Wat:** keuze van het kamp zomer 2027 (verkenners 14–16, 10–15 leden): 25 landen × 188 vragen, gewogen → Slovenië 91,28 bovenaan
+- **Tools:** HTML/WebGL (three.js), zelf opgewekte muziek, Fish Audio voor de stem
+- **Volgende stap:** stem maken met `node stem.mjs` (Fish-sleutel in `bron/.env`), dan film tonen aan de leiding
+- **Wiki:** `wiki/outdoor/scoutskamp-2027/_scoutskamp-2027.md` · skills: `skills/motion-design.md`, `skills/fish-audio.md`
+

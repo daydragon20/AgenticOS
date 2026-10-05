@@ -14,6 +14,9 @@ tags: [outdoor, moc, hub, certificaten, kajak, ski, ehbo, guiding]
 - [[Outdoor Wildernis EHBO]] — WFA → WFR
 - [[Outdoor Fysieke Basis]] — conditie die dit alles mogelijk maakt
 
+## Projecten
+- [[Scoutskamp 2027|🏕️ Scoutskamp 2027]] — buitenlands kamp verkenners: 25 landen, 188 vragen, film + verkenner (Slovenië v1)
+
 ## Waarom een eigen domein
 Deze vaardigheden verbinden meerdere landen én je fysieke discipline ([[Discipline Energie Management]]). Eén investering (certificaten) → toegang tot seizoenen wereldwijd. Dit is de praktische brug tussen [[Persoonlijk MOC]] en [[Wereldkaart|🌍 Wereldkaart]].
 
