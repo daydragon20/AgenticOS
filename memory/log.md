@@ -1,10 +1,15 @@
 # Dagelijks Log
 
+## 2026-10-07
+- **Scout Atlas v3**: de eerste film als basis genomen en veel leesbaarder gemaakt (grotere tekst, langere leestijd, 2:20). Erbij uit v2: draaiende 3D-rugzak, kubuslandschap, startscherm en afspeelbalk, en de dataverkenner die na de film opent. Stem eruit, het slotstuk met het notitieblok eruit, een land minder (24 landen; Portugal 89,96 bovenaan). PR #3 bijgewerkt
+- **Les**: in de race moet de getoonde score gelijk zijn aan waarop de rijen sorteren (tussenstand), anders lijkt de volgorde fout. Alle uitkomsttekst in de film wordt uit de data afgeleid
+- **Controle**: 645 getallen in beeld vs een onafhankelijke herberekening uit de ruwe JSON, 0 fouten
+
 ## 2026-10-05
 - **Stem Scout Atlas gemaakt** met Fish Audio (`s2.1-pro-free`, 24 zinnen, ±1 min, gratis) en ingebakken (commit 333429a in `animaties`). Les: een nieuw gratis Fish-account is niet "unlimited" (8.000/maand), maar het gratis model volstaat. Examencommissie gebruikt géén Fish (lokale SAPI/Piper). Sleutel stond in een chat → vernieuwen
-- **Scout Atlas 2027 v2**: film herbouwd op tempo en gevoel (3:28, 80 BPM, spanningsboog) i.p.v. sneller: proloog met zonsopgang, draaiende 3D-rugzak, kubuslandschap van 4.700 scores, afvaltocht 25 → 1, "waarom Slovenië", eerlijke afsluiter. Daarna een verkenner met alle data (zoomen/slepen, ranglijst, gewichten, CSV). PR #3 in `animaties`
+- **Scout Atlas 2027 v2**: film herbouwd op tempo en gevoel (3:28, 80 BPM, spanningsboog) i.p.v. sneller: proloog met zonsopgang, draaiende 3D-rugzak, kubuslandschap van 4.700 scores, afvaltocht 25 → 1. (Vervangen door v3 op 7 okt.) Daarna een verkenner met alle data (zoomen/slepen, ranglijst, gewichten, CSV). PR #3 in `animaties`
 - **Datafouten gevonden en opgelost**: Polen hoort vóór Oostenrijk, Frankrijk vóór Montenegro (afronding); categoriescores nu gewogen; oorzaak "Griekenland 87 onderaan" = sorteren op onzichtbare tussenstand
-- **Inzicht**: Slovenië wint geen enkele categorie, maar heeft de 2e hoogste "bodem" → consistentie wint
+- **Inzicht**: de winnaar wint geen enkele categorie, maar heeft de hoogste "bodem" (laagste categorie 85,6) → consistentie wint
 - **Drie inspiratievideo's** beeld per beeld geanalyseerd → `skills/motion-design.md`; stem-pijplijn → `skills/fish-audio.md`
 
 ## 2026-07-28

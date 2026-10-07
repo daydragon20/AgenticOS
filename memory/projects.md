@@ -24,9 +24,9 @@
 - **Skill:** `skills/n8n.md`
 
 ## 4. Scout Atlas 2027 — buitenlands kamp verkenners
-- **Status:** film v2 + verkenner + stem klaar (PR #3 in `daydragon20/animaties`); nog te doen: tonen aan de leiding
-- **Wat:** keuze van het kamp zomer 2027 (verkenners 14–16, 10–15 leden): 25 landen × 188 vragen, gewogen → Slovenië 91,28 bovenaan
-- **Tools:** HTML/WebGL (three.js), zelf opgewekte muziek, Fish Audio voor de stem
+- **Status:** film v3 (2:20) + verkenner klaar (PR #3 in `daydragon20/animaties`); nog te doen: tonen aan de leiding
+- **Wat:** keuze van het kamp zomer 2027 (verkenners 14–16, 10–15 leden): 24 landen × 188 vragen, gewogen → Portugal 89,96 bovenaan
+- **Tools:** HTML/WebGL (three.js), zelf opgewekte muziek (geen stem)
 - **Volgende stap:** film tonen aan de leiding en feedback op de gewichten verwerken
 - **Wiki:** `wiki/outdoor/scoutskamp-2027/_scoutskamp-2027.md` · skills: `skills/motion-design.md`, `skills/fish-audio.md`
 

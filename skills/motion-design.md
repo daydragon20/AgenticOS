@@ -41,10 +41,20 @@ Prompt: *"make a dynamic 15-second motion graphics video that shows what an incr
 6. **Beweging zonder informatie** mag en moet: draaiende objecten, stof, gloed, camera die altijd licht drijft.
 7. **Hoofdstukkaarten** als adempauze met energie: kleurvlak + cirkelwipe + kinetische titel.
 
+## Leesbaarheid: zodat je alles kunt lezen (les van 7 okt 2026)
+Een film van 1920 breed wordt op een laptop ±1280 breed getoond: tekst van 17 px wordt dan 11 px. Daarom:
+1. **Minimum ±25 px** voor elke tekst in het 1920-beeld (labels, kolomkoppen, bovenbalk); koppen en cijfers veel groter.
+2. **Leestijd**: ±0,45 s per woord + 1 s; liever een korte film die rustig leest dan een vlugge die niemand kan volgen.
+3. **Contrast**: donkere inkt op papier, lichte tekst op nacht; geen grijs op grijs. Gedimde tekst niet lager dan ±60 %.
+4. **Niets over elkaar**: labels op een 3D-kaart zoeken zelf een vrije plek (en krijgen een leiderlijntje); ze verschijnen pas als de camera stilstaat.
+5. **Kijk altijd op het kleine formaat**: screenshots op 1280 breed, niet alleen op 1920.
+6. **Getoonde score = sorteersleutel**: toon bij een race de tussenstand waarop de rijen sorteren, anders lijkt de volgorde fout.
+7. **Uitkomsttekst uit de data afleiden** (wie vooraan, wie zakt, laagste score), niet overtypen.
+
 ## Hoe ik het bouw (techniek)
 - Eén HTML-bestand, 1920×1080-podium dat meeschaalt; alles is een functie van de tijd `t` → spoelen werkt overal.
 - **three.js** voor 3D + eigen bloom (gloed), DOM voor scherpe tekst, labels vastgeprikt aan 3D-punten.
-- Muziek **zelf opgewekt** in JavaScript (synthesizer in een worker), synchroon met de tijdlijn; stem optioneel via [[Skill Fish Audio]].
+- Muziek **zelf opgewekt** in JavaScript (synthesizer in een worker), synchroon met de tijdlijn; een stem kan optioneel via [[Skill Fish Audio]] (Scout Atlas v3 heeft bewust geen stem).
 - Controleren: screenshots per moment met Playwright + een script dat elk getal in beeld vergelijkt met de data.
 
 ## Prompt-tips (uit het onderzoek)
