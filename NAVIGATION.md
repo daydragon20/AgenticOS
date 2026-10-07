@@ -73,7 +73,7 @@
 
 ## 🏕️ Scouts
 
-- [**wiki/outdoor/scoutskamp-2027/_scoutskamp-2027.md**](wiki/outdoor/scoutskamp-2027/_scoutskamp-2027.md) — buitenlands kamp verkenners 2027: film, ranglijst (Slovenië v1), open vragen
+- [**wiki/outdoor/scoutskamp-2027/_scoutskamp-2027.md**](wiki/outdoor/scoutskamp-2027/_scoutskamp-2027.md) — buitenlands kamp verkenners 2027: film, ranglijst (Portugal bovenaan), open vragen
 
 ---
 

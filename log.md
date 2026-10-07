@@ -14,6 +14,9 @@ Chronological, append-only record of everything that's happened in this wiki.
 
 ---
 
+## [2026-10-07 18:00] session | Scout Atlas v3 — eerste film als basis, leesbaar, 24 landen
+Touched: wiki/outdoor/scoutskamp-2027/ (4 notities), wiki/outdoor/_outdoor-moc.md, skills/fish-audio.md, skills/motion-design.md, NAVIGATION.md, memory/projects.md, memory/log.md
+
 ## [2026-10-05 18:00] session | Scout Atlas 2027 v2 + motion-design-inspiratie + Fish Audio
 Touched: wiki/outdoor/scoutskamp-2027/ (hub + 3 atomen), wiki/outdoor/_outdoor-moc.md, wiki/index.md, skills/motion-design.md, skills/fish-audio.md, memory/projects.md, memory/log.md, NAVIGATION.md, inbox.md
 

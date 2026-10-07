@@ -27,7 +27,9 @@ tags: [skill, tts, stem, voice-over, fish-audio, api]
 | Epic Game Announcer | `92e3ee13d7524fee904324e350a532a0` | bulderend (Engelse basis) |
 Eigen stem klonen kan ook (10–30 s opname) → eigen `reference_id`.
 
-## Zo gebruik ik het in Scout Atlas
+## Zo gebruikte ik het in Scout Atlas v2 (stem is er in v3 weer uit)
+> v3 (7 okt 2026) heeft geen stem: de pijplijn (`stem.mjs`, `stem/`) staat nog in de git-geschiedenis van `animaties` (commit 333429a). Hieronder hoe het werkte.
+
 1. `scout-atlas-2027/bron/.env` → `FISH_API_KEY=...` (staat in `.gitignore`, gaat nooit mee online)
 2. `node stem.mjs --toon` → toont de 24 zinnen (getallen voluit uit de data ingevuld)
 3. `node stem.mjs` → maakt `stem/v01.mp3 … v24.mp3`, waarschuwt als een zin te lang is (zet dan `"snelheid"` in `teksten.json`)
